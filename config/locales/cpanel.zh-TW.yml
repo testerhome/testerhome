@@ -1,0 +1,29 @@
+"zh-TW":
+  cpanel:
+    menu:
+      root_path: "概況"
+      site_configs: "設定"
+      users: "使用者"
+      sections: "分類"
+      nodes: "節點"
+      wiki: "Wiki"
+      topics: "討論"
+      replies: "回應"
+      photos: "圖片"
+      notes: "記事本"
+      comments: "評論"
+      site_nodes: "酷站类别"
+      sites: "酷站"
+      locations: "城市"
+      exception_logs: "异常"
+    overview: "概覽"
+    recent_topics: "最近討論"
+    statics: "統計資訊"
+    site_configs:
+      settings: "設定選項"
+      please_do_not_modify_key: "請勿修改 key"
+      edit_setting: "修改設定"
+    users:
+      trust_user_can_modify_wiki: "受信任使用者將可以修改 Wiki"
+    topic_list: "討論串列表"
+    check_photo: "查看圖片"

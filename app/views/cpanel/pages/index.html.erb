@@ -1,0 +1,32 @@
+<% content_for :sitemap do %>
+  <span class="current">Wiki</span>
+<% end %>
+<h1>Wiki 列表</h1>
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr class="head">
+    <td class="first">ID</td>
+    <td style="width:200px">Slug</td>
+    <td>Title</td>
+    <td>at</td>
+    <td>lock</td>
+    <td>Version</td>
+    <td style="width:80px;"></td>
+  </tr>
+
+<% @pages.each do |page| %>
+  <tr class="<%= 'deleted' if !page.deleted_at.blank? %>">
+    <td class="first"><%= page.id %></td>
+    <td><%= page.slug %></td>
+    <td><%= truncate(page.title, length: 30) %></td>
+    <td><%= l page.created_at, format: :short %></td>
+    <td><%= page.locked %></td>
+    <td><%= page.version %></td>
+    <td>
+      <%= link_to '历史', cpanel_page_versions_path(page.id) %>
+    <%= link_to '', edit_cpanel_page_path(page), class: "icon small_edit" %>
+    <%= link_to '', cpanel_page_path(page), 'data-confirm' => 'Are you sure?', method: :delete, class: "icon small_delete" %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @pages %>

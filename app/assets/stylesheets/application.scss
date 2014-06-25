@@ -1,0 +1,285 @@
+/*
+ *= require bootstrap
+ *= require wikistyle
+ *= require jquery.chosen
+ *= require highlight
+ *= require social-share-button
+ *= require jquery.atwho
+ *= require jquery.fluidbox
+ *= require nprogress
+ *= require_tree ./sprites/
+ *= require_self
+ */
+html {
+  width: 100%;
+  height: 100%;
+  background: #e5e5e5;
+}
+body { 
+  background:none; font-family: "Heiti SC Light","Helvetica Neue",Helvetica,Arial,sans-serif;
+  &.zoom-overlay-open {
+    background:#FFF;
+  }
+}
+
+code { background:none; }
+
+[data-action="zoom"] {
+  cursor: pointer;
+  cursor: -webkit-zoom-in;
+  cursor: -moz-zoom-in;
+}
+.navbar-fixed-top {
+  position:static;right:0;left:0;margin-bottom:20px;
+/*  .badge-inverse { background:#666;}*/
+
+  .search-query {
+    margin-top: 1px;
+    width: 130px;
+  }
+  .brand {width:60px;}
+  .badge {
+    color:#aaa;
+    font-weight:normal;
+    background-color: #f7f7f7;
+    background: -webkit-linear-gradient( #ffffff, #f0f0f0);
+    background: linear-gradient( #ffffff, #f0f0f0);
+    border: 1px solid #cccccc;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    padding: 2px 10px;
+  }
+  .badge-error { 
+    background-color:#d71900; 
+    background: -webkit-linear-gradient( #d71900, #C43C35);
+    background: linear-gradient( #d71900, #C43C35);
+    color:#fff; 
+    border-color:#af2525; 
+  }
+  h3 {
+    padding:0;
+    display:block; text-align:center;
+    width:123px; margin:0 auto;
+    margin-bottom: -35px;
+    a {
+      padding:0; margin:0; margin-top:3px;
+      background:image_url('text_logo.png') left top no-repeat;
+      width:123px;
+      height:30px;
+      display:block;
+      border:0px;
+      background-size:122px 30px;
+      &:hover {
+        opacity:0.9;
+      }
+      &:active {
+        opacity:0.5;
+      }
+    }
+  }
+}
+
+.breadcrumb { display:none; }
+.container { 
+  width:960px; 
+}
+.container-fluid { padding:0; }
+.container-fluid > .sidebar {
+  position:absolute;
+  left:auto;
+  right:0;
+  top:0;
+  width: 240px;
+}
+
+.container-fluid > .content {
+  margin-left:0;
+  margin-right: 260px;
+}
+
+fieldset { margin-bottom:0;}
+fieldset legend { font-size:16px; font-weight:bold;}
+
+.pagination { margin:0; margin-top:10px; }
+
+a.label:hover { text-decoration: none; color:#FFF;}
+
+abbr[title] { border:0; cursor:default; }
+
+form {
+  margin-bottom:0px;
+}
+.form-actions {
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  margin-bottom:0px;
+}
+
+.box {
+  background-color: #fff;
+  padding:10px;
+  margin: 0 0 20px 0; /* negative indent the amount of the padding to maintain the grid system */
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0px 2px rgba(0,0,0,.07);
+  -moz-box-shadow: 0 0px 2px rgba(0,0,0,.07);
+  box-shadow: 0 0px 2px rgba(0,0,0,.07);
+  h2.title {
+    font-size: 12px;
+    background: #f5f5f5;
+    font-weight:normal;
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+    margin:-10px -10px; padding:10px 10px 0; margin-bottom:8px;
+    color:#666; line-height:100%;
+    border-bottom:1px solid #ddd; padding-bottom:8px;
+  }
+}
+
+.box_gray {
+  background:#F5F5F5;
+}
+
+.dropdown-small {
+  .dropdown-menu {
+    border-color:#ccc;
+    min-width:100px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0px 2px rgba(0,0,0,.2);
+    box-shadow: 0 0px 2px rgba(0,0,0,.2);
+  }
+  li {
+    &.title {
+      padding:2px 8px;
+      color:#bbb;
+    }
+    a {
+      padding:1px 8px;
+      font-size:12px;
+      cursor: pointer;
+      i { color:#bbb; }
+    }
+  }
+}
+
+.footer {
+  border-top:0;
+  margin-bottom:30px;
+  margin-top:0px;
+  padding:0;
+  padding-bottom:10px;
+}
+.footer p {
+  margin:3px 0;
+  color: #555;
+}
+#main { position:relative;}
+#main h1 { font-size:14px; line-height:26px; font-weight:bold; text-align:right; color:#333; margin-bottom:10px; }
+
+.topbar { position: static; margin-bottom:20px;}
+
+textarea.long { width:670px;}
+textarea.span16 { width:910px;}
+.input-xxlarge, input.xxlarge, textarea.xxlarge, select.xxlarge { width:510px;}
+
+div.field, div.actions {
+  margin-bottom: 10px;
+}
+div.field .hint { font-size:12px; color:#999;}
+
+.field_with_errors {
+  display:inline;
+  color:#b16125;
+}
+
+.alert-message { margin-bottom:8px;}
+
+.icon {
+  display:inline-block;
+  transition-property: background-position;
+  transition-duration: 0.5s;
+  -moz-transition-property: background-position; /* Firefox 4 */
+  -moz-transition-duration: 0.5s; /* Firefox 4 */
+  -webkit-transition-property: background-position; /* Safari and Chrome */
+  -webkit-transition-duration: 0.5s; /* Safari and Chrome */
+}
+.icons_go_top { width: 16px; height: 16px; background: url(image-path('go_top.png'));}
+.icons_rss { width: 16px; height: 16px; background: url(image-path('rss.png')); }
+
+@media only screen and (-webkit-device-pixel-ratio: 2){
+	.icons_rss { background: url(image-path('rss@2x.png')); background-size:16px 16px; }
+	.icons_go_top { background: url(image-path('go_top@2x.png')); background-size:16px 16px; }
+}
+
+.simple_form {
+  label.required {
+    abbr { color:#c00;}
+  }
+}
+
+/* bootstrap puts .clearfix inside form, doesn't make much sense */
+.clearfix {
+  margin-bottom: 18px;
+  zoom: 1;
+  &:before, &:after {
+    display: table;
+    content: "";
+    zoom: 1;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+#error_page {
+  padding:60px;
+  h1 { font-size:600%; color:#aaa; margin-bottom:100px;}
+  p { font-size:16px; }
+}
+
+.no_result { text-align:center; color:#999; }
+
+.go_top {
+  background: #FFF;
+  text-align: center;
+  border:1px solid #eee;
+  display:none;
+  height:20px; width:24px;
+  padding-top:4px; overflow:hidden;
+  border-radius:6px;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+}
+
+img.emoji { width:20px; height:20px; }
+
+/* for markdown code hint */
+.v-btn-group {
+  display: block;
+}
+
+.v-btn-group + .v-btn-group {
+  margin-top: 5px;
+  margin-left: 0;
+}
+
+.langs {
+  width: 360px;
+  margin: 0 auto;
+}
+
+button.lang {
+  width: 90px;
+}
+
+.footer_buttons {
+  width: 130px;
+  padding-bottom: 15px;
+}

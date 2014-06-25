@@ -1,0 +1,106 @@
+<!--
+  App Environments:
+  --------------------------------------------------------
+  Ruby:  <%= RUBY_VERSION %><%= "-p#{RUBY_PATCHLEVEL}" if defined? RUBY_PATCHLEVEL %>
+  Rails: <%= Rails.version %>
+  Thanks to RubyChina
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render_page_title %>
+  <meta charset='utf-8' />
+  <meta name="keywords" content="<%= @meta_keywords %>" />
+  <meta name="description" content="<%= @meta_description %>" />
+  <%= stylesheet_link_tag "front", "data-turbolinks-track" => true %>
+  <% if mobile? %>
+    <%= stylesheet_link_tag "mobile" %>
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta content='True' name='HandheldFriendly' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="apple-touch-icon-precomposed" href="<%= asset_path("ios-icon.png") %>" />
+  <% else %>
+    <%= stylesheet_link_tag "mobile", media: "screen and (max-width: 798px)" %>
+  <% end %>
+  <link rel="shortcut icon" href="<%= asset_path("big_logo.png") %>" />
+  <%= auto_discovery_link_tag(:rss, feed_topics_url, title: '订阅最新帖') %>
+  <%= javascript_include_tag "app", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tag %>
+  <%= yield :node_feed_link %>
+  <%= raw SiteConfig.custom_head_html %>
+</head>
+<body data-offset="50" data-controller-name="<%= controller_name %>">
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <h3>
+          <a href="/" class="site-logo"></a>
+        </h3>
+        <%= render_list class: "nav" do |li|
+           li << link_to(t("menu.home"), root_path)
+           li << link_to(t("menu.topics"), topics_path)
+           li << link_to(t("menu.wiki"), pages_path) if !mobile?
+           li << link_to(t("menu.jobs"), jobs_path)
+           li << link_to(t("menu.sites"), sites_path) if !mobile?
+        end %>
+        <span class="pull-right">
+          <form action="/search" class="navbar-search" method="get">
+            <input type="text" name="q" class="search-query" value="<%= params[:q] %>" placeholder="<%= t("common.search") %>" />
+          </form>
+
+          <%= render "common/user_nav" %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <%= birthday_tag %>
+    <%= notice_message %>
+    <div id="main" class="container-fluid">
+      <%= yield %>
+    </div>
+  </div>
+
+  <% if not mobile? %>
+  <a class="go_top" href="#"><i class="icon icons_go_top"></i></a>
+  <footer class="footer">
+    <div class="container">
+      <%= raw SiteConfig.footer_html %>
+    </div>
+  </footer>
+  <% end %>
+  <% if mobile? %>
+    <script type="text/javascript">
+    app_mobile = true;
+    $('body').animate({ scrollTop: -1 },0);
+    </script>
+  <% end %>
+  <script type="text/javascript" data-turbolinks-eval=false>
+    App.root_url = "<%= root_url %>";
+    App.asset_url = "<%= Setting.upload_url %>";
+    App.faye_client_url = "<%= Setting.faye_client_url %>";
+    <% if current_user %>
+      App.current_user_id = <%= current_user.id %>;
+      App.access_token = "<%= current_user.temp_access_token %>";
+    <% end %>
+    if (App.faye_client_url) {
+      App.initNotificationSubscribe();
+    }
+  </script>
+  <%= yield :scripts %>
+  <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '<%= Setting.google_analytics_key %>']);
+      _gaq.push(['_setSiteSpeedSampleRate', 100]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  </script>
+  <div class="zoom-overlay"></div>
+</body>
+</html>
