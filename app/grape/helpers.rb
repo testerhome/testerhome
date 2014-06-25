@@ -1,4 +1,4 @@
-module RubyChina
+module TesterHome
   module APIHelpers
     def warden
       env['warden']

@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-    <% RubyChina::API.routes.each do |route| %>
+    <% TesterHome::API.routes.each do |route| %>
       <tr>
         <td><%= route.route_method %></td>
         <% route_path = route.route_path.gsub("(.:format)",".json") %>
