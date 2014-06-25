@@ -1,7 +1,7 @@
 require "entities"
 require "helpers"
 
-module RubyChina
+module TesterHome
   class API < Grape::API
     prefix "api"
     error_format :json

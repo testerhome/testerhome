@@ -128,7 +128,8 @@ class TopicsController < ApplicationController
     @topic = Topic.new(topic_params)
     @topic.user_id = current_user.id
     @topic.node_id = params[:node] || topic_params[:node_id]
-    if node.name == "吐槽"
+    node = Node.find(@topic.node_id)
+    if node.name.index("匿名")
       @topic.user_id = 12
     end
 
