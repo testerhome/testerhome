@@ -1,0 +1,34 @@
+<% content_for :sitemap do %>
+  <span class="current">用户</span>
+<% end %>
+<h1>Listing users</h1>
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr class="head">
+    <td class="first">Id</td>
+        <td>Login</td>
+        <td>Email</td>
+    <td>Location</td>
+    <td>State</td>
+    <td>Verified</td>
+    <td>操作</td>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td class="first"><%= user.id %></td>
+    <td><%= user.login %></td>
+    <td><%= user.email %></td>
+    <td><%= user.location %></td>
+    <td><%= user.state %></td>
+    <td><%= user.verified %></td>
+    <td>
+      <%= link_to '', edit_cpanel_user_path(user), class: "icon small_edit" %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @users %>
+<br />
+
+<%= link_to 'New User', new_cpanel_user_path %>

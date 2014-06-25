@@ -1,0 +1,28 @@
+language: ruby
+bundler_args: --without development
+
+env:
+  - USE_OFFICIAL_GEM_SOURCE=1
+
+services:
+  - mongodb
+  - redis-server
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+
+rvm:
+  - 2.0.0
+
+before_script:
+  - mongo ruby_china_test --eval 'db.addUser("travis", "test");'
+  - cp config/config.yml.default config/config.yml
+  - cp config/mongoid.yml.default config/mongoid.yml
+  - cp config/redis.yml.default config/redis.yml
+  - cp config/secrets.yml.default config/secrets.yml
+  - sed -i "s/SETUP_DEVELOPMENT_HOST/127.0.0.1:27017/g" config/mongoid.yml
+  - sed -i "s/SETUP_REDIS_HOST/127.0.0.1/g" config/redis.yml
+  - sed -i "s/SETUP_REDIS_PORT/6379/g" config/redis.yml
+
+script: RAILS_ENV=test bundle exec rake spec spec:javascript

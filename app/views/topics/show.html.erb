@@ -1,0 +1,93 @@
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    Topics.replies_per_page = <%= @per_page %>;
+    $(document).ready(function(){
+      <% if admin? %>
+        $("#replies .reply a.edit").css('display','inline-block');
+      <% elsif current_user %>
+        $("#replies .reply a.edit[data-uid='<%= current_user.id %>']").css('display','inline-block');
+      <% end %>
+      <% if current_user && !@user_liked_reply_ids.blank? %>
+        Topics.checkRepliesLikeStatus([<%= @user_liked_reply_ids.join(",") %>]);
+      <% end %>
+    })
+  </script>
+<% end %>
+
+<div class="content">
+  <div id="topic_show" class="topics box hfeed">
+    <div class="topic hentry">
+      <%= render partial: "topics/topic_info", locals: { topic: @topic } %>
+      <%= raw SiteConfig.before_topic_html %>
+      <div class="body entry-content">
+        <%= sanitize_topic @topic.body_html %>
+      </div>
+
+      <% if @topic.excellent? %>
+      <div class="excellent">
+        <i class="icon small_cert_on"></i> 本帖已被设为精华帖！
+        <% if admin? %>
+        <div class="opts pull-right">
+          <%= link_to "取消", unsuggest_topic_path(@topic.id), method: "delete" %>
+        </div>
+        <% end %>
+      </div>
+      <% end %>
+
+      <%= raw SiteConfig.after_topic_html %>
+
+      <%= render "buttons" %>
+    </div>
+  </div>
+
+  <% if @replies.blank? %>
+    <div class="no_result">
+      <%= t("topics.no_replies") %>
+    </div>
+    <% else %>
+    <div id="replies" class="box box_gray">
+      <div class="total">
+        共收到 <b><%= @topic.replies_count %></b> 条回复
+      </div>
+      <div class="items">
+        <%= cache([@topic,params[:page],"raw:#{@show_raw}"]) do %>
+          <%= render partial: "replies/reply", collection: @replies %>
+        <% end %>
+      </div>
+      <%= will_paginate @replies, inner_window: 2, params: { anchor: 'replies' } %>
+    </div>
+  <% end %>
+
+  <% if current_user %>
+    <div id="reply" class="form box">
+      <% if can? :create, Reply %>
+        <%= render "editor_toolbar" %>
+        <%= form_for(Reply.new, remote: true, url: topic_replies_path(@topic)) do |f| %>
+          <%= f.text_area :body, class: "topic_editor span10", rows: "4", tabindex: "1" %>
+          <div class="submit_buttons">
+            <button type="submit" id="btn_reply" class="btn btn-primary" tabindex="2"><%= t("topics.submit_reply")%></button><br />
+            <span class="help-inline" title="或者 Command + Enter">Ctrl+Enter</span>
+          </div>
+
+          <span class="body helpblock">
+            <%= render_cell :topics, :reply_help_block %>
+          </span>
+        <% end %>
+      <% else %>
+        <div class="alert alert-info">
+          当前设置新手用户不能在 22:00 ~ 9:00 发帖。
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+      <%= render partial: "topics/translation/need_login_to_reply" %>
+  <% end %>
+</div>
+
+<% if !mobile? %>
+  <div class="sidebar">
+    <%= render "sidebar_box_node_new_topic" %>
+    <%= render_cell :topics, :tips %>
+    <%= render_cell :topics, :sidebar_for_node_recent_topics, { topic: @topic } %>
+  </div>
+<% end %>

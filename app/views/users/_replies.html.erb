@@ -1,0 +1,14 @@
+<ul class="recent_replies">
+  <% replies.each do |reply| %>
+    <% next if reply.topic.blank? %>
+    <li>
+      <div class="title">
+        <%= link_to(reply.topic.title, topic_path(reply.topic_id)) %>
+        <span class="info">at <%= timeago(reply.created_at) %></span>
+      </div>
+      <div class="body">
+        <%= sanitize_reply reply.body_html %>
+      </div>
+    </li>
+  <% end %>
+</ul>

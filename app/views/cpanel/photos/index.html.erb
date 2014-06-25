@@ -1,0 +1,23 @@
+<h1>Listing photos</h1>
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <td>ID</td>
+    <td>Image</td>
+    <td>User</td>
+    <td></td>
+  </tr>
+
+<% @photos.each do |photo| %>
+  <tr>
+    <td><%= photo.id %></td>
+    <td><%= image_tag(photo.image.url) if !photo.image.blank? %></td>
+    <td><%= photo.user.login if !photo.user.blank? %></td>
+    <td><%= link_to '', cpanel_photo_path(photo), 'data-confirm' => 'Are you sure?', method: :delete, class: "icon small_delete" %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @photos %>
+<br />
+
+<%= link_to 'New Photo', new_cpanel_photo_path %>

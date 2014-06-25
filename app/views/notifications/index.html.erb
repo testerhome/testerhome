@@ -1,0 +1,16 @@
+<div id="notifications" class="box">
+  <div class="tools">
+    <%= link_to t("common.clear"), clear_notifications_path, class: 'btn btn-danger', method: :post, 'data-disable-with' => '清空中...' %>
+    <h1 class="pull-right">通知提醒 <small style="font-size:12px;margin-left:5px;">(<%= @notifications.total_entries %> 条)</small></h1>
+  </div>
+  <% if @notifications.blank? %>
+    <div class="no_result" style="padding:80px 0;">暂无通知</div>
+  <% else %>
+    <table class="table">
+      <tbody>
+        <%= render partial: "notification", collection: @notifications %>
+      </tbody>
+    </table>
+  <% end %>
+  <%= will_paginate @notifications %>
+</div>
