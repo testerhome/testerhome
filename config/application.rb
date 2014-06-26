@@ -10,7 +10,7 @@ if defined?(Bundler)
   Bundler.require *Rails.groups(assets: %w(production development test))
 end
 
-module RubyChina
+module TesterHome
   class Application < Rails::Application
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/uploaders)

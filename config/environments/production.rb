@@ -32,14 +32,20 @@ Rails.application.configure do
   # In production, Apache or nginx will already do this
   config.serve_static_assets = false
 
-  # Enable serving of images, stylesheets, and javascripts from an asset server
-  config.action_controller.asset_host = Setting.upload_url
 
-  # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: Setting.domain }
-  config.action_mailer.delivery_method   = :postmark
-  config.action_mailer.postmark_settings = { api_key: Setting.email_password }
+  # Don't care if the mailer can't send
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {:host => "testerhome.com" }
+  config.action_mailer.delivery_method =:smtp
+  config.action_mailer.smtp_settings = {
+    :address=> "smtp.126.com",
+    :port=> 25,
+    :domain=> "126.com",
+    :authentication=> :login,
+    :user_name=> "testerhome@126.com",
+    :password=> "Testerhome2013"
+  }
+
 
   # Enable threaded mode
   # config.threadsafe!
@@ -66,5 +72,5 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   # config.active_record.dump_schema_after_migration = false
 
-  config.force_ssl = true
+  #config.force_ssl = true
 end

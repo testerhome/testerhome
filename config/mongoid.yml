@@ -1,0 +1,26 @@
+defaults: &defaults
+
+development:
+  <<: *defaults
+  sessions:
+    default:
+      hosts:
+        - 127.0.0.1:27017
+      database: testerhome_dev
+
+test:
+  <<: *defaults
+  sessions:
+    default:
+      hosts:
+        - 127.0.0.1:27017
+      database: testerhome_test
+
+# set these environment variables on your prod server
+production:
+  <<: *defaults
+  sessions:
+    default:
+      hosts:
+        - 127.0.0.1:27017
+      database: testerhome

@@ -59,7 +59,7 @@ gem "redis-objects", "0.9.1"
 # Markdown 格式 & 文本处理
 gem "redcarpet", "~> 3.0.0"
 gem "rouge", "~> 1.3.4"
-gem 'nokogiri', "~> 1.5.6"
+gem 'nokogiri', "~> 1.6.0"
 gem 'auto-space', '0.0.2'
 
 # YAML 配置信息
@@ -119,5 +119,5 @@ group :development, :test do
 end
 
 group :production do
-  gem 'newrelic_rpm'
+  #gem 'newrelic_rpm'
 end
