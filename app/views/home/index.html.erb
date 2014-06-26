@@ -27,3 +27,14 @@
   <%= render_cell :topics, :index_sections %>
   <%= render_cell :topics, :index_locations %>
 <% end %>
+
+<% if current_user %>
+<script type="text/javascript">
+  var readed_topic_ids = <%= current_user.filter_readed_topics(@latest_topics) %>;
+  readed_topic_ids = readed_topic_ids.concat(<%= current_user.filter_readed_topics(@excellent_topics) %>);
+  for (var i = 0; i < readed_topic_ids.length; i++) {
+    topic_id = readed_topic_ids[i];
+    $(".topic_"+ topic_id + " .right_info .count").addClass("state_true");
+  }
+</script>
+<%end%>

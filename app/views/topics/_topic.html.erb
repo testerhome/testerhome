@@ -1,5 +1,10 @@
 <% cache([topic, suggest]) do %>
+
+<% if suggest %>
+<div class="suggest_topic topic topic_line topic_<%= topic.id %>">
+<% else %>
 <div class="topic topic_line topic_<%= topic.id %>">
+<% end %>
   <div class="pull-left avatar">
     <%= user_avatar_tag(topic.user,:normal) %>
   </div>
