@@ -9,6 +9,11 @@ class RepliesController < ApplicationController
     @reply.topic_id = @topic.id
     @reply.user_id = current_user.id
 
+    node = Node.find(@topic.node_id)
+    if node.name.index("匿名")
+      @reply.user_id = 12
+    end
+
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t('topics.reply_success')
