@@ -65,6 +65,12 @@ module TesterHome
         authenticate!
         @topic = current_user.topics.new(title: params[:title], body: params[:body])
         @topic.node_id = params[:node_id]
+
+ 	node = Node.find(@topic.node_id)
+        if node.name.index("匿名")
+          @topic.user_id = 12
+        end
+
         if @topic.save
           present @topic, with: APIEntities::DetailTopic
         else
@@ -94,6 +100,10 @@ module TesterHome
         @topic = Topic.find(params[:id])
         @reply = @topic.replies.build(body: params[:body])
         @reply.user_id = current_user.id
+	node = Node.find(@topic.node_id)
+	if node.name.index("匿名")
+	  @reply.user_id = 12
+	end
         if @reply.save
           present @reply, with: APIEntities::Reply
         else

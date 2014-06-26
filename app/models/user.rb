@@ -147,7 +147,7 @@ class User
   # 是否能发帖
   def newbie?
     return false if self.verified == true
-    self.created_at > 1.week.ago
+    self.created_at > 1.day.ago
   end
 
   def blocked?
