@@ -55,23 +55,22 @@ class Notifier
   visitUrl: (url) ->
     window.location.href = url
 
-  notify: (avatar, title, content, url = null) ->
-    @checkOrRequirePermission()
+notify: (avatar, title, content, url = null) ->
     if @enableNotification
-      if window.webkitNotifications
+      if not window.Notification
         popup = window.webkitNotifications.createNotification(avatar, title, content)
         if url
           popup.onclick = ->
             window.parent.focus()
             $.notifier.visitUrl(url)
-        popup.show()
-      else if window.Notification
+      else
         opts =
           body : content
           onclick : ->
             window.parent.focus()
             $.notifier.visitUrl(url)
         popup = new window.Notification(title,opts)
+      popup.show()
 
 
 jQuery.notifier = new Notifier
