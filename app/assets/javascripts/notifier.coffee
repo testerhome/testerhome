@@ -4,7 +4,9 @@ class Notifier
     @checkOrRequirePermission()
 
   hasSupport: ->
-    window.webkitNotifications?
+    try
+      !!(window.Notification ||window.webkitNotifications || navigator.mozNotification || (window.external && window.external.msIsSiteMode() !== undefined))
+
 
   requestPermission: (cb) ->
     window.webkitNotifications.requestPermission (cb)
@@ -59,7 +61,7 @@ class Notifier
             $.notifier.visitUrl(url)
         popup = new window.Notification(title,opts)
       popup.show()
-        
+
       # setTimeout ( => popup.cancel() ), 12000
 
 jQuery.notifier = new Notifier
