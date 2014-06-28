@@ -4,22 +4,34 @@ class Notifier
     @checkOrRequirePermission()
 
   hasSupport: ->
-    try
-      !!(window.Notification ||window.webkitNotifications || navigator.mozNotification || (window.external && window.external.msIsSiteMode() !== undefined))
-
+    window.Notification? or window.webkitNotifications? or (window.external && window.external.msIsSiteMode?() isnt undefined)
 
   requestPermission: (cb) ->
-    window.webkitNotifications.requestPermission (cb)
+    if @hasSupport()
+      return
+    if window.webkitNotifications && window.webkitNotifications.checkPermission
+      window.webkitNotifications.requestPermission(cb)
+    else if window.Notification && window.Notification.requestPermission
+      window.Notification.requestPermission(cb)
+
 
   setPermission: =>
     if @hasPermission()
       $('#notification-alert a.close').click()
       @enableNotification = true
-    else if window.webkitNotifications.checkPermission() is 2
-      $('#notification-alert a.close').click()
 
   hasPermission: ->
-    if window.webkitNotifications.checkPermission() is 0
+    if window.webkitNotifications?
+      if window.webkitNotifications.checkPermission() is 0
+        return true
+      else
+        return false
+    else if window.Notification?.permission
+      if window.Notification.permission is "granted"
+        return true
+      else
+        return false
+    else if window.external.msIsSiteMode()
       return true
     else
       return false
@@ -29,8 +41,7 @@ class Notifier
       if @hasPermission()
         @enableNotification = true
       else
-        if window.webkitNotifications.checkPermission() isnt 2
-          @showTooltip()
+        @showTooltip()
     else
       console.log("Desktop notifications are not supported for this Browser/OS version yet.")
 
@@ -47,12 +58,13 @@ class Notifier
   notify: (avatar, title, content, url = null) ->
     @checkOrRequirePermission()
     if @enableNotification
-      if window.webkitNotifications && navigator.userAgent.indexOf("Chrome") > -1
+      if window.webkitNotifications
         popup = window.webkitNotifications.createNotification(avatar, title, content)
         if url
           popup.onclick = ->
             window.parent.focus()
             $.notifier.visitUrl(url)
+        popup.show()
       else if window.Notification
         opts =
           body : content
@@ -60,8 +72,6 @@ class Notifier
             window.parent.focus()
             $.notifier.visitUrl(url)
         popup = new window.Notification(title,opts)
-      popup.show()
 
-      # setTimeout ( => popup.cancel() ), 12000
 
 jQuery.notifier = new Notifier
