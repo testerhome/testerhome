@@ -55,7 +55,7 @@ class Notifier
   visitUrl: (url) ->
     window.location.href = url
 
-notify: (avatar, title, content, url = null) ->
+  notify: (avatar, title, content, url = null) ->
     if @enableNotification
       if not window.Notification
         popup = window.webkitNotifications.createNotification(avatar, title, content)
