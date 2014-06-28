@@ -136,7 +136,6 @@ window.App =
       result[$e.text()] = $e.attr('data-name')
 
     result
-
   initNotificationSubscribe : () ->
     return if not App.access_token?
     faye = new Faye.Client(App.faye_client_url)
