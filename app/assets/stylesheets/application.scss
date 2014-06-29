@@ -15,7 +15,7 @@ html {
   height: 100%;
   background: #e5e5e5;
 }
-body { 
+body {
   background:none; font-family: "Heiti SC Light","Helvetica Neue",Helvetica,Arial,sans-serif;
   &.zoom-overlay-open {
     background:#FFF;
@@ -50,12 +50,12 @@ code { background:none; }
     border-radius: 2px;
     padding: 2px 10px;
   }
-  .badge-error { 
-    background-color:#d71900; 
+  .badge-error {
+    background-color:#d71900;
     background: -webkit-linear-gradient( #d71900, #C43C35);
     background: linear-gradient( #d71900, #C43C35);
-    color:#fff; 
-    border-color:#af2525; 
+    color:#fff;
+    border-color:#af2525;
   }
   h3 {
     padding:0;
@@ -81,8 +81,8 @@ code { background:none; }
 }
 
 .breadcrumb { display:none; }
-.container { 
-  width:960px; 
+.container {
+  width:960px;
 }
 .container-fluid { padding:0; }
 .container-fluid > .sidebar {
@@ -282,4 +282,8 @@ button.lang {
 .footer_buttons {
   width: 130px;
   padding-bottom: 15px;
+}
+
+#notification-alert {
+  margin-bottom: 0px;
 }
