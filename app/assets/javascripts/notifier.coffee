@@ -67,11 +67,10 @@ class Notifier
         opts =
           icon: avatar
           body : content
-          onclick : ->
+        popup = new window.Notification(title,opts)
+        if url
+          popup.onclick = ->
             window.parent.focus()
             $.notifier.visitUrl(url)
-        popup = new window.Notification(title,opts)
-
-
 
 jQuery.notifier = new Notifier
