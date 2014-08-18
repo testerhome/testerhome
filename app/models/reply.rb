@@ -14,6 +14,9 @@ class Reply
   field :body_html
   field :source
   field :message_id
+  # 匿名答复 0 否， 1 是
+  field :anonymous, type: Integer, default: 0
+
 
   belongs_to :user, inverse_of: :replies
   belongs_to :topic, inverse_of: :replies, touch: true
@@ -52,8 +55,8 @@ class Reply
       true
     end
   end
-  
-  
+
+
 
   after_create do
     Reply.delay.send_topic_reply_notification(self.id)
@@ -92,6 +95,10 @@ class Reply
   # 是否热门
   def popular?
     self.likes_count >= 5
+  end
+
+  def anonymous?
+    self.anonymous >= 1
   end
 
   def destroy

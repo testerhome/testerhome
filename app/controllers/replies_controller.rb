@@ -10,7 +10,7 @@ class RepliesController < ApplicationController
     @reply.user_id = current_user.id
 
     node = Node.find(@topic.node_id)
-    if node.name.index("匿名")
+    if node.name.index("匿名") and @reply.anonymous == 0
       @reply.user_id = 12
     end
 
@@ -52,6 +52,6 @@ class RepliesController < ApplicationController
   end
 
   def reply_params
-    params.require(:reply).permit(:body)
+    params.require(:reply).permit(:body, :anonymous)
   end
 end

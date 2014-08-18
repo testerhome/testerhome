@@ -66,7 +66,15 @@
           <%= f.text_area :body, class: "topic_editor span10", rows: "4", tabindex: "1" %>
           <div class="submit_buttons">
             <button type="submit" id="btn_reply" class="btn btn-primary" tabindex="2"><%= t("topics.submit_reply")%></button><br />
+          <% if Node.find(@topic.node_id).name.index("匿名") %>
+          <span class="help-inline">
+            <label class="checkbox inline">
+              <%= f.check_box :anonymous %>  <%= t("topics.real_name")%>
+            </label>
+          </span>
+          <% end %>
             <span class="help-inline" title="或者 Command + Enter">Ctrl+Enter</span>
+
           </div>
 
           <span class="body helpblock">
