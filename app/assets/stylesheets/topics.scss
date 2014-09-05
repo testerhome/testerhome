@@ -279,7 +279,10 @@ form .node_select {
 
 .totals ul li { line-height:150%;}
 
-#topic_new_tip li { margin-bottom:6px;}
+#topic_new_tip li {
+  margin-bottom:6px;
+  border-top: 3px solid #d40;
+}
 
 #topics_recent {
   h2 {
