@@ -19,6 +19,7 @@
     overview: "概览"
     recent_topics: "最近帖子"
     statics: "统计信息"
+    user_statics: "积分榜"
     site_configs:
       settings: "设置项"
       please_do_not_modify_key: "请勿修改 key"

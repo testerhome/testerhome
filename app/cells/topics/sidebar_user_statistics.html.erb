@@ -1,0 +1,12 @@
+<div class="totals box score">
+    <h2 class="title"><%= t("common.user_statics") %></h2>
+    <ol>
+        <% for user in @hot_users do %>
+          <li>
+              <span class="top_score"><%=user.score %></span>
+              <span class="user_name"><%= user_name_tag(user) %></span>
+              <div class="clear"></div>
+          </li>
+        <% end %>
+    </ol>
+</div>
