@@ -20,6 +20,14 @@ class TopicsCell < BaseCell
     render
   end
 
+  # 边栏的统计信息
+  cache :sidebar_user_statistics, expires_in: 1.days
+  def sidebar_user_statistics
+    @hot_users = User.hot.limit(10)
+    render
+  end
+
+
   # 节点下面的最新话题
   cache :sidebar_for_node_recent_topics, expires_in: 30.minutes do |cell, args|
     ['node', args[:topic].node_id].join("-")

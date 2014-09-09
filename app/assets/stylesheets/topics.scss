@@ -325,6 +325,30 @@ form .node_select {
 }
 
 .sidebar {
+  .score {
+    ol li {
+      list-style: none;
+    }
+    .clear {
+      clear: both;
+    }
+    .top_score {
+      color: rgb(128, 128, 128);
+      text-align: left;
+      float: left;
+      display: inline-block;
+    }
+
+    .user_name {
+      color: rgb(51, 51, 51);
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      white-space: nowrap;
+      max-width: 120px;
+      display: inline-block;
+      float: right;
+    }
+  }
   .hot_nodes {
     ul {
       margin: 0;

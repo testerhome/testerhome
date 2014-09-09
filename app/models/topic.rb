@@ -160,4 +160,8 @@ class Topic
   def excellent?
     self.excellent >= 1
   end
+
+  def popular?
+    self.likes_count >= 5
+  end
 end
