@@ -17,6 +17,7 @@
     delete_this_account: "Delete This Account"
     dont_like_it: "Do not like it?"
     bind_another_account: "Bind another account"
+    newbie_warning: "Newbies should wait 24 hours if you wanna create a topic!"
     register_user: "Registration"
     suggest_using_twitter_id: "Can modify after create."
     already_have_account: "Already have an account?"
