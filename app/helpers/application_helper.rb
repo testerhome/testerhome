@@ -121,9 +121,9 @@ module ApplicationHelper
   end
 
   def birthday_tag
-    if Time.now.month == 10 && Time.now.day == 28
-      age = Time.now.year - 2011 + 1
-      title = "Ruby China 创立 #{age} 周年纪念日"
+    if Time.now.month == 4 && Time.now.day == 1
+      age = Time.now.year - 2013 + 1
+      title = "TesterHome 创立 #{age} 周年纪念日"
       html = []
       html << "<div style='text-align:center;margin-bottom:20px; line-height:200%;'>"
       %W(dancers beers cake birthday crown gift crown birthday cake beers dancers).each do |name|
