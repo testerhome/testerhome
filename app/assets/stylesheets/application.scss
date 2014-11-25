@@ -287,3 +287,18 @@ button.lang {
 #notification-alert {
   margin-bottom: 0px;
 }
+
+#search_info {
+  margin-bottom: 10px;
+}
+
+.search-result {
+  em {
+    color: #000;
+    background-color: #ff0;
+  }
+
+  .topic:hover {
+    background-color: #fcf8e3;
+  }
+}
