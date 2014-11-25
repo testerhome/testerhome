@@ -30,12 +30,17 @@ gem "mongoid", github: 'mongoid/mongoid', ref: 'da35e0cd0fc17651c263e0f74d90b0ad
 gem 'mongoid_auto_increment_id', "0.6.4"
 gem 'mongoid_rails_migrations', '1.0.0'
 
+# 分页
+gem 'will_paginate', '3.0.4'
+
+# elasticsearch
+gem "elasticsearch"
+gem "elasticsearch-model"
+gem "elasticsearch-rails"
+
 # 用户系统
 gem 'devise', '3.0.1'
 gem 'devise-encryptable', '0.1.2'
-
-# 分页
-gem 'will_paginate', '3.0.4'
 
 # Bootstrap
 gem 'anjlab-bootstrap-rails', '2.0.3.2', require: 'bootstrap-rails'

@@ -1,20 +1,34 @@
-<div id="search_result_box" class="box">
-  <script>
-    (function() {
-      var cx = '<%= Setting.google_custom_search_id %>';
-      var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = false;
-      gcse.src = (document.location.protocol == 'https' ? 'https:' : 'http:') +
-          '//www.google.com/cse/cse.js?cx=' + cx;
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
-    })();
-  </script>
-  <gcse:search>
-    <div class="loading">
-      <div class="progress progress-danger progress-striped active">
-        <div class="bar" style="width: 100%;"></div>
-      </div>
-      正在加载 Google 搜索...
+<div class="search-result">
+    <div class="box box_gray">
+        <div id="search_info">
+            <h3 class="h2">找到约 <strong><%= @topics.count %></strong> 条结果</h3>
+        </div>
+
+        <div class="topics">
+            <% @topics.each_with_hit do |record, hit| %>
+
+            <div class="topic topic_line">
+                <div class="pull-left avatar">
+                    <%= user_avatar_tag(record.user,:normal) %>
+                </div>
+                <div class="title">
+                    <%= link_to(truncate(hit.highlight.title ? (raw hit.highlight.title[0]) : record.title, length: 100), topic_path(record), title: record.title) %>
+                </div>
+                <p class="excerpt"><%= truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200)%>...</p>
+            </div>
+            <% end %>
+        </div>
+        <%= will_paginate @topics, inner_window: 2 %>
     </div>
-  </gcse:search>
 </div>
 
+<% if current_user %>
+    <script type="text/javascript">
+        var readed_topic_ids = <%= current_user.filter_readed_topics(@topics) %>;
+        readed_topic_ids = readed_topic_ids.concat(<%= current_user.filter_readed_topics(@suggest_topics) %>);
+        for (var i = 0; i < readed_topic_ids.length; i++) {
+            topic_id = readed_topic_ids[i];
+            $(".topic_" + topic_id + " .right_info .count").addClass("state_true");
+        }
+    </script>
+<% end %>
