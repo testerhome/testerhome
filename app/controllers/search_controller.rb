@@ -1,7 +1,6 @@
 # coding: utf-8
 class SearchController < ApplicationController
   def index
-    puts params[:q].to_s
     @topics = Topic.search(
         query: {
             multi_match: {
@@ -16,7 +15,7 @@ class SearchController < ApplicationController
                 body: {}
             }
         }
-    ).paginate(page: params[:page], per_page: 15).records
-
+    ).paginate(page: params[:page], per_page: 10).records
+    @count = @topics.total_entries
   end
 end
