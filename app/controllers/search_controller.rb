@@ -6,7 +6,8 @@ class SearchController < ApplicationController
             multi_match: {
                 query: params[:q],
                 fields: %w(title body),
-                fuzziness: 2
+                fuzziness: 2,
+                prefix_length: 5
             }
         },
         highlight: {
