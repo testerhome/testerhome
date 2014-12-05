@@ -1,31 +1,34 @@
-<%= raw SiteConfig.index_html %>
-
-<div class="home_suggest_topics box box_gray">
-   <h2>最新帖子</h2>
-   <div class="topics">
-     <%= render partial: "topics/topic", collection: @latest_topics,  locals: { suggest: false } %>
-   </div>
-   <div class="more">
-     <%= link_to "查看更多...", recent_topics_path %>
-   </div>
- </div>
-
-
-<div class="home_suggest_topics box box_gray">
-  <h2>社区精华帖</h2>
-  <div class="topics">
-    <%= render partial: "topics/topic", collection: @excellent_topics, locals: { suggest: false } %>
-  </div>
-  <div class="more">
-    <%= link_to "查看更多精华帖...", excellent_topics_path %>
-    <% if not mobile? %>
-      <%= link_to(raw("<span class='icon icons_rss'></span>"), feedgood_topics_url, :title => t("topics.subscribe_good_with_rss", :name => Setting.app_name), :class => "feed") %>
-    <% end %>
+<%#= raw SiteConfig.index_html %>
+<div class="content">
+  <ul class="nav">
+    <li class="active"><a href="#latest_topics" data-toggle="tab">最新发帖</a></li>
+    <li class=""><a href="#excellent_topics" data-toggle="tab">社区精华</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="latest_topics" class="tab-pane active">
+      <div class="topics">
+        <%= render partial: "topics/topic", collection: @latest_topics,  locals: { suggest: false } %>
+      </div>
+      <div class="more">
+        <%= link_to "查看更多...", recent_topics_path %>
+      </div>
+    </div>
+    <div id="excellent_topics" class="tab-pane">
+      <div class="topics">
+        <%= render partial: "topics/topic", collection: @excellent_topics, locals: { suggest: false } %>
+      </div>
+      <div class="more">
+        <%= link_to "查看更多...", excellent_topics_path %>
+      </div>
+    </div>
   </div>
 </div>
+
 <% if !mobile? %>
-  <%= render_cell :topics, :index_sections %>
-  <%= render_cell :topics, :index_locations %>
+  <div class="sidebar">
+    <%= render_cell :topics, :index_sections %>
+    <%= render_cell :topics, :index_locations %>
+  </div>
 <% end %>
 
 <% if current_user %>

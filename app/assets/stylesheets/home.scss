@@ -18,24 +18,14 @@ h2 {
 .topics ul li .node a:link,
 .topics ul li .node a:visited { color:#666; }
 
-.home_suggest_topics {
-  h2 { 
-    font-size:14px;
-    margin: 0 -10px;
-    padding: 0 10px 10px 10px;
-    border-bottom:1px solid #ddd;
-  }
-  .topics {
-    .topic { 
-      height:50px;
-      .title {
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
+.topics {
+  .topic {
+    height:50px;
+    .title {
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .topic:nth-child(odd) { width:50%; float:left;  clear:left; }
-    .topic:nth-child(even) { width:50%; padding-left:50%; margin-left:10px; }
   }
 }
 

@@ -33,15 +33,13 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <h3>
-          <a href="/" class="site-logo"></a>
-        </h3>
         <%= render_list class: "nav" do |li|
-           li << link_to(t("menu.home"), root_path)
-           li << link_to(t("menu.topics"), topics_path)
-           li << link_to(t("menu.wiki"), pages_path) if !mobile?
-           li << link_to(t("menu.jobs"), jobs_path)
-           li << link_to(t("menu.sites"), sites_path) if !mobile?
+          li << link_to("", (root_path), :class => "site-logo")
+          li << link_to(t("menu.home"), root_path)
+          li << link_to(t("menu.topics"), topics_path)
+          li << link_to(t("menu.wiki"), pages_path) if !mobile?
+          li << link_to(t("menu.jobs"), jobs_path)
+          li << link_to(t("menu.sites"), sites_path) if !mobile?
         end %>
         <span class="pull-right">
           <form action="/search" class="navbar-search" method="get">
@@ -90,16 +88,16 @@
   </script>
   <%= yield :scripts %>
   <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', '<%= Setting.google_analytics_key %>']);
-      _gaq.push(['_setSiteSpeedSampleRate', 100]);
-      _gaq.push(['_trackPageview']);
+      // var _gaq = _gaq || [];
+      // _gaq.push(['_setAccount', '<%= Setting.google_analytics_key %>']);
+      // _gaq.push(['_setSiteSpeedSampleRate', 100]);
+      // _gaq.push(['_trackPageview']);
 
-      (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+      // (function() {
+      //     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      //     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      //     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      // })();
   </script>
   <div class="zoom-overlay"></div>
 </body>

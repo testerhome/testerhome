@@ -22,15 +22,6 @@
 }
 
 .sidebar {
-   h2 {
-     font-size: 12px;
-     line-height: 100%;
-     color: #999;
-     text-align: center;
-     border-bottom:1px solid #ddd;
-     margin:0 -10px 10px -10px;
-     padding-bottom:8px;
-   }
    ul, ol {
      margin:0;
      list-style-position: inside;
@@ -157,19 +148,19 @@
     position: relative;
     border-top: 1px solid #eee;
     padding-top:20px;
-    
+
     .avatar {
       position:absolute;
       left:0;
     }
-    
+
     .info {
       color:#aaa;
       font-size:12px;
       margin-bottom:5px;
       line-height:22px;
       padding-bottom:3px;
-      
+
     }
     .body {
       font-size:14px;
@@ -253,6 +244,18 @@
   }
 }
 
+.sidebar #sections {
+  li label,
+  .nodes {
+    margin: 0;
+    float: none;
+    text-align: left;
+  }
+  .nodes a {
+    text-indent: 1em;
+    display: block;
+  }
+}
 
 #hot_locations {
   ul { list-style: none; margin:0; padding:0; text-align:center; }

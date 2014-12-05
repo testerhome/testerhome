@@ -21,7 +21,7 @@ body {
   }
 }
 .navbar-fixed-top {
-    h3 { 
+    h3 {
       display:block; float:none; clear:both; text-align:center;
       margin:0px;
       width:auto;
@@ -228,18 +228,9 @@ form {
 
 .go_top { display:none; }
 
-.home_suggest_topics {
-  .box { width:auto; position: static;}
+.container-fluid > .content {
   .topics {
-    .topic { 
-      height:auto;
-      .title {
-        white-space:break-all;
-        overflow:auto;
-      }
-    }
-    .topic:nth-child(odd) { width:auto; float:none;  clear:left; }
-    .topic:nth-child(even) { width:auto; padding-left:0; margin-left:-10px; }
+    margin: 0 15px;
   }
 }
 
