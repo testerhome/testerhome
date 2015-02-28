@@ -21,6 +21,7 @@ module TesterHome
     # user helpers
     def current_user
       token = params[:token] || oauth_token
+      token = token.to_s
       @current_user ||= User.where(private_token: token).first
     end
     

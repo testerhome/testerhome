@@ -28,6 +28,16 @@
   <%= csrf_meta_tag %>
   <%= yield :node_feed_link %>
   <%= raw SiteConfig.custom_head_html %>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bfca03d31121ff43bab8f1bf58dcb58b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 </head>
 <body data-offset="50" data-controller-name="<%= controller_name %>">
   <div class="navbar navbar-fixed-top">
@@ -94,6 +104,10 @@
       _gaq.push(['_setAccount', '<%= Setting.google_analytics_key %>']);
       _gaq.push(['_setSiteSpeedSampleRate', 100]);
       _gaq.push(['_trackPageview']);
+      u=document.getElementById("user_menu");
+      ur="";
+      if(u) ur=document.getElementById("user_menu").innerText.split(" ")[0]
+      _gaq.push(['_setCustomVar', 1,'user',ur,1]);
 
       (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -101,6 +115,7 @@
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   </script>
+
   <div class="zoom-overlay"></div>
 </body>
 </html>
