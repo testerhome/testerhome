@@ -2,11 +2,13 @@
 require "redcarpet"
 module ApplicationHelper
   def sanitize_topic(body)
-    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em strike del u a ul ol li span), :attributes => %w(href src class title alt target rel)
+    # 为实现锚点，允许id属性
+    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em strike del u a ul ol li span), :attributes => %w(href src class title alt target rel id)
   end
 
   def sanitize_reply(body)
-    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em strike del u a ul ol li span), :attributes => %w(href src class title alt target rel data-floor)
+    # 为实现锚点，允许id属性
+    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em strike del u a ul ol li span), :attributes => %w(href src class title alt target rel data-floor id)
   end
 
   def notice_message
