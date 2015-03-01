@@ -19,7 +19,7 @@ module Redcarpet
                                link_attributes: {target: '_blank'}))
       end
 
-      
+
       def block_code(code, language)
         language.downcase! if language.is_a?(String)
         html = super(code, language)
@@ -53,7 +53,7 @@ module Redcarpet
       # Topic 里面，所有的 head 改为 h4 显示
       def header(text, header_level)
         # 为每个标题添加锚点
-        "<h4 id='#{text}'>#{text}</h4>"
+        "<h4 id='#{text.gsub(/\s+/, '-')}'>#{text}</h4>"
       end
     end
   end
