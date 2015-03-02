@@ -23,7 +23,7 @@ class TopicsCell < BaseCell
   # 边栏的统计信息
   cache :sidebar_user_statistics, expires_in: 1.days
   def sidebar_user_statistics
-    @hot_users = User.hot.limit(10)
+    @outstanding_users = User.outstanding.limit(20)
     render
   end
 

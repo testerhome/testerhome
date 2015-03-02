@@ -93,9 +93,11 @@ class User
 
   scope :hot, -> { desc(:replies_count, :topics_count) }
 
+
   def score
     excellent_topics.length * 10 + popular_topics.length * 5 + topics_count + replies_count
   end
+  scope :outstanding, -> {desc(:topics_count, :score)}
 
   def excellent_topics
     (topics.map do |item|
