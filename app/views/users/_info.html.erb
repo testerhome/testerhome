@@ -69,6 +69,10 @@
         <label><%= t("users.join_time")%>:</label>
         <span><%= render_user_join_time(@user) %></span>
       </li>
+        <li>
+            <label><%= t("users.score")%>:</label>
+            <span><%=@user.score%></span>
+        </li>
 
     </ul>
   </div>

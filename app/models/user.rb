@@ -44,6 +44,7 @@ class User
   field :company
   field :github
   field :twitter
+  field :score, type: Integer, default: 1000
   # 是否信任用户
   field :verified, type: Mongoid::Boolean, :default => false
   field :state, type: Integer, default: 1
@@ -92,12 +93,7 @@ class User
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   scope :hot, -> { desc(:replies_count, :topics_count) }
-
-
-  def score
-    excellent_topics.length * 10 + popular_topics.length * 5 + topics_count + replies_count
-  end
-  scope :outstanding, -> {desc(:topics_count, :score)}
+  scope :outstanding, -> {desc(:score)}
 
   def excellent_topics
     (topics.map do |item|
@@ -325,11 +321,16 @@ class User
     true
   end
 
+  def update_score fen
+    self.score = self.score + fen
+    self.save(validate: false)
+  end
+
   # 软删除
   # 只是把用户信息修改了
   def soft_delete
     # assuming you have deleted_at column added already
-    self.email = "#{self.login}_#{self.id}@ruby-china.org"
+    self.email = "#{self.login}_#{self.id}@testerhome.com"
     self.login = "Guest"
     self.bio = ""
     self.website = ""

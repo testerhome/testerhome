@@ -3,6 +3,7 @@
     bios: "個人介紹"
     city: "城市"
     join_time: "加入時間"
+    score: "积分"
     signature: "簽名檔"
     personal_website: "個人網站"
     recent_publish_topic: "最近發表的話題"
@@ -30,7 +31,7 @@
     recent_joined: "最新加入的會員"
     edit_on_gravatar: "如需修改頭像，請進入"
     menu:
-      topics: "文章" 
+      topics: "文章"
       recent_reply_topics: "最近回應"
       like: "喜歡"
       favorites: "收藏"

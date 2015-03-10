@@ -15,6 +15,7 @@ class RepliesController < ApplicationController
     end
 
     if @reply.save
+      reply_owner.update_score 1
       current_user.read_topic(@topic)
       @msg = t('topics.reply_success')
     else
@@ -39,6 +40,7 @@ class RepliesController < ApplicationController
   def destroy
     @reply = Reply.find(params[:id])
     if @reply.destroy
+      reply_owner.update_score -1
       redirect_to(topic_path(@reply.topic_id), notice: '回帖删除成功。')
     else
       redirect_to(topic_path(@reply.topic_id), alert: '程序异常，删除失败。')
@@ -53,5 +55,9 @@ class RepliesController < ApplicationController
 
   def reply_params
     params.require(:reply).permit(:body, :anonymous)
+  end
+
+  def reply_owner
+    User.find_by_id @reply.user_id
   end
 end

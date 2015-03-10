@@ -136,6 +136,7 @@ class TopicsController < ApplicationController
     end
 
     if @topic.save
+      topic_owner.update_score 5
       redirect_to(topic_path(@topic.id), notice: t('topics.create_topic_success'))
     else
       render action: 'new'
@@ -174,6 +175,7 @@ class TopicsController < ApplicationController
   def destroy
     @topic = Topic.find(params[:id])
     @topic.destroy_by(current_user)
+    topic_owner.update_score -5
     redirect_to(topics_path, notice: t('topics.delete_topic_success'))
   end
 
@@ -202,12 +204,14 @@ class TopicsController < ApplicationController
   def suggest
     @topic = Topic.find(params[:id])
     @topic.update_attributes(excellent: 1)
+    topic_owner.update_score 10
     redirect_to @topic, success: '加精成功。'
   end
 
   def unsuggest
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:excellent, 0)
+    topic_owner.update_score -10
     redirect_to @topic, success: '加精已经取消。'
   end
 
@@ -215,5 +219,9 @@ class TopicsController < ApplicationController
 
   def topic_params
     params.require(:topic).permit(:title, :body, :node_id)
+  end
+
+  def topic_owner
+    User.find_by_id @topic.user_id
   end
 end
