@@ -2,6 +2,9 @@
 class SearchController < ApplicationController
   def index
     @topics = Topic.search(
+        sort: [
+            { updated_at: :desc },
+        ],
         query: {
             multi_match: {
                 query: params[:q],
