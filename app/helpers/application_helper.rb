@@ -11,6 +11,11 @@ module ApplicationHelper
     sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span), :attributes => %w(href src class title alt target rel data-floor id)
   end
 
+  def sanitize_search_result(body)
+    # 为实现锚点，允许id属性
+    sanitize body, :tags => %w(em)
+  end
+
   def notice_message
     flash_messages = []
 
