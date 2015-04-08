@@ -28,6 +28,10 @@ module Redcarpet
         html
       end
 
+      def table(header, body)
+        %(<table class="table table-striped">#{header}#{body}</table>)
+      end
+
       def autolink(link, link_type)
         # return link
         if link_type.to_s == "email"
@@ -241,6 +245,7 @@ class MarkdownTopicConverter < MarkdownConverter
         fenced_code_blocks: true,
         strikethrough: true,
         space_after_headers: true,
+        tables: true,
         disable_indented_code_blocks: true,
         no_intra_emphasis: true
       })

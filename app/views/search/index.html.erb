@@ -14,7 +14,7 @@
                 <div class="title">
                     <%= link_to(truncate(hit.highlight.title ? (raw hit.highlight.title[0]) : record.title, length: 100), topic_path(record), title: record.title) %>
                 </div>
-                <p class="excerpt"><%= sanitize_topic truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200, escape: false)%>...</p>
+                <p class="excerpt"><%= sanitize_topic truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200, escape: true)%>...</p>
             </div>
             <% end %>
         </div>
