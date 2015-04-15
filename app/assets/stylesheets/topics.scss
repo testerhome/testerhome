@@ -12,8 +12,8 @@
     .avatar { width:56px; margin-left:10px; }
     .infos { padding-right:74px;}
     .right_info { padding-left:66px;}
-    .title { 
-      font-size:14px; margin-top:2px; margin-bottom:6px; 
+    .title {
+      font-size:14px; margin-top:2px; margin-bottom:6px;
       i { margin-bottom:-1px; }
     }
     .info {
@@ -46,15 +46,15 @@
     img { max-width: 100%; }
   }
   .excellent {
-    background:#fffce9; 
+    background:#fffce9;
     border-top:1px solid #fff3e6;
     border-bottom:1px solid #fff3e6;
     margin: 0px -10px 10px -10px;
     padding:4px 10px;
     color:#da974d; font-size:12px;
     .icon { margin-bottom:-1px; }
-    .opts { 
-      text-align:right; font-size:10px; 
+    .opts {
+      text-align:right; font-size:10px;
       a { margin-left:10px; color:#aaa; }
     }
   }
@@ -162,8 +162,8 @@ form .node_select {
 }
 
 #replies {
-  .total { 
-    padding:0 10px 6px 10px; border-bottom:1px solid #DDD; color:#999; margin:0 -10px; 
+  .total {
+    padding:0 10px 6px 10px; border-bottom:1px solid #DDD; color:#999; margin:0 -10px;
     a { color:#666; text-decoration: underline; }
   }
   .pagination { padding:8px 10px 0 10px; margin:0 -10px; }
@@ -185,15 +185,15 @@ form .node_select {
       a:link,
       a:visited { color:#999; }
       .name {
-        a { 
+        a {
           color:#888;
-          text-decoration:none; font-weight:bold; margin-right:4px; 
+          text-decoration:none; font-weight:bold; margin-right:4px;
           &:hover { color:#555; }
         }
       }
       .time {
-        a.reply-floor { 
-          margin-right: 0; color:#bbb; text-decoration: none; 
+        a.reply-floor {
+          margin-right: 0; color:#bbb; text-decoration: none;
           &:hover {color:#999;}
         }
       }
@@ -252,10 +252,18 @@ form .node_select {
     color:#000; font-weight:bold;
     i { color:#777; }
   }
-  h4 { 
-    font-weight:bold; font-size:16px; line-height:100%; 
-    margin:0; color:#222; margin-top:20px; 
-    border-left:15px solid #eee; padding-left:5px; margin-bottom:20px;  }
+  h4 {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px !important;
+    line-height: 100%;
+    margin: 0;
+    color: #444;
+    margin-top: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
   strong { color:#000; }
   ul,
   ol {
@@ -268,8 +276,8 @@ form .node_select {
     li { line-height:1.8em; padding:2px 0; color:#333; font-size:13px; }
     ul { list-style-type: circle; }
   }
-  ol { 
-    list-style-type: decimal; 
+  ol {
+    list-style-type: decimal;
     ol { list-style-type: lower-alpha; }
   }
   img { vertical-align: top; }
