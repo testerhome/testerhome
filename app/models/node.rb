@@ -36,18 +36,18 @@ class Node
       Node.all.collect { |n| [n.name,n.id] }
     end
   end
-  
+
   def self.jobs_id
-    25
+    19
   end
-  
+
   # Markdown 转换过后的 HTML
   def summary_html
     Rails.cache.fetch("#{self.cache_key}/summary_html") do
       MarkdownConverter.convert(self.summary)
     end
   end
-  
+
   # 是否为 jobs 节点
   def jobs?
     self.id == self.class.jobs_id
