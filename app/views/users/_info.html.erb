@@ -1,78 +1,57 @@
-<div class="box">
-  <div class="userinfo vcard clearfix">
-    <div class="pull-right" style="text-align:center;">
-      <%= user_avatar_tag(@user,:big, link: false) %>
-    </div>
-    <%= render_user_level_tag(@user) %>
-    <ul>
-      <li class="with_nbsp">
-        <label>&nbsp;</label>
-        <span class="title">第 <%= @user.id %> 位<%= t("menu.users")%></span>
-        <% if admin? %>
-          <%= link_to "后台修改", edit_cpanel_user_path(@user), class: 'btn btn-mini' %>
-        <% end %>
-      </li>
-      <li>
-        <label>ID:</label>
-        <strong class="fn"><%= @user.login %></strong>
-      </li>
-      <% if !@user.name.blank? %>
-        <li>
-          <label>Name:</label>
-          <strong><%= @user.name %></strong>
-        </li>
-      <% end %>
-
+<div class="panel panel-default userinfo">
+  <div class="panel-body vcard clearfix">
+    <ul class="list-group">
       <% if !@user.location.blank? %>
-        <li class="adr">
+        <li class="adr list-group-item">
           <label><%= t("users.city")%>:</label>
           <span class="region"><%= location_name_tag(@user.location) %></span>
         </li>
       <% end %>
 
       <% if !@user.company.blank? %>
-        <li class="adr">
+        <li class="adr list-group-item">
           <label><%= t("users.company")%>:</label>
           <span class="org"><%= @user.company %></span>
         </li>
       <% end %>
 
       <% if !@user.email.blank? && @user.email_public %>
-      <li>
+      <li class="list-group-item">
         <label>Email:</label>
         <span><%= auto_link @user.email %></span>
       </li>
       <% end %>
 
       <% if !@user.twitter.blank? %>
-        <li>
+        <li class="list-group-item">
           <label><%= t("users.twitter")%>:</label>
           <span><%= link_to "@#{@user.twitter}", @user.twitter_url, class: "twitter", rel: "nofollow" %></span>
         </li>
       <% end %>
 
       <% if !@user.website.blank? %>
-        <li>
+        <li class="list-group-item">
           <label><%= t("users.personal_website")%>:</label>
           <span><%= render_user_personal_website(@user)%></span>
         </li>
       <% end %>
 
       <% if !@user.tagline.blank? %>
-        <li>
+        <li class="list-group-item">
           <label><%= t("users.signature")%>:</label>
           <span><%= render_user_tagline(@user) %></span>
         </li>
       <% end %>
 
-      <li>
+      <li class="list-group-item">
         <label><%= t("users.join_time")%>:</label>
         <span><%= render_user_join_time(@user) %></span>
       </li>
-        <li>
-            <label><%= t("users.score")%>:</label>
-            <span><%=@user.score%></span>
-        </li>
+
+             <li class="list-group-item">
+                 <label><%= t("users.score")%>:</label>
+                 <span><%= @user.score %></span>
+             </li>
 
     </ul>
   </div>
@@ -82,8 +61,11 @@
 
 <% cache([@user, "bio"]) do %>
   <% if !@user.bio.blank? %>
-    <div class="box bio wikistyle">
-      <%= markdown(@user.bio) %>
+    <div class="panel panel-default bio">
+      <div class="panel-heading">个人介绍</div>
+      <div class="panel-body markdown">
+        <%= markdown(@user.bio) %>
+      </div>
     </div>
   <% end %>
 <% end %>

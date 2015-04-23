@@ -1,19 +1,11 @@
 # coding: utf-8
 require "redcarpet"
 module ApplicationHelper
-  def sanitize_topic(body)
-    # 为实现锚点，允许id属性
-    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span), :attributes => %w(href src class title alt target rel id)
-  end
-
-  def sanitize_reply(body)
-    # 为实现锚点，允许id属性
-    sanitize body, :tags => %w(p br img h1 h2 h3 h4 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span), :attributes => %w(href src class title alt target rel data-floor id)
-  end
-
-  def sanitize_search_result(body)
-    # 为实现锚点，允许id属性
-    sanitize body, :tags => %w(em)
+  ALLOW_TAGS = %w(p br img h1 h2 h3 h4 h5 h6 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span hr)
+  ALLOW_ATTRIBUTES = %w(href src class title alt target rel data-floor id)
+  def sanitize_markdown(body)
+    # TODO: This method slow, 3.5ms per call in topic body
+    sanitize body, tags: ALLOW_TAGS, attributes: ALLOW_ATTRIBUTES
   end
 
   def notice_message
@@ -21,6 +13,7 @@ module ApplicationHelper
 
     flash.each do |type, message|
       type = :success if type.to_sym == :notice
+      type = :danger if type.to_sym == :alert
       text = content_tag(:div, link_to("x", "#", :class => "close", 'data-dismiss' => "alert") + message, :class => "alert alert-#{type}")
       flash_messages << text if message
     end
@@ -66,6 +59,11 @@ module ApplicationHelper
     content_tag(:div, sanitize(MarkdownConverter.convert(str)), :class => options[:class])
   end
 
+  def sanitize_search_result(body)
+    # 为实现锚点，允许id属性
+    sanitize body, :tags => %w(em)
+  end
+
   def admin?(user = nil)
     user ||= current_user
     user.try(:admin?)
@@ -78,18 +76,22 @@ module ApplicationHelper
 
   def owner?(item)
     return false if item.blank? || current_user.blank?
-    item.user_id == current_user.id
+    if item.is_a?(User)
+      item.id == current_user.id
+    else
+      item.user_id == current_user.id
+    end
   end
 
   def timeago(time, options = {})
-    options[:class]
     options[:class] = options[:class].blank? ? "timeago" : [options[:class],"timeago"].join(" ")
-    content_tag(:abbr, "", options.merge(:title => time.iso8601)) if time
+    options.merge!(title: time.iso8601)
+    content_tag(:abbr, "", class: options[:class], title: time.iso8601) if time
   end
 
   def render_page_title
     site_name = Setting.app_name
-    title = @page_title ? "#{site_name} | #{@page_title}" : site_name rescue "SITE_NAME"
+    title = @page_title ? "#{@page_title} &raquo; #{site_name}" : site_name rescue "SITE_NAME"
     content_tag("title", title, nil, false)
   end
 
@@ -128,8 +130,8 @@ module ApplicationHelper
   end
 
   def birthday_tag
-    if Time.now.month == 4 && Time.now.day == 1
-      age = Time.now.year - 2013 + 1
+    if Time.now.month == 10 && Time.now.day == 28
+      age = Time.now.year - 2012
       title = "TesterHome 创立 #{age} 周年纪念日"
       html = []
       html << "<div style='text-align:center;margin-bottom:20px; line-height:200%;'>"
@@ -141,5 +143,19 @@ module ApplicationHelper
       html << "</div>"
       raw html.join(" ")
     end
+  end
+
+  def random_tips
+    tips = SiteConfig.tips
+    return "" if tips.blank?
+    tips.split("\n").sample
+  end
+
+  def icon_tag(name, opts = {})
+    label = ""
+    if opts[:label]
+      label = %(<span>#{opts[:label]}</span>)
+    end
+    raw "<i class='fa fa-#{name}'></i> #{label}"
   end
 end

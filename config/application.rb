@@ -26,13 +26,7 @@ module TesterHome
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
-    # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password, :password_confirm, :token, :private_token]
-
     config.mongoid.include_root_in_json = false
-
-    config.assets.enabled = true
-    config.assets.version = '1.0'
 
     config.generators do |g|
       g.test_framework :rspec
@@ -45,17 +39,18 @@ module TesterHome
       Devise::Mailer.layout "mailer"
     }
 
-    config.assets.precompile += %w(application.css app.js topics.css topics.js
-      window.css front.css cpanel.css
-      users.css pages.css pages.js notes.css notes.js
-      mobile.css home.css)
-
     config.middleware.use Rack::Cors do
       allow do
         origins '*'
         resource '/api/*', headers: :any, methods: [:get, :post, :put, :delete, :destroy]
       end
     end
+
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
+
+    config.cache_store = [:dalli_store,"127.0.0.1", { namespace: "rb-cn", compress: true }]
+
+    config.middleware.insert 0, Rack::UTF8Sanitizer
   end
 end
 
@@ -64,4 +59,4 @@ require "markdown"
 I18n.config.enforce_available_locales = false
 I18n.locale = 'zh-CN'
 
-GC::Profiler.enable
+# GC::Profiler.enable

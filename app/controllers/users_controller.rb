@@ -1,8 +1,10 @@
 # coding: utf-8
 require 'will_paginate/array'
 class UsersController < ApplicationController
-  before_filter :require_user, only: 'auth_unbind'
-  before_filter :find_user, only: [:show, :topics, :favorites, :notes]
+  before_action :require_user, only: [:block, :unblock, :auth_unbind]
+  before_filter :find_user, only: [:show, :topics, :favorites, :notes, 
+                                   :block, :unblock, :blocked,
+                                   :follow, :unfollow, :followers, :following]
   caches_action :index, expires_in: 2.hours, layout: false
 
   def index
@@ -57,12 +59,49 @@ class UsersController < ApplicationController
       return
     end
 
-    @users = User.where(location_id: @location.id).desc('replies_count').paginate(page: params[:page], per_page: 30)
+    @users = User.where(location_id: @location.id).desc('replies_count').paginate(page: params[:page], per_page: 60)
 
     if @users.count == 0
       render_404
       return
     end
+  end
+
+  def block
+    current_user.block_user(@user.id)
+    render json: { code: 0 }
+  end
+
+  def unblock
+    current_user.unblock_user(@user.id)
+    render json: { code: 0 }
+  end
+
+  def blocked
+    if current_user.id != @user.id
+      render_404
+    end
+
+    @blocked_users = User.where(:_id.in => current_user.blocked_user_ids).paginate(page: params[:page], per_page: 20)
+  end
+  
+  def follow
+    current_user.follow_user(@user)
+    render json: { code: 0, data: { followers_count: @user.followers_count } }
+  end
+  
+  def unfollow
+    current_user.unfollow_user(@user)
+    render json: { code: 0, data: { followers_count: @user.followers_count } }
+  end
+  
+  def followers
+    @users = @user.followers.paginate(page: params[:page], per_page: 60)
+  end
+  
+  def following
+    @users = @user.following.paginate(page: params[:page], per_page: 60)
+    render "followers"
   end
 
   protected
@@ -73,8 +112,7 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.where(login: /^#{params[:id]}$/i).first
-    render_404 if @user.nil?
+    @user = User.find_login(params[:id])
   end
 
 end

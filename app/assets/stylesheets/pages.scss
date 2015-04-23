@@ -6,38 +6,21 @@
     }
   }
 }
-#page_show {
+#page-show {
   .info {
     text-align:right;
     padding:10px;
-    border-bottom:1px solid #ddd;
+    border-bottom:1px solid #eaeaea;
     margin:-10px -10px 0;
     background: #f5f5f5;
     border-radius: 3px 3px 0 0;
     margin-bottom:20px;
   }
   .editors {
-    padding:10px 10px 0px 10px;
-    border-top:1px solid #ddd;
-    margin:0 -10px;
-    margin-top:20px;
     h3 { font-size:14px; color:#999;}
+    .media-object { display: inline; }
+    .buttons { margin-top: 10px; }
   }
 }
 
-#preview {
-  width: 670px;
-  height: 400px;
-  border: 1px solid #CCCCCC;
-  border-radius: 3px 3px 3px 3px;
-  -moz-border-radius: 3px 3px 3px 3px;
-  display: none;
-  padding:4px;
-  overflow: scroll;
-}
 
-.page_form {
-  .editor_toolbar{
-    width: 680px;
-  }
-}

@@ -9,6 +9,8 @@ class User
   include Redis::Objects
   extend OmniauthCallbacks
 
+  ALLOW_LOGIN_CHARS_REGEXP = /\A\w+\z/
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
@@ -18,8 +20,6 @@ class User
   # Email 是否公开
   field :email_public, type: Mongoid::Boolean
   field :encrypted_password, type: String, default: ""
-
-  validates_presence_of :email
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -44,7 +44,10 @@ class User
   field :company
   field :github
   field :twitter
+
+  # 积分
   field :score, type: Integer, default: 1000
+
   # 是否信任用户
   field :verified, type: Mongoid::Boolean, :default => false
   field :state, type: Integer, default: 1
@@ -55,6 +58,10 @@ class User
   # 用户密钥，用于客户端验证
   field :private_token
   field :favorite_topic_ids, type: Array, default: []
+  # 屏蔽的节点
+  field :blocked_node_ids, type: Array, default: []
+  # 屏蔽的用户
+  field :blocked_user_ids, type: Array, default: []
 
   mount_uploader :avatar, AvatarUploader
 
@@ -84,33 +91,15 @@ class User
   attr_accessor :password_confirmation
   ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :by, :current_password, :password, :password_confirmation]
 
-  validates :login, format: { with: /\A\w+\z/, message: '只允许数字、大小写字母和下划线'},
+  validates :login, format: { with: ALLOW_LOGIN_CHARS_REGEXP, message: '只允许数字、大小写字母和下划线'},
                               length: {:in => 3..20}, presence: true,
                               uniqueness: {case_sensitive: false}
 
-  has_and_belongs_to_many :following_nodes, class_name: 'Node', inverse_of: :followers
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   scope :hot, -> { desc(:replies_count, :topics_count) }
   scope :outstanding, -> {desc(:score)}
-
-  def excellent_topics
-    (topics.map do |item|
-      if item.excellent?
-        item
-      end
-    end).compact
-  end
-
-  def popular_topics
-    (topics.map do |item|
-      if item.popular?
-        item
-      end
-    end).compact
-  end
-
 
   def email=(val)
     self.email_md5 = Digest::MD5.hexdigest(val || "")
@@ -148,6 +137,11 @@ class User
     return "http://www.google.com/profiles/#{self.email.split("@").first}"
   end
 
+  def fullname
+    return self.login if self.name.blank?
+    return "#{self.login} (#{self.name})"
+  end
+
   # 是否是管理员
   def admin?
     Setting.admin_emails.include?(self.email)
@@ -166,7 +160,7 @@ class User
   # 是否能发帖
   def newbie?
     return false if self.verified == true
-    self.created_at > 1.day.ago
+    self.created_at > 1.week.ago
   end
 
   def blocked?
@@ -236,6 +230,12 @@ class User
     where(email: email).first
   end
 
+  def self.find_login(slug)
+    # FIXME: Regexp search in MongoDB is slow!!!
+    raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug) if not slug =~ ALLOW_LOGIN_CHARS_REGEXP
+    where(login: /^#{slug}$/i).first or raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug)
+  end
+
   def bind?(provider)
     self.authorizations.collect { |a| a.provider }.include?(provider)
   end
@@ -259,7 +259,6 @@ class User
     return [] if topics.blank?
     cache_keys = topics.map { |t| "user:#{self.id}:topic_read:#{t.id}" }
     results = Rails.cache.read_multi(*cache_keys)
-
     ids = []
     topics.each do |topic|
       val = results["user:#{self.id}:topic_read:#{topic.id}"]
@@ -268,7 +267,7 @@ class User
       end
     end
     t2 = Time.now
-    logger.error "filter_readed_topics (#{(t2 - t1) * 1000}ms)"
+    logger.info "  User filter_readed_topics (#{(t2 - t1) * 1000}ms)"
     ids
   end
 
@@ -321,6 +320,10 @@ class User
     true
   end
 
+  def favorite_topics_count
+    self.favorite_topic_ids.size
+  end
+
   def update_score fen
     self.score = self.score + fen
     self.save(validate: false)
@@ -342,9 +345,8 @@ class User
     self.save(validate: false)
   end
 
-  # Github 项目
+  # GitHub 项目
   def github_repositories
-    return [] if self.github.blank?
     cache_key = self.github_repositories_cache_key
     items = Rails.cache.read(cache_key)
     if items == nil
@@ -355,19 +357,22 @@ class User
   end
 
   def github_repositories_cache_key
-    "github_repositories:#{self.github}+14+v2"
+    "github_repositories:#{self.github}+10+v3"
   end
 
   def self.fetch_github_repositories(user_id)
     user = User.find_by_id(user_id)
     return false if user.blank?
 
+    github_login = user.github || user.login
+
+    url = "https://api.github.com/users/#{github_login}/repos?type=owner&sort=pushed&client_id=#{Setting.github_token}&client_secret=#{Setting.github_secret}"
     begin
       json = Timeout::timeout(5) do
-        open("https://api.github.com/users/#{user.github}/repos?type=owner&sort=pushed&client_id=#{Setting.github_token}&client_secret=#{Setting.github_secret}").read
+        open(url).read
       end
     rescue => e
-      Rails.logger.error("Github Repositiory fetch Error: #{e}")
+      Rails.logger.error("GitHub Repositiory fetch Error: #{e}")
       items = []
       Rails.cache.write(user.github_repositories_cache_key, items, expires_in: 15.days)
       return false
@@ -379,11 +384,13 @@ class User
         name: a1["name"],
         url: a1["html_url"],
         watchers: a1["watchers"],
+        language: a1["language"],
         description: a1["description"]
       }
     end
-    items = items.sort { |a1,a2| a2[:watchers] <=> a1[:watchers] }.take(14)
+    items = items.sort { |a1,a2| a2[:watchers] <=> a1[:watchers] }.take(10)
     Rails.cache.write(user.github_repositories_cache_key, items, expires_in: 15.days)
+    items
   end
 
   # 重新生成 Private Token
@@ -394,5 +401,55 @@ class User
 
   def ensure_private_token!
     self.update_private_token if self.private_token.blank?
+  end
+
+  def block_node(node_id)
+    new_node_id = node_id.to_i
+    return false if self.blocked_node_ids.include?(new_node_id)
+    self.push(blocked_node_ids: new_node_id)
+  end
+
+  def unblock_node(node_id)
+    new_node_id = node_id.to_i
+    self.pull(blocked_node_ids: new_node_id)
+  end
+
+  def has_blocked_users?
+    return self.blocked_user_ids.count > 0
+  end
+
+  def block_user(user_id)
+    user_id = user_id.to_i
+    return false if self.blocked_user_ids.include?(user_id)
+    self.push(blocked_user_ids: user_id)
+  end
+
+  def unblock_user(user_id)
+    user_id = user_id.to_i
+    self.pull(blocked_user_ids: user_id)
+  end
+
+  def followed?(user)
+    uid = user.is_a?(User) ? user.id : user
+    return self.following_ids.include?(uid)
+  end
+
+  def follow_user(user)
+    return false if user.blank?
+    self.following.push(user)
+    Notification::Follow.notify(user: user, follower: self)
+  end
+
+  def followers_count
+    self.follower_ids.count
+  end
+
+  def following_count
+    self.following_ids.count
+  end
+
+  def unfollow_user(user)
+    return false if user.blank?
+    self.following.delete(user)
   end
 end

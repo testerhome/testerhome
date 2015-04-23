@@ -9,15 +9,16 @@ class RepliesController < ApplicationController
     @reply.topic_id = @topic.id
     @reply.user_id = current_user.id
 
+    # 加入匿名
     node = Node.find(@topic.node_id)
     if node.name.index("匿名") and @reply.anonymous == 0
       @reply.user_id = 12
     end
 
     if @reply.save
-      reply_owner.update_score 1
       current_user.read_topic(@topic)
       @msg = t('topics.reply_success')
+      reply_owner.update_score 1
     else
       @msg = @reply.errors.full_messages.join('<br />')
     end

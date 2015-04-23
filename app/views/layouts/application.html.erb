@@ -1,10 +1,3 @@
-<!--
-  App Environments:
-  --------------------------------------------------------
-  Ruby:  <%= RUBY_VERSION %><%= "-p#{RUBY_PATCHLEVEL}" if defined? RUBY_PATCHLEVEL %>
-  Rails: <%= Rails.version %>
-  Thanks to RubyChina
--->
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,73 +6,72 @@
   <meta name="keywords" content="<%= @meta_keywords %>" />
   <meta name="description" content="<%= @meta_description %>" />
   <%= stylesheet_link_tag "front", "data-turbolinks-track" => true %>
-  <% if mobile? %>
-    <%= stylesheet_link_tag "mobile" %>
-    <meta name="apple-mobile-web-app-capable" content="no">
-    <meta content='True' name='HandheldFriendly' />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="apple-touch-icon-precomposed" href="<%= asset_path("ios-icon.png") %>" />
-  <% else %>
-    <%= stylesheet_link_tag "mobile", media: "screen and (max-width: 798px)" %>
-  <% end %>
+  <meta name="apple-mobile-web-app-capable" content="no">
+  <meta content='True' name='HandheldFriendly' />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="apple-touch-icon-precomposed" href="<%= asset_path("ios-icon.png") %>" />
   <link rel="shortcut icon" href="<%= asset_path("big_logo.png") %>" />
   <%= auto_discovery_link_tag(:rss, feed_topics_url, title: '订阅最新帖') %>
   <%= javascript_include_tag "app", "data-turbolinks-track" => true %>
   <%= csrf_meta_tag %>
   <%= yield :node_feed_link %>
   <%= raw SiteConfig.custom_head_html %>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?bfca03d31121ff43bab8f1bf58dcb58b";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
 </head>
-<body data-offset="50" data-controller-name="<%= controller_name %>">
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
+<body data-controller-name="<%= controller_name %>">
+  <div class="header">
+    <nav class="navbar navbar-inverse navbar-static-top navbar-default">
       <div class="container">
-        <h3>
-          <a href="/" class="site-logo"></a>
-        </h3>
-        <%= render_list class: "nav" do |li|
-           li << link_to(t("menu.home"), root_path)
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand"><b>TesterHome</b></a>
+        </div>
+
+        <%= render_list class: "nav navbar-nav" do |li|
            li << link_to(t("menu.topics"), topics_path)
            li << link_to(t("menu.wiki"), pages_path) if !mobile?
            li << link_to(t("menu.jobs"), jobs_path)
            li << link_to(t("menu.sites"), sites_path) if !mobile?
         end %>
-        <span class="pull-right">
-          <form action="/search" class="navbar-search" method="get">
-            <input type="text" name="q" class="search-query" value="<%= params[:q] %>" placeholder="<%= t("common.search") %>" />
-          </form>
 
-          <%= render "common/user_nav" %>
-        </span>
+        <%= render "common/user_nav" %>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-search hidden-xs">
+            <form class="navbar-form form-search" action="/search" method="GET">
+              <div class="form-group">
+                <input class="form-control" name="q" type="text" value="<%= params[:q] %>" placeholder="搜索本站内容" />
+              </div>
+              <i class="fa btn-search fa-search"></i>
+              <i class="fa btn-close fa-times-circle"></i>
+            </form>
+          </li>
+          <% if current_user %>
+          <%
+          badge_class = ""
+          badge_class = "new" if unread_notify_count > 0
+          %>
+          <li class="notification-count">
+            <a href="<%= notifications_path %>" class="<%= badge_class %>" title="通知"><i class="fa fa-bell"></i><span class="count"><%= unread_notify_count %></span></a>
+          </li>
+          <% end %>
+        </ul>
       </div>
-    </div>
+    </nav>
   </div>
 
-  <div class="container">
+  <div id="main" class="main-container container">
     <%= birthday_tag %>
     <%= notice_message %>
-    <div id="main" class="container-fluid">
-      <%= yield %>
-    </div>
+    <%= yield %>
   </div>
 
   <% if not mobile? %>
-  <a class="go_top" href="#"><i class="icon icons_go_top"></i></a>
   <footer class="footer">
     <div class="container">
       <%= raw SiteConfig.footer_html %>
     </div>
   </footer>
   <% end %>
+
   <% if mobile? %>
     <script type="text/javascript">
     app_mobile = true;
@@ -89,33 +81,21 @@ var _hmt = _hmt || [];
   <script type="text/javascript" data-turbolinks-eval=false>
     App.root_url = "<%= root_url %>";
     App.asset_url = "<%= Setting.upload_url %>";
-    App.faye_client_url = "<%= Setting.faye_client_url %>";
     <% if current_user %>
       App.current_user_id = <%= current_user.id %>;
       App.access_token = "<%= current_user.temp_access_token %>";
     <% end %>
-    if (App.faye_client_url) {
-      App.initNotificationSubscribe();
-    }
   </script>
   <%= yield :scripts %>
-  <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', '<%= Setting.google_analytics_key %>']);
-      _gaq.push(['_setSiteSpeedSampleRate', 100]);
-      _gaq.push(['_trackPageview']);
-      u=document.getElementById("user_menu");
-      ur="";
-      if(u) ur=document.getElementById("user_menu").innerText.split(" ")[0]
-      _gaq.push(['_setCustomVar', 1,'user',ur,1]);
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    ga('create', '<%= Setting.google_analytics_key %>', 'auto');
+    ga('send', 'pageview');
   </script>
-
   <div class="zoom-overlay"></div>
 </body>
 </html>

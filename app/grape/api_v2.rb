@@ -5,7 +5,7 @@ module TesterHome
   class APIV2 < Grape::API
     prefix "api"
     version "v2"
-    error_format :json
+    format :json
 
     rescue_from :all do |e|
       case e
@@ -65,17 +65,36 @@ module TesterHome
         authenticate!
         @topic = current_user.topics.new(title: params[:title], body: params[:body])
         @topic.node_id = params[:node_id]
-
- 	node = Node.find(@topic.node_id)
-        if node.name.index("匿名")
-          @topic.user_id = 12
-        end
-
         if @topic.save
           present @topic, with: APIEntities::DetailTopic
         else
           error!({ error: @topic.errors.full_messages }, 400)
         end
+      end
+
+      # Edit a topic
+      # require authentication
+      # params:
+      #   title
+      #   body
+      post ":id" do
+        authenticate!
+        #copy from the topicsController#update
+        @topic = Topic.find(params[:id])
+        if @topic.lock_node == false || current_user.admin?
+          # 锁定接点的时候，只有管理员可以修改节点
+          @topic.node_id = params[:node_id]
+
+          if current_user.admin? && @topic.node_id_changed?
+            # 当管理员修改节点的时候，锁定节点
+            @topic.lock_node = true
+          end
+        end
+        @topic.title = params[:title]
+        @topic.body = params[:body]
+        @topic.save
+
+        present @topic, with: APIEntities::DetailTopic, include_deleted: params[:include_deleted]
       end
 
       # Get topic detail
@@ -100,10 +119,6 @@ module TesterHome
         @topic = Topic.find(params[:id])
         @reply = @topic.replies.build(body: params[:body])
         @reply.user_id = current_user.id
-	node = Node.find(@topic.node_id)
-	if node.name.index("匿名")
-	  @reply.user_id = 12
-	end
         if @reply.save
           present @reply, with: APIEntities::Reply
         else
@@ -183,20 +198,20 @@ module TesterHome
       # Example
       #   /api/users/qichunren.json
       get ":user" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         present @user, topics_limit: 5, with: APIEntities::DetailUser
       end
 
       # List topics for a user
       get ":user/topics" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         @topics = @user.topics.recent.limit(page_size)
         present @topics, with: APIEntities::UserTopic
       end
 
       # List favorite topics for a user
       get ":user/topics/favorite" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         @topics = Topic.find(@user.favorite_topic_ids)
         present @topics, with: APIEntities::Topic
       end

@@ -1,10 +1,56 @@
-<div class="sidebar">
-  <div class="box" id="user_github_repos">
+<div class="sidebar col-md-4">
+  <div class="panel profile panel-default">
+    <div class="panel-body">
+      <div class="media">
+        <div class="avatar media-left">
+          <%= user_avatar_tag(@user,:big, link: false) %>
+        </div>
+        <div class="media-body">
+          <div class="item">
+            <%= @user.fullname %>
+            <span class="opts pull-right">
+              <% if admin? %>
+                <%= link_to icon_tag("pencil", label: "修改"), edit_cpanel_user_path(@user) %>
+              <% end %>
+            </span>
+          </div>
+          <div class="item number">第 <%= @user.id %> 位<%= t("menu.users")%></div>
+          <div class="item badges"> <%= render_user_level_tag(@user) %> </div>
+        </div>
+      </div>
+      <div class="follow-info row">
+        <div class="col-sm-4 followers">
+          <%= link_to @user.followers_count, followers_user_path(@user.login), class: "counter" %>
+          <%= link_to "关注者", followers_user_path(@user.login), class: "text" %>
+        </div>
+        <div class="col-sm-4 following">
+          <%= link_to @user.following_count, following_user_path(@user.login), class: "counter" %>
+          <%= link_to "正在关注", following_user_path(@user.login), class: "text" %>
+        </div>
+        <div class="col-sm-4 stars">
+          <%= link_to @user.favorite_topics_count, favorites_user_path(@user.login), class: "counter" %>
+          <%= link_to "收藏", favorites_user_path(@user.login), class: "text" %>
+        </div>
+      </div>
+      <% if !owner? @user %>
+      <div class="buttons row">
+        <div class="col-sm-6">
+          <%= follow_user_tag(@user) %>
+        </div>
+        
+        <div class="col-sm-6">
+          <%= block_user_tag(@user) %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="panel panel-default" id="user_github_repos">
     <% if not user.github.blank? %>
-      <h2 class="title">Github Public Repos</h2>
-      <ul>
+      <div class="panel-heading">GitHub Public Repos</div>
+      <ul class="list-group">
         <% user.github_repositories.each do |item| %>
-        <li>
+        <li class="list-group-item">
           <div class="title">
             <%= link_to truncate(item[:name], length: 25), item[:url], target: "_blank", rel: "nofollow" %>
             <span class="watchers" title="<%= item[:watchers] %> Watchers"><%= item[:watchers] %></span>
@@ -14,11 +60,13 @@
         </li>
         <% end %>
       </ul>
-      <div class="more">
-        <%= link_to "More on Github", user.github_url, target: "_blank", rel: "nofollow" %>
+      <div class="panel-footer more">
+        <%= link_to "More on GitHub", user.github_url, target: "_blank", rel: "nofollow" %>
       </div>
     <% else %>
-      未设置 Github 信息.
+      <div class="panel-body">
+        未设置 GitHub 信息.
+      </div>
     <% end %>
   </div>
 </div>

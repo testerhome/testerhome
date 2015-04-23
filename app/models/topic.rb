@@ -11,6 +11,7 @@ class Topic
   include Redis::Objects
   include Mongoid::Mentionable
 
+  # 加入 Elasticsearch
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
@@ -88,6 +89,14 @@ class Topic
     where(:node_id.nin => self.topic_index_hide_node_ids)
   end
 
+  def self.without_nodes(node_ids)
+    where(:node_id.nin => node_ids)
+  end
+
+  def self.without_users(user_ids)
+    where(:user_id.nin => user_ids)
+  end
+
   def self.topic_index_hide_node_ids
     SiteConfig.node_ids_hide_in_topics_index.to_s.split(",").collect { |id| id.to_i }
   end
@@ -104,6 +113,10 @@ class Topic
   before_create :init_last_active_mark_on_create
   def init_last_active_mark_on_create
     self.last_active_mark = Time.now.to_i
+  end
+
+  after_create do
+    Topic.delay.notify_topic_created(self.id)
   end
 
   def push_follower(uid)
@@ -123,7 +136,7 @@ class Topic
     # replied_at 用于最新回复的排序，如果帖着创建时间在一个月以前，就不再往前面顶了
     return false if reply.blank? && !opts[:force]
 
-    self.last_active_mark = Time.now.to_i if self.created_at > 2.month.ago
+    self.last_active_mark = Time.now.to_i if self.created_at > 1.month.ago
     self.replied_at = reply.try(:created_at)
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
@@ -168,7 +181,24 @@ class Topic
     self.excellent >= 1
   end
 
-  def popular?
-    self.likes_count >= 5
+  def self.notify_topic_created(topic_id)
+    topic = Topic.find_by_id(topic_id)
+    return if topic.blank?
+
+    notified_user_ids = topic.mentioned_user_ids
+
+    follower_ids = (topic.user.try(:follower_ids) || [])
+    follower_ids.uniq!
+
+    # 给关注者发通知
+    follower_ids.each do |uid|
+      # 排除同一个回复过程中已经提醒过的人
+      next if notified_user_ids.include?(uid)
+      # 排除回帖人
+      next if uid == topic.user_id
+      puts "Post Notification to: #{uid}"
+      Notification::Topic.create user_id: uid, topic_id: topic.id
+    end
+    true
   end
 end

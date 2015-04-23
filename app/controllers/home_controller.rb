@@ -10,5 +10,10 @@ class HomeController < ApplicationController
   end
 
   def twitter
+    set_seo_meta t("menu.tweets")
+  end
+
+  def error_404
+    render_404
   end
 end

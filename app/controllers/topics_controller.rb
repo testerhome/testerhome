@@ -9,16 +9,21 @@ class TopicsController < ApplicationController
     suggest_topic_ids = @suggest_topics.map(&:id)
 
     @topics = Topic.last_actived.without_hide_nodes.where(:_id.nin => suggest_topic_ids)
+    if current_user
+      @topics = @topics.without_nodes(current_user.blocked_node_ids)
+      @topics = @topics.without_users(current_user.blocked_user_ids)
+    end
     @topics = @topics.fields_for_list.includes(:user)
     @topics = @topics.paginate(page: params[:page], per_page: 15, total_entries: 1500)
 
-    set_seo_meta '', "#{Setting.app_name}#{t("menu.topics")}"
+    set_seo_meta t("menu.topics"), "#{Setting.app_name}#{t("menu.topics")}"
   end
 
   def feed
     @topics = Topic.recent.without_body.limit(20).includes(:node, :user, :last_reply_user)
     render layout: false
   end
+
   def feedgood
     @topics = Topic.excellent.recent.without_body.limit(20).includes(:node,:user, :last_reply_user)
     render :layout => false
@@ -28,7 +33,8 @@ class TopicsController < ApplicationController
     @node = Node.find(params[:id])
     @topics = @node.topics.last_actived.fields_for_list
     @topics = @topics.includes(:user).paginate(page: params[:page], per_page: 15)
-    set_seo_meta "#{@node.name} &raquo; #{t("menu.topics")}", "#{Setting.app_name}#{t("menu.topics")}#{@node.name}", @node.summary
+    title = @node.jobs? ? @node.name : "#{@node.name} &raquo; #{t("menu.topics")}"
+    set_seo_meta title, "#{Setting.app_name}#{t("menu.topics")}#{@node.name}", @node.summary
     render action: 'index'
   end
 
@@ -64,7 +70,7 @@ class TopicsController < ApplicationController
   end
 
   def show
-    @topic = Topic.without_body.find(params[:id])
+    @topic = Topic.without_body.includes(:user).find(params[:id])
     @topic.hits.incr(1)
     @node = @topic.node
     @show_raw = params[:raw] == '1'
@@ -75,7 +81,7 @@ class TopicsController < ApplicationController
     @page = params[:page].to_i > 0 ? params[:page].to_i : 1
 
     @replies = @topic.replies.unscoped.without_body.asc(:_id)
-    @replies = @replies.paginate(page: params[:page], per_page: @per_page)
+    @replies = @replies.paginate(page: @page, per_page: @per_page)
 
     check_current_user_status_for_topic
     set_special_node_active_menu
@@ -100,7 +106,7 @@ class TopicsController < ApplicationController
   end
 
   def set_special_node_active_menu
-    case @node.id
+    case @node.try(:id)
     when Node.jobs_id
       @current = ["/jobs"]
     end
@@ -128,6 +134,8 @@ class TopicsController < ApplicationController
     @topic = Topic.new(topic_params)
     @topic.user_id = current_user.id
     @topic.node_id = params[:node] || topic_params[:node_id]
+
+    # 加入匿名功能
     if @topic.node_id
       node = Node.find(@topic.node_id)
       if node.name.index("匿名")

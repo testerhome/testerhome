@@ -37,7 +37,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :nodes
+  resources :nodes do
+    member do
+      post :block
+      post :unblock
+    end
+  end
 
   get "topics/node:id" => "topics#node", as: 'node_topics'
   get "topics/node:id/feed" => "topics#node_feed", as: 'feed_node_topics', defaults: { format: 'xml' }
@@ -56,8 +61,8 @@ Rails.application.routes.draw do
       get :no_reply
       get :popular
       get :excellent
-      get :feedgood, defaults: { format: 'xml' }
       get :feed, defaults: { format: 'xml' }
+      get :feedgood, defaults: { format: 'xml' }
       post :preview
     end
     resources :replies
@@ -105,8 +110,8 @@ Rails.application.routes.draw do
   get "api" => "home#api", as: 'api'
   get "twitter" => "home#twitter", as: "twitter"
 
-  mount TesterHome::API => "/"
-  mount TesterHome::APIV2 => "/"
+  # mount TesterHome::API => "/"
+  # mount TesterHome::APIV2 => "/"
 
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
@@ -123,7 +128,15 @@ Rails.application.routes.draw do
       get :topics
       get :favorites
       get :notes
+      get :blocked
+      post :block
+      post :unblock
+      post :follow
+      post :unfollow
+      get :followers
+      get :following
     end
   end
 
+  match '*path', via: :all, to: 'home#error_404'
 end

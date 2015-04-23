@@ -16,15 +16,16 @@ module TopicsHelper
 
   def topic_favorite_tag(topic)
     return "" if current_user.blank?
-    class_name = "bookmark"
+    class_name = ""
     link_title = "收藏"
     if current_user && current_user.favorite_topic_ids.include?(topic.id)
-      class_name = "bookmarked"
+      class_name = "followed"
       link_title = "取消收藏"
     end
 
-    link_to("", "#", class: "icon small_#{class_name}", title: link_title, rel: "twipsy",
-            onclick: "return Topics.favorite(this);", 'data-id' => topic.id)
+    icon = raw(content_tag("i", "", class: "fa fa-bookmark"))
+
+    link_to(icon, "#", title: link_title, class: "bookmark #{class_name}", 'data-id' => topic.id)
   end
 
   def topic_follow_tag(topic)
@@ -33,12 +34,11 @@ module TopicsHelper
     return "" if owner?(topic)
     class_name = "follow"
     if topic.follower_ids.include?(current_user.id)
-      class_name = "followed"
+      class_name = "follow followed"
     end
-    icon = content_tag("i", "", class: "icon small_#{class_name}")
+    icon = content_tag("i", "", class: "fa fa-eye")
     followed = class_name == "followed"
-    link_to(raw("#{icon} 关注"), "#", onclick: "return Topics.follow(this);", rel: "twipsy",
-            'data-id' => topic.id, 'data-followed' => followed)
+    link_to(raw("#{icon} 关注"), "#", 'data-id' => topic.id, 'data-followed' => followed, class: class_name)
   end
 
   def topic_title_tag(topic)
@@ -48,7 +48,7 @@ module TopicsHelper
 
   def topic_excellent_tag(topic)
     return "" if !topic.excellent?
-    content_tag(:i,"", title: "精华帖", class: "icon small_cert_on")
+    content_tag(:i,"", title: "精华帖", class: "fa fa-diamond")
   end
 
   def render_topic_last_reply_time(topic)

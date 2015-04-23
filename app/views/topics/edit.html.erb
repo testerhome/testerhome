@@ -1,10 +1,6 @@
-<div class="content">
-  <div class="box">
-     <%= render "form" %>
-  </div>
-</div>
-
-<div class="sidebar">
-  <%= render "sidebar_box_node_new_topic" %>
-  <%= render "sidebar_box_new_topic_tip" %>
+<div class="panel panel-default">
+    <div class="panel-heading">修改话题 <span class="pull-right"><%= topic_title_tag(@topic) %></span></div>
+    <div class="panel-body">
+        <%= render 'form' %>
+    </div>
 </div>

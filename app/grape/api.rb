@@ -4,7 +4,7 @@ require "helpers"
 module TesterHome
   class API < Grape::API
     prefix "api"
-    error_format :json
+    format :json
 
     helpers APIHelpers
 
@@ -57,7 +57,7 @@ module TesterHome
       get ":id" do
         @topic = Topic.includes(:replies).find_by_id(params[:id])
         error!("Topic not found", 404) if @topic.blank?
-        
+
         @topic.hits.incr(1)
         present @topic, with: APIEntities::DetailTopic
       end
@@ -143,8 +143,8 @@ module TesterHome
         @users = User.hot.limit(20)
         present @users, with: APIEntities::DetailUser
       end
-      
-      # Get temp_access_token, this key is use for Faye client channel
+
+      # Get temp_access_token, this key is use for Push client channel
       # Example
       # /api/users/temp_access_token?token=232332233223:1
       get "temp_access_token" do
@@ -156,21 +156,21 @@ module TesterHome
       # Example
       #   /api/users/qichunren.json
       get ":user" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         present @user, topics_limit: 5, with: APIEntities::DetailUser
       end
 
 
       # List topics for a user
       get ":user/topics" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         @topics = @user.topics.recent.limit(page_size)
         present @topics, with: APIEntities::UserTopic
       end
 
       # List favorite topics for a user
       get ":user/topics/favorite" do
-        @user = User.where(login: /^#{params[:user]}$/i).first
+        @user = User.find_login(params[:user])
         @topics = Topic.find(@user.favorite_topic_ids)
         present @topics, with: APIEntities::Topic
       end

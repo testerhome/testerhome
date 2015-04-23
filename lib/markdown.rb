@@ -46,7 +46,7 @@ module Redcarpet
             return link
           end
           # Fix Chinese neer the URL
-          bad_text = link.match(/[^\w:\/\-\~\,\$\!\.=\?&#+\|\%]+/im).to_s
+          bad_text = link.match(/[^\w:@\/\-\~\,\$\!\.=\?&#+\|\%]+/im).to_s
           link.gsub!(bad_text, '')
           "<a href=\"#{link}\" rel=\"nofollow\" target=\"_blank\">#{link}</a>#{bad_text}"
         end
@@ -56,8 +56,7 @@ module Redcarpet
     class HTMLwithTopic < HTMLwithSyntaxHighlight
       # Topic 里面，所有的 head 改为 h4 显示
       def header(text, header_level)
-        # 为每个标题添加锚点
-        "<h4 id='#{text.gsub(/\s+/, '-')}'>#{text}</h4>"
+        "<h4>#{text}</h4>"
       end
     end
   end
@@ -244,8 +243,8 @@ class MarkdownTopicConverter < MarkdownConverter
         autolink: true,
         fenced_code_blocks: true,
         strikethrough: true,
-        space_after_headers: true,
         tables: true,
+        space_after_headers: true,
         disable_indented_code_blocks: true,
         no_intra_emphasis: true
       })

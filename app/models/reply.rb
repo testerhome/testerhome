@@ -17,7 +17,6 @@ class Reply
   # 匿名答复 0 否， 1 是
   field :anonymous, type: Integer, default: 0
 
-
   belongs_to :user, inverse_of: :replies
   belongs_to :topic, inverse_of: :replies, touch: true
   has_many :notifications, class_name: 'Notification::Base', dependent: :delete
@@ -40,13 +39,11 @@ class Reply
     end
   end
 
-  after_create :update_parent_topic
+  after_save :update_parent_topic
   def update_parent_topic
     topic.update_last_reply(self)
   end
 
-  # 更新的时候也更新话题的 updated_at 以便于清理缓存之类的东西
-  after_update :update_parent_topic_updated_at
   # 删除的时候也要更新 Topic 的 updated_at 以便清理缓存
   after_destroy :update_parent_topic_updated_at
   def update_parent_topic_updated_at
@@ -59,14 +56,14 @@ class Reply
 
 
   after_create do
-    Reply.delay.send_topic_reply_notification(self.id)
+    Reply.delay.notify_reply_created(self.id)
   end
 
   def self.per_page
     50
   end
 
-  def self.send_topic_reply_notification(reply_id)
+  def self.notify_reply_created(reply_id)
     reply = Reply.find_by_id(reply_id)
     return if reply.blank?
     topic = Topic.find_by_id(reply.topic_id)
@@ -80,8 +77,11 @@ class Reply
       notified_user_ids << topic.user_id
     end
 
+    follower_ids = topic.follower_ids + (reply.user.try(:follower_ids) || [])
+    follower_ids.uniq!
+
     # 给关注者发通知
-    topic.follower_ids.each do |uid|
+    follower_ids.each do |uid|
       # 排除同一个回复过程中已经提醒过的人
       next if notified_user_ids.include?(uid)
       # 排除回帖人
@@ -95,10 +95,6 @@ class Reply
   # 是否热门
   def popular?
     self.likes_count >= 5
-  end
-
-  def anonymous?
-    self.anonymous >= 1
   end
 
   def destroy

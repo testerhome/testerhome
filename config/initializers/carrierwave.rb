@@ -76,5 +76,5 @@ end # CarrierWave
 Mongoid::Document::ClassMethods.send(:include, CarrierWave::Mongoid)
 
 CarrierWave.configure do |config|
-	config.storage = :file
+  config.storage = :file
 end

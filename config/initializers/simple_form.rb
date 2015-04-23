@@ -5,8 +5,8 @@ SimpleForm.setup do |config|
   # wrapper, change the order or even add your own to the
   # stack. The options given below are used to wrap the
   # whole input.
-  config.wrappers :default, class: :input, 
-                            hint_class: :field_with_hint, 
+  config.wrappers :default, class: :input,
+                            hint_class: :field_with_hint,
                             error_class: :field_with_errors do |b|
     ## Extensions enabled by default
     # Any of these extensions can be disabled for a
@@ -43,21 +43,21 @@ SimpleForm.setup do |config|
     ## Inputs
     b.use :label_input
     b.use :hint, wrap_with: { tag: :span, class: :hint }
-    b.use :error, wrap_with: { tag: :span, class: :error }
+    b.use :error, wrap_with: { tag: :span, class: "has-warning" }
   end
 
-  config.wrappers :bootstrap, tag: 'div', class: 'control-group', error_class: 'error' do |b|
+  config.wrappers :bootstrap, tag: 'div', class: 'form-group', error_class: '' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
-    b.wrapper tag: 'div', class: 'controls' do |ba|
-      ba.use :input
-      ba.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
-      ba.use :hint, wrap_with: { tag: 'p', class: 'help-block' }
+    b.wrapper tag: 'div', class: 'col-sm-10' do |bw|
+      bw.use :input, class: "form-control"
+      bw.use :error, wrap_with: { tag: 'span', class: 'hidden' }
+      bw.use :hint, wrap_with: { tag: 'p', class: 'help-block' }
     end
   end
 
-  config.wrappers :prepend, tag: 'div', class: "control-group", error_class: 'error' do |b|
+  config.wrappers :prepend, tag: 'div', class: "form-group", error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
@@ -70,7 +70,7 @@ SimpleForm.setup do |config|
     end
   end
 
-  config.wrappers :append, tag: 'div', class: "control-group", error_class: 'error' do |b|
+  config.wrappers :append, tag: 'div', class: "form-group", error_class: 'error' do |b|
     b.use :html5
     b.use :placeholder
     b.use :label
@@ -134,10 +134,10 @@ SimpleForm.setup do |config|
   # config.label_text = lambda { |label, required| "#{required} #{label}" }
 
   # You can define the class to use on all labels. Default is nil.
-  config.label_class = 'control-label'
+  config.label_class = 'control-label col-sm-2'
 
   # You can define the class to use on all forms. Default is simple_form.
-  config.form_class = "simple_form form-horizontal"
+  config.default_form_class = "form-horizontal"
 
   # You can define which elements should obtain additional classes
   # config.generate_additional_classes_for = [:wrapper, :label, :input]

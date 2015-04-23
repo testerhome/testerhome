@@ -1,3 +1,5 @@
+@import "vars";
+
 .subnav {
   margin-bottom:-18px;
   .nav-tabs {
@@ -17,7 +19,7 @@
     cursor: default;
   }
 }
-.node_topics {
+.node-topics {
   td.title {
     a:link,
     a:visited {color:#2c64d7; text-decoration: none;}
@@ -39,16 +41,10 @@
   }
 }
 
-.recent_topics {
+.recent-topics {
   ul {
-    list-style:none; margin:0;
     li {
-      border-bottom:1px dashed #ddd;
-      &:last-child {
-        border-bottom: 0px;
-      }
-      padding:10px 0px;
-      .title { 
+      .title {
         font-size:14px;
       }
       i.icon { margin-bottom: -1px; }
@@ -61,14 +57,8 @@
   }
 }
 
-.recent_replies {
-  list-style:none; margin:0;
+.recent-replies {
   li {
-    padding:10px 0px;
-    border-bottom:1px dashed #ddd;
-    &:last-child {
-      border-bottom: 0px;
-    }
     .title {
       font-size:14px;
       .info { font-size:12px; color:#bbb; }
@@ -87,16 +77,26 @@
 #main .userinfo h1 { text-align: left; display:inline; }
 .userinfo {
   .tagline { text-align:left; margin-top:-8px; margin-bottom:20px;}
-  ul { list-style:none; }
+  .media-right {
+    padding-left: 15px;
+    text-align: center;
+    .avatar {
+      margin-bottom: 10px;
+    }
+  }
+  .list-group { margin-bottom: 0px; }
   li {
-    font-size:14px; line-height:180%; border-bottom:1px dashed #eee;
-    label { color:#999; font-size:12px; margin-right:8px; display:inline-block; width:100px; text-align: right;}
+    border-color: #f0f0f0;
+    font-size:13px;
+    label { color:#999; margin-right:8px; display:inline-block; width:80px; text-align: right;}
   }
 
+  .panel-footer {
+  }
 }
 
-.bio { 
-  font-size:12px; line-height:180%; 
+.bio {
+  font-size:12px; line-height:180%;
   p:last-child { margin-bottom:0; }
 }
 
@@ -112,40 +112,74 @@
   .active { margin-bottom:0;}
 }
 
-table.node_topics {
+table.node-topics {
   td {
     a { color:#333; font-weight:normal; }
   }
-  td.replied_at { width:80px; }
+  td.replied-at { width:80px; }
 }
 
-#users {
-  .info { margin-bottom:10px; text-align:right;}
-}
-.user_list {
-  padding-bottom:20px; margin-left:0;
+.user-list {
   h2 { font-size:14px; margin:0; }
-  .span1 {
-    width:70px; text-align:center; margin-top:20px; margin-left:20px;
+  .user {
+    text-align:center; margin-bottom:20px;
+    overflow: hidden;;
     .avatar {
-      img { width:48px; height:48px; }
+      img { width:48px; height:48px; margin: 0 auto;}
+      margin-bottom: 5px;
     }
     .name {
-      width: 80px; overflow: hidden; margin-left: -5px;
+      a { color: #333; }
     }
+  }
+}
+
+.bloced-users {
+  .item {
+    text-align: left; margin-bottom: 10px;
+    .media-object { display: inline; }
+  }
+}
+
+.sidebar {
+  .profile {
+    .item { margin-bottom: 5px; }
+    .number { color: #999; }
+    .follow-info { 
+      border-top: 1px solid #f0f0f0;
+      text-align: center; margin-top: 15px; padding-top: 15px;
+      a { display:block; text-decoration: none; }
+      a.counter { 
+        font-size: 32px; color: $blue; 
+        &:hover { color: $blueLight; }
+      }
+      a.text {
+        color: #999;
+      }
+    }
+    .buttons { 
+      border-top: 1px solid #f0f0f0;
+      margin-top: 15px; padding-top: 15px; 
+    }
+  }
+}
+
+.user-card { 
+  margin-bottom: 15px;
+  .media-heading { 
+    font-weight:bold; 
+    a { color: #333; }
+  }
+  .infos { 
+    color:#999; font-size: 12px;
+    .item { margin-top: 5px; }
   }
 }
 
 #user_github_repos {
-  margin-top:36px;
   .more { text-align:right; }
   ul { margin:0; }
   li {
-    list-style:none;
-    margin:0 -10px;
-    padding:0 10px;
-    margin-bottom:10px;
-    border-bottom:1px solid #eee;
     .title {
       position:relative;
       a { color:#333; font-weight:bold; }

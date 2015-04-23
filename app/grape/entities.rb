@@ -43,7 +43,7 @@ module TesterHome
       expose :id, :body, :body_html, :created_at, :updated_at, :deleted_at, :topic_id
       expose :user, using: APIEntities::User
     end
-    
+
     class Topic < Grape::Entity
       expose :id, :title, :created_at, :updated_at, :replied_at, :replies_count, :node_name, :node_id, :last_reply_user_id, :last_reply_user_login
       expose :user, using: APIEntities::User

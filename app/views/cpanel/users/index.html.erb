@@ -1,7 +1,14 @@
 <% content_for :sitemap do %>
   <span class="current">用户</span>
 <% end %>
-<h1>Listing users</h1>
+<div class="toolbar">
+  <form class="form-inline" action="<%= cpanel_users_path %>">
+    <div class="form-group">
+      <input type="text" name="q" class="form-control" value="<%= params[:q] %>" placeholder="用户名" />
+    </div>
+    <button class="btn btn-default">搜索</button>
+  </form>
+</div>
 
 <table class="table table-bordered table-striped table-condensed">
   <tr class="head">
@@ -23,12 +30,9 @@
     <td><%= user.state %></td>
     <td><%= user.verified %></td>
     <td>
-      <%= link_to '', edit_cpanel_user_path(user), class: "icon small_edit" %>
+      <%= link_to '', edit_cpanel_user_path(user), class: "fa fa-pencil" %>
     </td>
   </tr>
 <% end %>
 </table>
 <%= will_paginate @users %>
-<br />
-
-<%= link_to 'New User', new_cpanel_user_path %>

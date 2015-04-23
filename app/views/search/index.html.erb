@@ -1,24 +1,32 @@
 <div class="search-result">
-    <div class="box box_gray">
-        <div id="search_info">
+    <div class="topics panel panel-default">
+        <div class="panel-heading clearfix">
             <h3 class="h2">找到约 <strong><%= @count %></strong> 条结果</h3>
         </div>
 
-        <div class="topics">
+        <div class="panel-body">
             <% @topics.each_with_hit do |record, hit| %>
 
-            <div class="topic topic_line">
-                <div class="pull-left avatar">
-                    <%= user_avatar_tag(record.user,:normal) %>
+                <div class="topic media">
+                    <div class="avatar media-left">
+                        <%= user_avatar_tag(record.user, :normal) %>
+                    </div>
+                    <div class="infos media-body">
+                        <div class="title media-heading">
+                            <%= link_to(truncate(hit.highlight.title ? (raw hit.highlight.title[0]) : record.title, length: 100), topic_path(record), title: record.title) %>
+                        </div>
+                        <div>
+                            <p class="excerpt"><%= sanitize_search_result truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200, escape: true) %>
+                                ...
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="title">
-                    <%= link_to(truncate(hit.highlight.title ? (raw hit.highlight.title[0]) : record.title, length: 100), topic_path(record), title: record.title) %>
-                </div>
-                <p class="excerpt"><%= sanitize_search_result truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200, escape: true)%>...</p>
-            </div>
             <% end %>
         </div>
+        <div class="panel-footer clearfix">
         <%= will_paginate @topics, inner_window: 2 %>
+        </div>
     </div>
 </div>
 
