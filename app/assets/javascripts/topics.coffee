@@ -65,6 +65,9 @@ window.TopicView = Backbone.View.extend
 
   # 回复
   reply: (e) ->
+    if !App.isLogined()
+      location.href = "/account/sign_in"
+      return false
     _el = $(e.target)
     floor = _el.data("floor")
     login = _el.data("login")
