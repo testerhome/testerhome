@@ -57,6 +57,19 @@ AppView = Backbone.View.extend
     $('.dropdown-toggle').dropdown()
     $("select").chosen()
 
+    # Go Top
+    $("#go_top").click () ->
+      $('html, body').animate({ scrollTop: 0 },300)
+      return false
+
+    # Go top
+    $(window).bind 'scroll resize', ->
+      scroll_from_top = $(window).scrollTop()
+      if scroll_from_top >= 1
+        $("#go_top").show()
+      else
+        $("#go_top").hide()
+
     # 绑定评论框 Ctrl+Enter 提交事件
     $(".cell_comments_new textarea").unbind "keydown"
     $(".cell_comments_new textarea").bind "keydown","ctrl+return",(el) ->

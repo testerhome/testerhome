@@ -65,12 +65,14 @@
   </div>
 
   <% if not mobile? %>
-  <footer class="footer">
+    <a id="go_top" href="#" title='<%= t("common.go_top") %>'><i class="fa fa-angle-up"></i></a>
+    <footer class="footer">
     <div class="container">
       <%= raw SiteConfig.footer_html %>
     </div>
   </footer>
   <% end %>
+
 
   <% if mobile? %>
     <script type="text/javascript">

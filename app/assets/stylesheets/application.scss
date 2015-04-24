@@ -822,4 +822,20 @@ footer {
   .topic:hover {
     background-color: #faebcc;
   }
+
+}
+
+#go_top {
+  background: grey;
+  text-align: center;
+  border:1px solid grey;
+  display:none;
+  height: 40px;
+  width: 40px;
+  overflow:hidden;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  padding-top: 3px;
+  font-size: 30px;
 }
