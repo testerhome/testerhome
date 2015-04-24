@@ -4,32 +4,20 @@ class Notifier
     @checkOrRequirePermission()
 
   hasSupport: ->
-    window.Notification? or window.webkitNotifications? or (window.external && window.external.msIsSiteMode?() isnt undefined)
+    window.webkitNotifications?
 
   requestPermission: (cb) ->
-    if window.webkitNotifications && window.webkitNotifications.checkPermission
-      window.webkitNotifications.requestPermission(cb)
-    else if window.Notification && window.Notification.requestPermission
-      window.Notification.requestPermission(cb)
-
+    window.webkitNotifications.requestPermission (cb)
 
   setPermission: =>
     if @hasPermission()
       $('#notification-alert a.close').click()
       @enableNotification = true
+    else if window.webkitNotifications.checkPermission() is 2
+      $('#notification-alert a.close').click()
 
   hasPermission: ->
-    if window.webkitNotifications?
-      if window.webkitNotifications.checkPermission() is 0
-        return true
-      else
-        return false
-    else if window.Notification?.permission
-      if window.Notification.permission is "granted"
-        return true
-      else
-        return false
-    else if window.external.msIsSiteMode()
+    if window.webkitNotifications.checkPermission() is 0
       return true
     else
       return false
@@ -39,12 +27,13 @@ class Notifier
       if @hasPermission()
         @enableNotification = true
       else
-        @showTooltip()
+        if window.webkitNotifications.checkPermission() isnt 2
+          @showTooltip()
     else
       console.log("Desktop notifications are not supported for this Browser/OS version yet.")
 
   showTooltip: ->
-    $('.navbar').before("<div class='alert alert-info' id='notification-alert'><a href='#' id='link_enable_notifications' style='color:green'>点击这里</a> 开启桌面提醒通知功能。 <a class='close' data-dismiss='alert' href='#'>×</a></div>")
+    $('.breadcrumb').before("<div class='alert alert-info' id='notification-alert'><a href='#' id='link_enable_notifications' style='color:green'>点击这里</a> 开启桌面提醒通知功能。 <a class='close' data-dismiss='alert' href='#'>×</a></div>")
     $("#notification-alert").alert()
     $('#notification-alert').on 'click', 'a#link_enable_notifications', (e) =>
       e.preventDefault()
@@ -54,7 +43,6 @@ class Notifier
     window.location.href = url
 
   notify: (avatar, title, content, url = null) ->
-    @checkOrRequirePermission()
     if @enableNotification
       if not window.Notification
         popup = window.webkitNotifications.createNotification(avatar, title, content)
@@ -62,15 +50,15 @@ class Notifier
           popup.onclick = ->
             window.parent.focus()
             $.notifier.visitUrl(url)
-        popup.show()
       else
         opts =
-          icon: avatar
           body : content
-        popup = new window.Notification(title,opts)
-        if url
-          popup.onclick = ->
+          onclick : ->
             window.parent.focus()
             $.notifier.visitUrl(url)
+        popup = new window.Notification(title,opts)
+      popup.show()
+
+# setTimeout ( => popup.cancel() ), 12000
 
 jQuery.notifier = new Notifier
