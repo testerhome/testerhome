@@ -99,6 +99,12 @@ class User
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   scope :hot, -> { desc(:replies_count, :topics_count) }
+
+  scope :fields_for_list, -> {
+    only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state, :guest,
+         :tagline, :github, :website, :location, :location_id, :twitter, :co)
+  }
+
   scope :outstanding, -> {desc(:score)}
 
   def email=(val)
