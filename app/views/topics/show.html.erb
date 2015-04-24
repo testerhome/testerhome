@@ -30,7 +30,7 @@
 
       <% if @topic.excellent? %>
         <div class="label-awesome">
-          <i class="fa fa-bug awesome"></i> 本帖已被设为精华帖！
+          <i class="fa fa-star awesome"></i> 本帖已被设为精华帖！
           <% if admin? %>
           <div class="pull-right">
             <%= link_to icon_tag("close"), unsuggest_topic_path(@topic.id), data: { confirm: "确定要取消么？", method: "delete" } %>
