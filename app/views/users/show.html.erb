@@ -1,6 +1,6 @@
 <div class="row">
   <%= render "sidebar", user: @user %>
-  
+
   <div class="col-md-8">
     <%= render "menu" %>
     <%= render "info" %>
@@ -27,7 +27,7 @@
             </ul>
           </div>
         </div>
-        <div class="tab-pane" id="replies">
+        <div class="tab-pane recent-replies" id="replies">
           <div class="panel panel-default">
             <%= render "replies", replies: @replies %>
           </div>
@@ -35,5 +35,5 @@
       </div>
     </div>
   </div>
-  
+
 </div>

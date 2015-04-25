@@ -67,7 +67,6 @@
       a { color:#333; }
       margin-top:6px; color:#333;
       p { font-size:13px; }
-      img { max-width:680px; }
     }
   }
 }
@@ -105,6 +104,10 @@
   h6 { color:#999; font-weight:normal; }
   li { line-height:180%; border-bottom:1px solid #ddd; list-style: none;}
   blockquote { line-height:160%; }
+}
+
+.recent-replies img{
+  max-width: 100%;
 }
 
 .content > .tabs {
@@ -145,32 +148,32 @@ table.node-topics {
   .profile {
     .item { margin-bottom: 5px; }
     .number { color: #999; }
-    .follow-info { 
+    .follow-info {
       border-top: 1px solid #f0f0f0;
       text-align: center; margin-top: 15px; padding-top: 15px;
       a { display:block; text-decoration: none; }
-      a.counter { 
-        font-size: 32px; color: $blue; 
+      a.counter {
+        font-size: 32px; color: $blue;
         &:hover { color: $blueLight; }
       }
       a.text {
         color: #999;
       }
     }
-    .buttons { 
+    .buttons {
       border-top: 1px solid #f0f0f0;
-      margin-top: 15px; padding-top: 15px; 
+      margin-top: 15px; padding-top: 15px;
     }
   }
 }
 
-.user-card { 
+.user-card {
   margin-bottom: 15px;
-  .media-heading { 
-    font-weight:bold; 
+  .media-heading {
+    font-weight:bold;
     a { color: #333; }
   }
-  .infos { 
+  .infos {
     color:#999; font-size: 12px;
     .item { margin-top: 5px; }
   }
