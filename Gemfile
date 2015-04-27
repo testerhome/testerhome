@@ -73,7 +73,7 @@ gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'message_bus'
 
 # 分享功能
-gem 'social-share-button', '0.1.5'
+gem 'social-share-button', :git => 'https://github.com/testerhome/social-share-button.git'
 
 # 表单
 gem 'simple_form', '3.1.0'
