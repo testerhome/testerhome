@@ -27,8 +27,8 @@
 
         <%= render_list class: "nav navbar-nav" do |li|
            li << link_to(t("menu.topics"), topics_path)
-           li << link_to(t("menu.wiki"), pages_path) if !mobile?
            li << link_to(t("menu.jobs"), jobs_path)
+           li << link_to(t("menu.wiki"), pages_path) if !mobile?
            li << link_to(t("menu.sites"), sites_path) if !mobile?
         end %>
 
