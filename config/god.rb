@@ -1,4 +1,4 @@
-RAILS_ROOT = "/home/ruby/www/ruby-china/current"
+RAILS_ROOT = "/home/rails/testerhome"
 
 God.watch do |w|
   w.name     = "sidekiq"
