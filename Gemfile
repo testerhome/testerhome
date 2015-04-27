@@ -93,6 +93,7 @@ gem 'kgio'
 gem 'dalli', '2.7.1'
 
 gem 'puma'
+gem 'thin'
 
 # for api 跨域
 gem 'rack-cors', require: 'rack/cors'
