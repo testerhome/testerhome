@@ -1,0 +1,18 @@
+<%
+   topic = notification.topic
+%>
+
+<div class="media-left avatar">
+</div>
+<div class="media-body">
+    <div class="media-heading">
+        <span class="info">你发布的话题 <%= topic_title_tag(topic) %> 由于内容或者格式原因</span>
+        <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= timeago(notification.created_at) %></span>
+    </div>
+    <div class="summary">
+        被管理员删除，请注意查看论坛须知。
+        <% if !notification.read? %>
+            <span class="new label label-warning">新</span>
+        <% end %>
+    </div>
+</div>

@@ -161,6 +161,11 @@ class TopicsController < ApplicationController
 
   def update
     @topic = Topic.find(params[:id])
+
+    if current_user.admin?
+      @topic.admin_editing = true
+    end
+
     if @topic.lock_node == false || current_user.admin?
       # 锁定接点的时候，只有管理员可以修改节点
       @topic.node_id = topic_params[:node_id]
@@ -182,6 +187,9 @@ class TopicsController < ApplicationController
 
   def destroy
     @topic = Topic.find(params[:id])
+    if current_user.admin?
+      @topic.admin_deleting = true
+    end
     @topic.destroy_by(current_user)
     topic_owner.update_score -5
     redirect_to(topics_path, notice: t('topics.delete_topic_success'))

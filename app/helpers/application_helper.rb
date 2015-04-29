@@ -3,6 +3,7 @@ require "redcarpet"
 module ApplicationHelper
   ALLOW_TAGS = %w(p br img h1 h2 h3 h4 h5 h6 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span hr)
   ALLOW_ATTRIBUTES = %w(href src class title alt target rel data-floor id)
+  EMPTY_STRING = ''.freeze
   $html_cache = {}
   def sanitize_markdown(body)
     # TODO: This method slow, 3.5ms per call in topic body
@@ -87,7 +88,7 @@ module ApplicationHelper
   def timeago(time, options = {})
     options[:class] = options[:class].blank? ? "timeago" : [options[:class],"timeago"].join(" ")
     options.merge!(title: time.iso8601)
-    content_tag(:abbr, "", class: options[:class], title: time.iso8601) if time
+    content_tag(:abbr, EMPTY_STRING, class: options[:class], title: time.iso8601) if time
   end
 
   def render_page_title
@@ -99,7 +100,7 @@ module ApplicationHelper
   # 去除区域里面的内容的换行标记
   def spaceless(&block)
     data = with_output_buffer(&block)
-    data = data.gsub(/\n\s+/,"")
+    data = data.gsub(/\n\s+/,EMPTY_STRING)
     data = data.gsub(/>\s+</,"><")
     sanitize data
   end
@@ -127,7 +128,7 @@ module ApplicationHelper
         content_tag(:a, raw(k), id: l, class: 'insert_code', data: { content: l })
       end
     end
-    raw lang_list.join("")
+    raw lang_list.join(EMPTY_STRING)
   end
 
   def birthday_tag
@@ -148,12 +149,12 @@ module ApplicationHelper
 
   def random_tips
     tips = SiteConfig.tips
-    return "" if tips.blank?
+    return EMPTY_STRING if tips.blank?
     tips.split("\n").sample
   end
 
   def icon_tag(name, opts = {})
-    label = ""
+    label = EMPTY_STRING
     if opts[:label]
       label = %(<span>#{opts[:label]}</span>)
     end
