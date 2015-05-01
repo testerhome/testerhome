@@ -1,6 +1,6 @@
 # coding: utf-8
 class Notification::NodeChanged < Notification::Base
-  belongs_to :topic
+  belongs_to :topic, class_name: "Topic"
   belongs_to :node
 
   delegate :name, to: :node, allow_nil: true, prefix: true
