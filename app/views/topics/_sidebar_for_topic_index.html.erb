@@ -1,5 +1,4 @@
 <% if can? :create, Topic %>
-  <% cache(["sidebar_new_topic_box",SiteConfig.new_topic_dropdown_node_ids]) do %>
     <%
       if !SiteConfig.new_topic_dropdown_node_ids.blank?
         ids = SiteConfig.new_topic_dropdown_node_ids.split(",").collect { |id| id.to_i }
@@ -11,7 +10,11 @@
     <div class="panel panel-default clearfix">
       <div class="panel-body">
         <div class="btn-group pull-left">
-          <%= link_to(t("topics.start_a_new_topic_button"), new_topic_path, class: "btn btn-primary" )%>
+            <% if !node.blank? %>
+                <%= link_to(t("topics.start_a_new_topic_button"), new_topic_path(node: node.id), class: "btn btn-primary" )%>
+            <% else %>
+                <%= link_to(t("topics.start_a_new_topic_button"), new_topic_path, class: "btn btn-primary" )%>
+            <% end %>
           <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
           </button>
@@ -26,7 +29,6 @@
       </div>
     </div>
   <% end %>
-<% end %>
 
 <% if current_user && current_user.newbie? %>
 <div class="panel panel-default">

@@ -47,20 +47,6 @@ module ApplicationHelper
     raw %(<script src="#{asset_path(fname)}" data-turbolinks-track></script>)
   end
 
-  def markdown(str, options = {})
-    # XXX: the renderer instance should be a class variable
-
-    options[:hard_wrap] ||= false
-    options[:class] ||= ''
-    assembler = Redcarpet::Render::HTML.new(:hard_wrap => options[:hard_wrap]) # auto <br> in <p>
-
-    renderer = Redcarpet::Markdown.new(assembler, {
-      :autolink => true,
-      :fenced_code_blocks => true
-    })
-    content_tag(:div, sanitize(MarkdownConverter.convert(str)), :class => options[:class])
-  end
-
   def sanitize_search_result(body)
     # 为实现锚点，允许id属性
     sanitize body, :tags => %w(em)
@@ -125,7 +111,7 @@ module ApplicationHelper
     lang_list = []
     LANGUAGES_LISTS.each do |k, l|
       lang_list << content_tag(:li) do
-        content_tag(:a, raw(k), id: l, class: 'insert_code', data: { content: l })
+        link_to raw(k), '#', data: { lang: l }
       end
     end
     raw lang_list.join(EMPTY_STRING)

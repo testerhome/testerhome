@@ -11,8 +11,8 @@ class User
 
   ALLOW_LOGIN_CHARS_REGEXP = /\A\w+\z/
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :trackable, :validatable, :omniauthable
 
   field :email, type: String, default: ""
   # Email 的 md5 值，用于 Gravatar 头像
@@ -49,7 +49,7 @@ class User
   field :score, type: Integer, default: 1000
 
   # 是否信任用户
-  field :verified, type: Mongoid::Boolean, :default => false
+  field :verified, type: Mongoid::Boolean, default: false
   field :state, type: Integer, default: 1
   field :guest, type: Mongoid::Boolean, default: false
   field :tagline
