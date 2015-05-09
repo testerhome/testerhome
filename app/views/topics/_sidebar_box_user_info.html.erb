@@ -1,3 +1,4 @@
+<% if !user.blank? %>
 <div class="panel panel-default userinfo">
     <div class="panel-heading">作者</div>
     <div class="panel-body vcard clearfix">
@@ -23,7 +24,7 @@
                 </li>
             <% end %>
 
-            <% if !owner? user %>
+            <% if !current_user.blank? and !owner? user %>
             <li class="list-group-item">
                 <div class="buttons row">
                     <div class="col-sm-6">
@@ -43,3 +44,4 @@
 
 
 </div>
+<% end %>
