@@ -155,7 +155,7 @@ class User
 
   # 是否有 Wiki 维护权限
   def wiki_editor?
-    self.admin? or self.verified == true
+    self.admin? or self.verified == true or self.topics_count >= 20
   end
 
   # 回帖大于 150 的才有酷站的发布权限
