@@ -7,7 +7,6 @@
             </li>
             <% if !user.location.blank? %>
                 <li class="adr list-group-item">
-                    <label><%= t("users.city")%>:</label>
                     <span class="region"><%= location_name_tag(user.location) %></span>
                 </li>
             <% end %>
