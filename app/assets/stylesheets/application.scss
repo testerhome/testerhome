@@ -497,6 +497,7 @@ a.followed {
     &:last-child { border-bottom: 0px; }
     .avatar { text-align:center; }
     .title {
+      word-break: break-all;
       font-size: 15px;
       i.fa { color: #999; margin-left: 3px; }
       i.fa-diamond { color: $red; }

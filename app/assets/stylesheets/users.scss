@@ -21,6 +21,7 @@
 }
 .node-topics {
   td.title {
+    word-break: break-all;
     a:link,
     a:visited {color:#2c64d7; text-decoration: none;}
     a:hover { text-decoration: underline; }
