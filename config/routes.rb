@@ -107,7 +107,8 @@ Rails.application.routes.draw do
     end
   end
 
-  get "api" => "home#api", as: 'api'
+  get "api" => "home#api", as: "api"
+  get "timeline" => "home#timeline", as: "timeline"
   get "twitter" => "home#twitter", as: "twitter"
 
   # mount TesterHome::API => "/"

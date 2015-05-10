@@ -9,6 +9,9 @@ class HomeController < ApplicationController
   def api
   end
 
+  def timeline
+  end
+
   def twitter
     set_seo_meta t("menu.tweets")
   end

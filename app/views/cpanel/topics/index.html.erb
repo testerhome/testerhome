@@ -25,10 +25,10 @@
     <td><%= topic.replies_count %></td>
     <td>
       <% if topic.deleted_at.blank? %>
-        <%= l topic.created_at, format: :short %>
+        <%= l topic.created_at, format: :long %>
       <% else %>
         <%= link_to topic.who_deleted, user_path(topic.who_deleted) if not topic.who_deleted.blank? %> 删除于 <br />
-        <%= l topic.deleted_at, format: :short %>
+        <%= l topic.deleted_at, format: :long %>
       <% end %>
     </td>
     <td>
