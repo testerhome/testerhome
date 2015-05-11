@@ -92,6 +92,11 @@ pickle-email-*.html
 config/initializers/secret_token.rb
 config/secrets.yml
 config/config.yml
+config/mongoid.yml
+config/redis.yml
+config/secrets.yml
+config/sidekiq.yml
+
 
 ## Environment normalisation:
 /.bundle
