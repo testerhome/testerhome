@@ -10,6 +10,7 @@ class HomeController < ApplicationController
   end
 
   def timeline
+    set_seo_meta("TesterHome #{t("menu.timeline")}")
   end
 
   def twitter
