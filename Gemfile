@@ -6,7 +6,7 @@ else
 end
 
 gem 'rails', '4.2.1'
-gem 'sass-rails'
+gem 'sass-rails', '5.0.3'
 gem 'coffee-rails'
 gem 'uglifier'
 gem 'jquery-rails'
@@ -103,7 +103,7 @@ gem 'rack-utf8_sanitizer'
 gem "elasticsearch"
 gem "elasticsearch-model"
 gem "elasticsearch-rails"
-
+gem 'tilt'
 group :development, :test do
   gem 'capistrano', '2.9.0', require: false
   gem 'rvm-capistrano', require: false
@@ -123,4 +123,5 @@ end
 group :production do
   gem 'newrelic_rpm'
   gem 'newrelic_moped'
+  gem 'oneapm_rpm'
 end
