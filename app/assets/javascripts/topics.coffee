@@ -201,7 +201,8 @@ window.TopicView = Backbone.View.extend
   testerhome_qrcode : (e) ->
     link = $(e.currentTarget)
     topic_url = link.data("url")
-    $('#qrcode-body').qrcode(topic_url);
+    $('#qrcode-body').empty()
+    $('#qrcode-body').qrcode(topic_url)
     $('#qrcode-modal').modal
       keyboard : true
       backdrop : true
