@@ -2,6 +2,7 @@
   <%= likeable_tag(@topic) %>
   <%= topic_follow_tag(@topic) %>
   <%= topic_favorite_tag(@topic) %>
+  <%= topic_qrcode_tag(@topic) %>
   <% if admin? %>
   <% if !@topic.suggested_at.blank? %>
   <%= link_to raw("<i class='fa fa-thumb-tack'></i> 取消"), unsuggest_cpanel_topic_path(@topic), 'data-confirm' => '确定要取消置顶么?', method: :post %>
@@ -18,4 +19,20 @@
     <%= link_to "", topic_path(@topic.id), method: :delete, 'data-confirm' => t("common.confirm_delete"), class: "fa fa-trash", title: "删除本帖" %>
     <% end %>
   </span>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="qrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel-heading">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+            <div class="modal-body">
+                <div id="qrcode-body" class="center-block"></div>
+            </div>
+
+        </div>
+    </div>
 </div>

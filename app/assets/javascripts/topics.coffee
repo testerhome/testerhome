@@ -14,6 +14,7 @@ window.TopicView = Backbone.View.extend
     "click a.at_floor": "clickAtFloor"
     "click .topic-detail a.follow": "follow"
     "click .topic-detail a.bookmark": "bookmark"
+    "click .topic-detail a.qrcode": "testerhome_qrcode"
 
   initialize: (opts) ->
     @parentView = opts.parentView
@@ -196,6 +197,16 @@ window.TopicView = Backbone.View.extend
             return msg
       else
         $(window).unbind("beforeunload")
+
+  testerhome_qrcode : (e) ->
+    link = $(e.currentTarget)
+    topic_url = link.data("url")
+    $('#qrcode-body').qrcode(topic_url);
+    $('#qrcode-modal').modal
+      keyboard : true
+      backdrop : true
+      show : true
+    false
 
   bookmark : (e) ->
     link = $(e.currentTarget)

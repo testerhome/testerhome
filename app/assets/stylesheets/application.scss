@@ -535,6 +535,9 @@ a.followed {
 }
 
 .topic-detail {
+
+  i.fa-qrcode { color: #38ad5a}
+
   margin-bottom: 30px;
   .panel-heading {
     padding: 15px;
@@ -580,6 +583,18 @@ a.followed {
       }
     }
     }
+  #qrcode-body {
+    height: 420px;
+    width: 480px;
+    canvas {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      margin: -100px 0 0 -100px;
+      left: 50%;
+      top: 50%;
+    }
+  }
 }
 
 #replies {

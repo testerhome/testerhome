@@ -25,7 +25,14 @@ module TopicsHelper
 
     icon = raw(content_tag("i", "", class: "fa fa-bookmark"))
 
-    link_to(icon, "#", title: link_title, class: "bookmark #{class_name}", 'data-id' => topic.id)
+    link_to(raw("#{icon} 收藏"), "#", title: link_title, class: "bookmark #{class_name}", 'data-id' => topic.id)
+  end
+
+  def topic_qrcode_tag(topic)
+    link_title = "二维码"
+    class_name = ""
+    icon = raw(content_tag("i", "", class: "fa fa-qrcode"))
+    link_to(raw("#{icon} 二维码"), "#",  title: link_title, class: "qrcode #{class_name}", 'data-url' => topic_url(topic))
   end
 
   def topic_follow_tag(topic)
