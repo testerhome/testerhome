@@ -14,6 +14,8 @@ class User
   devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :omniauthable
 
+
+
   field :email, type: String, default: ""
   # Email 的 md5 值，用于 Gravatar 头像
   field :email_md5
@@ -47,6 +49,24 @@ class User
 
   # 积分
   field :score, type: Integer, default: 1000
+
+  # skill
+  attr_accessor :skill_list
+  field :skills, type: Array, default: []
+
+  def skill_list=value
+    new_skill = [];
+    value.split(',').each do |skill|
+      if !skill.blank?
+        new_skill << skill.strip.downcase
+      end
+    end
+    self.skills = new_skill
+  end
+
+  def skill_list
+    self.skills.join(',')
+  end
 
   # 是否信任用户
   field :verified, type: Mongoid::Boolean, default: false
@@ -89,7 +109,7 @@ class User
   end
 
   attr_accessor :password_confirmation
-  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :by, :current_password, :password, :password_confirmation]
+  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :by, :current_password, :password, :password_confirmation, :skill_list]
 
   validates :login, format: { with: ALLOW_LOGIN_CHARS_REGEXP, message: '只允许数字、大小写字母和下划线'},
                               length: {:in => 3..20}, presence: true,

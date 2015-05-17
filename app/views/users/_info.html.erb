@@ -1,71 +1,86 @@
 <div class="panel panel-default userinfo">
-  <div class="panel-body vcard clearfix">
-    <ul class="list-group">
-      <% if !@user.location.blank? %>
-        <li class="adr list-group-item">
-          <label><%= t("users.city")%>:</label>
-          <span class="region"><%= location_name_tag(@user.location) %></span>
-        </li>
-      <% end %>
+    <div class="panel-body vcard clearfix">
+        <ul class="list-group">
+            <% if !@user.location.blank? %>
+                <li class="adr list-group-item">
+                    <label><%= t("users.city")%>:</label>
+                    <span class="region"><%= location_name_tag(@user.location) %></span>
+                </li>
+            <% end %>
 
-      <% if !@user.company.blank? %>
-        <li class="adr list-group-item">
-          <label><%= t("users.company")%>:</label>
-          <span class="org"><%= @user.company %></span>
-        </li>
-      <% end %>
+            <% if !@user.company.blank? %>
+                <li class="adr list-group-item">
+                    <label><%= t("users.company")%>:</label>
+                    <span class="org"><%= @user.company %></span>
+                </li>
+            <% end %>
 
-      <% if !@user.email.blank? && @user.email_public %>
-      <li class="list-group-item">
-        <label>Email:</label>
-        <span><%= auto_link @user.email %></span>
-      </li>
-      <% end %>
+            <% if !@user.email.blank? && @user.email_public %>
+                <li class="list-group-item">
+                    <label>Email:</label>
+                    <span><%= auto_link @user.email %></span>
+                </li>
+            <% end %>
 
-      <% if !@user.twitter.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.twitter")%>:</label>
-          <span><%= link_to "@#{@user.twitter}", @user.twitter_url, class: "twitter", rel: "nofollow" %></span>
-        </li>
-      <% end %>
+            <% if !@user.twitter.blank? %>
+                <li class="list-group-item">
+                    <label><%= t("users.twitter")%>:</label>
+                    <span><%= link_to "@#{@user.twitter}", @user.twitter_url, class: "twitter", rel: "nofollow" %></span>
+                </li>
+            <% end %>
 
-      <% if !@user.website.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.personal_website")%>:</label>
-          <span><%= render_user_personal_website(@user)%></span>
-        </li>
-      <% end %>
+            <% if !@user.website.blank? %>
+                <li class="list-group-item">
+                    <label><%= t("users.personal_website")%>:</label>
+                    <span><%= render_user_personal_website(@user)%></span>
+                </li>
+            <% end %>
 
-      <% if !@user.tagline.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.signature")%>:</label>
-          <span><%= render_user_tagline(@user) %></span>
-        </li>
-      <% end %>
+            <% if !@user.tagline.blank? %>
+                <li class="list-group-item">
+                    <label><%= t("users.signature")%>:</label>
+                    <span><%= render_user_tagline(@user) %></span>
+                </li>
+            <% end %>
 
-      <li class="list-group-item">
-        <label><%= t("users.join_time")%>:</label>
-        <span><%= render_user_join_time(@user) %></span>
-      </li>
+            <li class="list-group-item">
+                <label><%= t("users.join_time")%>:</label>
+                <span><%= render_user_join_time(@user) %></span>
+            </li>
 
-             <li class="list-group-item">
-                 <label><%= t("users.score")%>:</label>
-                 <span><%= @user.score %></span>
-             </li>
+            <li class="list-group-item">
+                <label><%= t("users.score")%>:</label>
+                <span><%= @user.score %></span>
+            </li>
 
-    </ul>
-  </div>
-
-
+        </ul>
+    </div>
 </div>
 
-<% cache([@user, "bio-markdown"]) do %>
-  <% if !@user.bio.blank? %>
-    <div class="panel panel-default bio">
-      <div class="panel-heading">个人介绍</div>
-      <div class="panel-body markdown">
-        <%= markdown(@user.bio) %>
-      </div>
+
+<% cache([@user, "user-skill"]) do %>
+<% if !@user.skills.blank? %>
+
+<div class="panel panel-default user-skills">
+    <div class="panel-heading">个人技能</div>
+    <div class="panel-body">
+        <ul class="nav nav-pills" role="tablist">
+            <% @user.skills.each do |skill,count| %>
+            <li><span class="label label-info label-skill"><%=skill%></span></li>
+            <% end %>
+        </ul>
     </div>
-  <% end %>
+</div>
+<% end %>
+<%end%>
+
+<% cache([@user, "bio-markdown"]) do %>
+    <% if !@user.bio.blank? %>
+        <div class="panel panel-default bio">
+            <div class="panel-heading">个人介绍</div>
+            <div class="panel-body markdown">
+                <%= markdown(@user.bio) %>
+            </div>
+        </div>
+    <% end %>
 <% end %>

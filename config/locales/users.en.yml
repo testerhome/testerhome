@@ -4,6 +4,7 @@
     city: "City"
     join_time: "Joined at"
     score: "Score"
+    skill: "Skill"
     signature: "Status"
     personal_website: "Personal website"
     recent_publish_topic: "Recent Topics"

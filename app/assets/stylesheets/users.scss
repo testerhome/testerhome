@@ -95,6 +95,28 @@
   }
 }
 
+.user-skills {
+  .label-skill {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: rgb(51, 122, 183);
+    cursor: auto;
+    display: block;
+    font-size: 14px;
+    height: 40px;
+    line-height: 20px;
+    list-style-type: none;
+    padding: 10px 15px 10px 15px;
+    position: relative;
+    text-align: left;
+  }
+
+  .label-skill:hover {
+    background: #eee;
+  }
+}
+
 .bio {
   font-size:12px; line-height:180%;
   p:last-child { margin-bottom:0; }

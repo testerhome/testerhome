@@ -15,6 +15,7 @@
 #= require social-share-button
 #= require jquery.atwho
 #= require jquery.qrcode.min
+#= require bootstrap-tokenfield
 #= require emoji_list
 #= require notifier
 #= require message-bus
@@ -51,6 +52,8 @@ AppView = Backbone.View.extend
 
     if $('body').data('controller-name') in ['notes']
       window._noteView = new NoteView({parentView: @})
+
+    $('#user_skill_list').tokenfield()
 
   initComponents: () ->
     $("abbr.timeago").timeago()

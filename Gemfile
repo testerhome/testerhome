@@ -36,6 +36,8 @@ gem 'mongoid_rails_migrations', '1.0.0'
 gem 'devise', '~> 3.4.0'
 gem 'devise-encryptable', '0.1.2'
 
+gem 'bootstrap_tokenfield_rails'
+
 # 分页
 gem 'will_paginate', '3.0.7'
 
@@ -123,5 +125,8 @@ end
 group :production do
   gem 'newrelic_rpm'
   gem 'newrelic_moped'
+end
+
+source 'http://rubygems.oneapm.com/' do
   gem 'oneapm_rpm'
 end
