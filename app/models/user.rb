@@ -55,13 +55,7 @@ class User
   field :skills, type: Array, default: []
 
   def skill_list=value
-    new_skill = [];
-    value.split(',').each do |skill|
-      if !skill.blank?
-        new_skill << skill.strip.downcase
-      end
-    end
-    self.skills = new_skill
+    self.skills = value.split(',').map{|s| s.to_s.strip}.uniq
   end
 
   def skill_list
