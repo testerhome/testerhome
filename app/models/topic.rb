@@ -148,7 +148,7 @@ class Topic
     # replied_at 用于最新回复的排序，如果帖着创建时间在一个月以前，就不再往前面顶了
     return false if reply.blank? && !opts[:force]
 
-    self.last_active_mark = Time.now.to_i if self.created_at > 1.year.ago
+    self.last_active_mark = Time.now.to_i if self.created_at > 3.months.ago
     self.replied_at = reply.try(:created_at)
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
