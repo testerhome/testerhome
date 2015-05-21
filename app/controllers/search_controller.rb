@@ -3,8 +3,8 @@ class SearchController < ApplicationController
   def index
     @topics = Topic.search(
         sort: [
-            {updated_at: :desc},
-            {excellent: :desc}
+            {updated_at: {order: "desc", ignore_unmapped: true}},
+            {excellent:  {order: "desc", ignore_unmapped: true}}
         ],
         query: {
             multi_match: {
