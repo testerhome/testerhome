@@ -16,7 +16,7 @@ class Topic
   include Elasticsearch::Model::Callbacks
 
   def as_indexed_json(options={})
-    self.as_json( {only: [:title, :body, :updated_at, :excellent]})
+    self.as_json( {only: [:title, :body, :updated_at]})
   end
 
   field :title
