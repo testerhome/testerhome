@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   resources :photos
   resources :likes
   resources :jobs
+  resources :bugs
 
   get "/search" => "search#index", as: 'search'
 

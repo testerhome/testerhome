@@ -31,6 +31,7 @@
            li << link_to(t("menu.wiki"), pages_path) if !mobile?
            li << link_to(t("menu.timeline"), timeline_path) if !mobile?
            li << link_to(t("menu.sites"), sites_path) if !mobile?
+           li << link_to(t("menu.bugs"), bugs_path)
         end %>
 
         <%= render "common/user_nav" %>

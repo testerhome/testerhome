@@ -41,6 +41,11 @@ class Node
     19
   end
 
+  def self.bugs_id
+    47
+  end
+
+
   # Markdown 转换过后的 HTML
   def summary_html
     Rails.cache.fetch("#{self.cache_key}/summary_html") do
@@ -52,4 +57,9 @@ class Node
   def jobs?
     self.id == self.class.jobs_id
   end
+
+  def bugs?
+    self.id == self.class.bugs_id
+  end
+
 end
