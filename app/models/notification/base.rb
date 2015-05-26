@@ -29,6 +29,10 @@ class Notification::Base
     ''
   end
 
+  def actor
+    nil
+  end
+
   def anchor
     "notification-#{id}"
   end

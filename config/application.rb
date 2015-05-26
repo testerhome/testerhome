@@ -22,11 +22,14 @@ module TesterHome
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = "zh-CN"
+    config.autoload_paths << Rails.root.join("app/api")
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
     config.mongoid.include_root_in_json = false
+
+
 
     config.generators do |g|
       g.test_framework :rspec
@@ -37,6 +40,12 @@ module TesterHome
 
     config.to_prepare {
       Devise::Mailer.layout "mailer"
+      # Only Applications list
+      Doorkeeper::ApplicationsController.layout "simple"
+      # Only Authorization endpoint
+      Doorkeeper::AuthorizationsController.layout "simple"
+      # Only Authorized Applications
+      Doorkeeper::AuthorizedApplicationsController.layout "simple"
     }
 
     config.middleware.use Rack::Cors do

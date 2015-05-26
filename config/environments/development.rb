@@ -6,7 +6,7 @@ Rails.application.configure do
   # every request.  This slows down response time but is perfect for development
   # since you don't have to restart the webserver when you make code changes.
   config.cache_classes = false
-  
+
   config.eager_load = false
 
   # Show full error reports and disable caching
@@ -14,11 +14,20 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
-  # config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.default_url_options = { :host => Setting.domain }
-  config.action_mailer.delivery_method   = :postmark
-  config.action_mailer.postmark_settings = { :api_key => Setting.email_password }
+  # Don't care if the mailer can't send
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {:host => "testerhome.com" }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      :address=> Setting.email_server,
+      :port=> Setting.email_port,
+      :domain=> Setting.email_domain,
+      :authentication=> :login,
+      :user_name=> Setting.email_sender,
+      :password=> Setting.email_password
+  }
+
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -30,7 +39,7 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-  
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
@@ -44,7 +53,7 @@ api_reloader = ActiveSupport::FileUpdateChecker.new(Dir["#{Rails.root}/app/grape
   files.each_with_index do |s,i|
     if times[i] > @last_api_change
       Rails.logger.debug " - #{s}"
-      load s 
+      load s
     end
   end
 

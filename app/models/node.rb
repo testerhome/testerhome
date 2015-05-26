@@ -10,6 +10,8 @@ class Node
   field :topics_count, type: Integer, default: 0
 
   has_many :topics
+  delegate :name, to: :section, prefix: true, allow_nil: true
+
   belongs_to :section
 
   index section_id: 1

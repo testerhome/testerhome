@@ -241,6 +241,35 @@ form {
   .form-actions { padding-left:190px; }
 }
 
+.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+  .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border-bottom-width: 1px;
+    border-bottom-width: 1px;
+    background: #F0F0F0;
+    background: #F0F0F0;
+    color: #888;
+    color: #888;
+    font-weight: normal;
+    font-weight: normal;
+    font-size: 14px;
+    font-size: 14px;
+  }
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background: #FFF;
+    background: #FFF;
+  }
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+  .table-striped > tbody > tr:nth-of-type(even) {
+    background: #f9f9f9;
+    background: #f9f9f9;
+  }
+}
+
 
 .input-group-addon {
   padding: 6px 0;
@@ -300,6 +329,15 @@ form {
   }
 }
 abbr[title] { border-bottom: 0px; cursor: text; }
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  padding: 4px 5px;
+}
 
 .chosen-container {
   .chosen-single {
@@ -856,3 +894,4 @@ footer {
   padding-top: 3px;
   font-size: 30px;
 }
+

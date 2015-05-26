@@ -80,6 +80,15 @@ class Topic
   scope :without_node_ids, Proc.new { |ids| where(:node_id.nin => ids) }
   scope :excellent, -> { where(:excellent.gte => 1) }
 
+  scope :without_hide_nodes, -> { where(:node_id.nin => Topic.topic_index_hide_node_ids) }
+  scope :without_nodes, Proc.new { |node_ids|
+                        ids = node_ids + self.topic_index_hide_node_ids
+                        ids.uniq!
+                        where(:node_id.nin => ids)
+                      }
+  scope :without_users, Proc.new { |user_ids| where(:user_id.nin => user_ids) }
+
+
   def self.find_by_message_id(message_id)
     where(message_id: message_id).first
   end

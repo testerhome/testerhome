@@ -13,6 +13,10 @@ class Notification::Mention < Notification::Base
     }
   end
 
+  def actor
+    self.mentionable.try(:user)
+  end
+
   def content_path
     case self.mentionable_type.downcase
     when 'topic'

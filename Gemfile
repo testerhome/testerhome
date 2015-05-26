@@ -18,6 +18,10 @@ gem 'rails_autolink', '>= 1.1.0'
 gem 'md_emoji', '1.0.2'
 gem 'exception_notification'
 
+gem 'doorkeeper'
+gem 'doorkeeper-i18n', github: 'huacnlee/doorkeeper-i18n'
+
+
 gem 'rails-perftest'
 gem 'ruby-prof'
 
@@ -82,7 +86,8 @@ gem 'simple_form', '3.1.0'
 
 # API
 gem 'grape', '0.7.0'
-gem 'grape-entity', '0.4.4'
+gem 'active_model_serializers'
+gem 'grape-active_model_serializers'
 
 # Mailer
 gem 'postmark', '0.9.15'
@@ -122,10 +127,9 @@ group :development, :test do
   gem 'jasmine-rails', '~> 0.10.2'
 end
 
-group :production do
-  gem 'newrelic_rpm'
-  gem 'newrelic_moped'
-end
+gem 'newrelic_rpm'
+gem 'newrelic_moped'
+gem 'newrelic-grape'
 
 source 'http://rubygems.oneapm.com/' do
   gem 'oneapm_rpm'
