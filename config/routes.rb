@@ -116,7 +116,7 @@ Rails.application.routes.draw do
   get "api" => "home#api", as: "api"
   get "timeline" => "home#timeline", as: "timeline"
   get "twitter" => "home#twitter", as: "twitter"
-
+  get "markdown" => "home#markdown", as: "markdown"
 
   require "dispatch"
   mount Api::Dispatch => "/api"

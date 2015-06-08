@@ -79,6 +79,7 @@
           <div class="submit-buttons">
             <button type="submit" id="reply-button" class="btn btn-primary" tabindex="2"><%= t("topics.submit_reply")%></button>
               <span class="help-inline" title="或者 Ctrl + Enter"><kbd>Command</kbd> + <kbd>Enter</kbd></span>
+              <div class="pull-right"><a href="/markdown" target="_blank">排版说明</a></div>
               <% if Node.find(@topic.node_id).name.index("匿名") %>
                   <span class="help-inline">
                     <label>
@@ -95,10 +96,6 @@
         </div>
       <% end %>
       </div>
-
-        <div class="panel-footer">
-            <%= render "/shared/editor_help_block" %>
-        </div>
     </div>
   <% else %>
     <div class="panel panel-default">
