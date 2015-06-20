@@ -148,6 +148,10 @@ window.TopicView = Backbone.View.extend
     else
       $('a.zoom-image').fluidbox
         overlayColor: "#FFF"
+        closeTrigger: [ {
+                    selector: 'window'
+                    event: 'scroll'
+                  } ]
     true
 
   preview: (body) ->
