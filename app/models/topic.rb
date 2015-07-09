@@ -1,5 +1,13 @@
 # coding: utf-8
 require "auto-space"
+
+CORRECT_CHARS = [
+  ['【', '['],
+  ['】', ']'],
+  ['（', '('],
+  ['）', ')']
+]
+
 class Topic
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -116,6 +124,14 @@ class Topic
   end
   before_save :auto_space_with_title
   def auto_space_with_title
+    self.title.auto_space!
+  end
+
+  before_save :auto_correct_title
+  def auto_correct_title
+    CORRECT_CHARS.each do |chars|
+      self.title.sub!(chars[0], chars[1])
+    end
     self.title.auto_space!
   end
 
