@@ -1,7 +1,7 @@
 # coding: utf-8
 class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
-                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest]
+                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban]
   caches_action :feed, :node_feed, expires_in: 1.hours
 
   def index
@@ -28,7 +28,7 @@ class TopicsController < ApplicationController
   end
 
   def feedgood
-    @topics = Topic.excellent.recent.without_body.limit(20).includes(:node,:user, :last_reply_user)
+    @topics = Topic.excellent.recent.without_body.limit(20).includes(:node, :user, :last_reply_user)
     render :layout => false
   end
 
@@ -49,7 +49,7 @@ class TopicsController < ApplicationController
 
   %W(no_reply popular).each do |name|
     define_method(name) do
-      @topics = Topic.send(name.to_sym).last_actived.fields_for_list.includes(:user)
+      @topics = Topic.without_hide_nodes.send(name.to_sym).last_actived.fields_for_list.includes(:user)
       @topics = @topics.paginate(page: params[:page], per_page: 15, total_entries: 1500)
 
       set_seo_meta [t("topics.topic_list.#{name}"), t('menu.topics')].join(' &raquo; ')
@@ -132,8 +132,8 @@ class TopicsController < ApplicationController
 
   def set_special_node_active_menu
     case @node.try(:id)
-    when Node.jobs_id
-      @current = ["/jobs"]
+      when Node.jobs_id
+        @current = ["/jobs"]
     end
   end
 
@@ -254,6 +254,13 @@ class TopicsController < ApplicationController
     @topic.update_attribute(:excellent, 0)
     topic_owner.update_score -10
     redirect_to @topic, success: '加精已经取消。'
+  end
+
+
+  def ban
+    @topic = Topic.find(params[:id])
+    @topic.update_attribute(:node_id, Node.no_point_id)
+    redirect_to @topic, success: '已转移到 NoPoint 节点。'
   end
 
   private

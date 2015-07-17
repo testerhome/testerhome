@@ -398,8 +398,8 @@ a {
 }
 
 .alert-warning {
-  background: $yellowLabel;
-  color: $yellowLabelText;
+  background: $yellowLabel; color: $yellowLabelText;
+  hr { border-color: #DAC264 !important; }
 }
 
 .alert-danger {
@@ -453,14 +453,14 @@ textarea.form-control:focus {
   .nav-pills > li > a {
     border-radius: 0px;
     padding: 3px 13px;
-    background-color: $gray;
-    border-bottom: 1px solid $grayDark;
+    background-color: $grayLabel;
+    color:  $grayLabelText;
   }
   .nav-pills > li.active > a:link,
   .nav-pills > li.active > a:visited,
   .nav-pills > li.active > a:hover {
-    background-color: $blueLight;
-    border-color: $blueDark;
+    background-color: #D5DCE1;
+    border-color: $black;
   }
 }
 
@@ -1299,6 +1299,7 @@ a.followed {
     overflow: auto;
     border-radius: 0px;
     code {
+      display: block;
       line-height: 150%;
       padding: 0 !important;
       font-size: 12px !important;

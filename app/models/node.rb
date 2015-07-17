@@ -47,6 +47,10 @@ class Node
     47
   end
 
+  def self.no_point_id
+      55
+  end
+
 
   # Markdown 转换过后的 HTML
   def summary_html

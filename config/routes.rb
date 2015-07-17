@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       delete :unfollow
       patch :suggest
       delete :unsuggest
+      post :ban
     end
     collection do
       get :no_reply

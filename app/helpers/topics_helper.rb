@@ -72,8 +72,15 @@ module TopicsHelper
 
   def render_topic_node_select_tag(topic)
     return if topic.blank?
+
+    opts = {
+        "data-width" => "140px",
+        "data-live-search" => "true",
+        "data-mobile"=> true,
+        "class" => "show-menu-arrow"
+    }
     grouped_collection_select :topic, :node_id, Section.all,
                     :sorted_nodes, :name, :id, :name,
-                    {value: topic.node_id, include_blank: true, prompt: "选择节点"}, style: "width:145px;"
+                    {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
   end
 end
