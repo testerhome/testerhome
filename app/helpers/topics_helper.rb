@@ -74,10 +74,11 @@ module TopicsHelper
     return if topic.blank?
 
     opts = {
-        "data-width" => "140px",
+        "data-width" => "145px",
         "data-live-search" => "true",
         "data-mobile"=> true,
-        "class" => "show-menu-arrow"
+        "class" => "show-menu-arrow",
+        "style" => "width: 145px"
     }
     grouped_collection_select :topic, :node_id, Section.all,
                     :sorted_nodes, :name, :id, :name,
