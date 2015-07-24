@@ -2,7 +2,7 @@
 class HomeController < ApplicationController
   def index
     @excellent_topics = Topic.excellent.recent.fields_for_list.limit(20).to_a
-    @latest_topics = Topic.recent.fields_for_list.limit(10).to_a
+    @latest_topics = Topic.recent.without_hide_nodes.fields_for_list.limit(10).to_a
     fresh_when(etag: [@excellent_topics, @latest_topics, SiteConfig.index_html])
   end
 
