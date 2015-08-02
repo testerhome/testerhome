@@ -36,7 +36,7 @@ class TopicsController < ApplicationController
     @node = Node.find(params[:id])
     @topics = @node.topics.last_actived.fields_for_list
     @topics = @topics.includes(:user).paginate(page: params[:page], per_page: 15)
-    title = @node.jobs? ? @node.name : "#{@node.name} &raquo; #{t("menu.topics")}"
+    title = (@node.jobs? or @node.bugs?) ? @node.name : "#{@node.name} &raquo; #{t("menu.topics")}"
     set_seo_meta title, "#{Setting.app_name}#{t("menu.topics")}#{@node.name}", @node.summary
     render action: 'index'
   end
