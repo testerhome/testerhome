@@ -2,7 +2,7 @@
 require 'will_paginate/array'
 class UsersController < ApplicationController
   before_action :require_user, only: [:block, :unblock, :auth_unbind, :follow, :unfollow]
-  before_filter :find_user, only: [:show, :topics, :favorites, :notes,
+  before_action :find_user, only: [:show, :topics, :favorites, :notes,
                                    :block, :unblock, :blocked,
                                    :follow, :unfollow, :followers, :following]
   caches_action :index, expires_in: 1.hours, layout: false
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def topics
-    @topics = @user.topics.fields_for_list.recent.paginate(page: params[:page], per_page: 30)
+    @topics = @user.topics.unscoped.fields_for_list.recent.paginate(page: params[:page], per_page: 30)
     set_seo_meta("#{@user.login} 的帖子")
   end
 
