@@ -29,6 +29,16 @@ module UsersHelper
     end
   end
 
+  def user_qrcode_width_for_size(size)
+    case size
+      when :normal then 48
+      when :small then 16
+      when :large then 300
+      when :big then 430
+      else size
+    end
+  end
+
   def user_avatar_size_name_for_2x(size)
     case size
       when :normal then :large
@@ -38,6 +48,17 @@ module UsersHelper
       else size
     end
   end
+
+  def user_qrcode_size_name_for_2x(size)
+    case size
+      when :normal then :large
+      when :small then :normal
+      when :large then :big
+      when :big then :big
+      else size
+    end
+  end
+
 
   def user_avatar_tag(user, size = :normal, opts = {})
     link = opts[:link] || true
@@ -63,6 +84,19 @@ module UsersHelper
     else
       raw img
     end
+  end
+
+  def user_qrcode_tag(user, size = :normal, opts = {})
+
+    width = user_qrcode_width_for_size(size)
+    img_class = "center-block qrcode-#{width}"
+
+    if user.blank?
+      # hash = Digest::MD5.hexdigest("") => d41d8cd98f00b204e9800998ecf8427e
+      return image_tag("qrcode/#{size}.png", class: img_class)
+    end
+    img = image_tag(user.qrcode.url(user_qrcode_size_name_for_2x(size)), class: img_class)
+    raw img
   end
 
   def render_user_join_time(user)

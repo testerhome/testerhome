@@ -78,6 +78,7 @@ class User
   field :blocked_user_ids, type: Array, default: []
 
   mount_uploader :avatar, AvatarUploader
+  mount_uploader :qrcode, QrcodeUploader
 
   index login: 1
   index email: 1
@@ -105,7 +106,7 @@ class User
   end
 
   attr_accessor :password_confirmation
-  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :by, :current_password, :password, :password_confirmation, :skill_list]
+  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :qrcode, :by, :current_password, :password, :password_confirmation, :skill_list]
 
   validates :login, format: { with: ALLOW_LOGIN_CHARS_REGEXP, message: '只允许数字、大小写字母和下划线'},
                               length: {:in => 3..20}, presence: true,
@@ -485,6 +486,14 @@ class User
       self.avatar.url(:large)
     else
       "#{Setting.gravatar_proxy}/avatar/#{self.email_md5}.png?s=120"
+    end
+  end
+
+  def qrcode_url
+    if self.qrcode?
+      self.qrcode.url(:large)
+    else
+      nil
     end
   end
 end

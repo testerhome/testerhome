@@ -3,6 +3,7 @@
   <%= topic_follow_tag(@topic) %>
   <%= topic_favorite_tag(@topic) %>
   <%= topic_qrcode_tag(@topic) %>
+
   <% if admin? %>
         <% if !@topic.suggested_at.blank? %>
             <%= link_to raw("<i class='fa fa-thumb-tack'></i> 取消"), unsuggest_cpanel_topic_path(@topic), 'data-confirm' => '确定要取消置顶么?', method: :post %>
@@ -16,6 +17,11 @@
             <%= link_to raw("<i class='fa fa-ban'></i> 屏蔽"), ban_topic_path(@topic), method: 'post', title: "屏蔽此贴，移动到 NoPoint 节点" %>
         <% end %>
   <% end %>
+
+    <% if @topic.excellent? and @topic.topic_pay_url %>
+        <%= topic_qrcode_pay_tag(@topic) %>
+    <% end %>
+
   <span class="pull-right opts">
     <% if owner?(@topic) or admin? %>
     <%= link_to "", edit_topic_path(@topic), class: "fa fa-pencil", title: "修改本帖" %>
@@ -34,6 +40,21 @@
             </div>
             <div class="modal-body">
                 <div id="qrcode-body" class="center-block"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="qrcode-pay-modal" tabindex="-1" role="dialog" aria-labelledby="myPayModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel-heading">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <p>打开微信“扫一扫”，进行打赏</p>
+            </div>
+            <div class="modal-body">
+                <div id="qrcode-pay-body" class="center-block"></div>
             </div>
 
         </div>

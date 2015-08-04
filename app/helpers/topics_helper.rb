@@ -35,6 +35,13 @@ module TopicsHelper
     link_to(raw("#{icon} 二维码"), "#",  title: link_title, class: "qrcode #{class_name}", 'data-url' => topic_url(topic))
   end
 
+  def topic_qrcode_pay_tag(topic)
+    link_title = "打赏"
+    icon = raw(content_tag("i", "", class: "fa fa-money"))
+    link_to(raw("#{icon} 打赏"), "#",  title: link_title, class: "pay-qrcode", 'data-url' => (topic.topic_pay_url))
+  end
+
+
   def topic_follow_tag(topic)
     return "" if current_user.blank?
     return "" if topic.blank?

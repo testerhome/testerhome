@@ -15,6 +15,8 @@ window.TopicView = Backbone.View.extend
     "click .topic-detail a.follow": "follow"
     "click .topic-detail a.bookmark": "bookmark"
     "click .topic-detail a.qrcode": "testerhome_qrcode"
+    "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
+
 
   initialize: (opts) ->
     @parentView = opts.parentView
@@ -212,6 +214,19 @@ window.TopicView = Backbone.View.extend
       backdrop : true
       show : true
     false
+
+  testerhome_qrcode_pay : (e) ->
+    link = $(e.currentTarget)
+    qrcode_image_url = link.data("url")
+    $('#qrcode-pay-body').empty()
+    $('#qrcode-pay-body').html($('<img class="center-block" src=' + qrcode_image_url + '>'))
+    $('#qrcode-pay-modal').modal
+      keyboard : true
+      backdrop : true
+      show : true
+    false
+
+
 
   bookmark : (e) ->
     link = $(e.currentTarget)

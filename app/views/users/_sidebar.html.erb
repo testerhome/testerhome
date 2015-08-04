@@ -45,6 +45,16 @@
       <% end %>
     </div>
   </div>
+
+<% if not user.qrcode.blank? %>
+  <div class="panel panel-default" id="user_qrcode">
+      <div class="panel-heading">我的打赏二维码</div>
+      <div class="panel-body">
+          <%= user_qrcode_tag(@user,:large, link: false) %>
+      </div>
+  </div>
+<% end %>
+
   <div class="panel panel-default" id="user_github_repos">
     <% if not user.github.blank? %>
       <div class="panel-heading">GitHub Public Repos</div>

@@ -255,4 +255,7 @@ class Topic
     return true
   end
 
+  def topic_pay_url
+    self.user.qrcode_url
+  end
 end
