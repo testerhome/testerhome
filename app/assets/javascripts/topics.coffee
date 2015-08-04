@@ -216,10 +216,6 @@ window.TopicView = Backbone.View.extend
     false
 
   testerhome_qrcode_pay : (e) ->
-    link = $(e.currentTarget)
-    qrcode_image_url = link.data("url")
-    $('#qrcode-pay-body').empty()
-    $('#qrcode-pay-body').html($('<img class="center-block" src=' + qrcode_image_url + '>'))
     $('#qrcode-pay-modal').modal
       keyboard : true
       backdrop : true

@@ -46,6 +46,7 @@
     </div>
 </div>
 
+<% if @topic.excellent? and @topic.topic_pay_url %>
 <div class="modal fade" id="qrcode-pay-modal" tabindex="-1" role="dialog" aria-labelledby="myPayModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -54,9 +55,12 @@
                 <p>打开微信“扫一扫”，进行打赏</p>
             </div>
             <div class="modal-body">
-                <div id="qrcode-pay-body" class="center-block"></div>
+                <div id="qrcode-pay-body" class="center-block">
+                    <img class="center-block" src="<%= @topic.topic_pay_url %>">
+                </div>
             </div>
 
         </div>
     </div>
 </div>
+<% end %>
