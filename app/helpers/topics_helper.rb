@@ -87,8 +87,21 @@ module TopicsHelper
         "class" => "show-menu-arrow",
         "style" => "width: 145px"
     }
+
+    if topic.node_id == Node.no_point_id and !admin?
+      # 非管理员，屏蔽帖只能选屏蔽节点
+      nodes = :no_point_nodes
+    elsif current_user.admin?
+      # 管理员，可以选所有节点（包括屏蔽节点）
+      nodes = :all_sorted_nodes
+    else
+      # 非管理员非屏蔽帖，可以选除屏蔽节点外所有节点
+      nodes = :sorted_nodes
+    end
+    
     grouped_collection_select :topic, :node_id, Section.all,
-                    :sorted_nodes, :name, :id, :name,
-                    {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
+                              nodes, :name, :id, :name,
+                              {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
   end
+
 end
