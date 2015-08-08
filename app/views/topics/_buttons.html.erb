@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<% @topic.topic_pay_url %>
+<% if @topic.topic_pay_url %>
 <div class="modal fade" id="qrcode-pay-modal" tabindex="-1" role="dialog" aria-labelledby="myPayModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
