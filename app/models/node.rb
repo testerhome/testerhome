@@ -48,7 +48,7 @@ class Node
   end
 
   def self.no_point_id
-      1
+      55
   end
 
 

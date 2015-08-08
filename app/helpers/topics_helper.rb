@@ -87,16 +87,8 @@ module TopicsHelper
         "class" => "show-menu-arrow",
         "style" => "width: 145px"
     }
-
-    if topic.node_id == Node.no_point_id
-      grouped_collection_select :topic, :node_id, Section.all,
-                                :no_point_nodes, :name, :id, :name,
-                                {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
-    else
-      grouped_collection_select :topic, :node_id, Section.all,
-                      :sorted_nodes, :name, :id, :name,
-                      {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
-    end
+    grouped_collection_select :topic, :node_id, Section.all,
+                    :sorted_nodes, :name, :id, :name,
+                    {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
   end
-
 end
