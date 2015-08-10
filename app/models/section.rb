@@ -25,4 +25,13 @@ class Section
   def sorted_nodes
     self.nodes.where(:_id.nin => [Node.no_point_id]).sorted
   end
+
+  def all_sorted_nodes
+    self.nodes.sorted
+  end
+
+  def no_point_nodes
+    # 被屏蔽的帖子在修改页面的所在节点里只需要显示屏蔽专区
+    self.nodes.where(:_id => Node.no_point_id).sorted
+  end
 end
