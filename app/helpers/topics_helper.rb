@@ -81,11 +81,9 @@ module TopicsHelper
     return if topic.blank?
 
     opts = {
-        "data-width" => "145px",
+        "data-width" => "140px",
         "data-live-search" => "true",
-        "data-mobile"=> true,
-        "class" => "show-menu-arrow",
-        "style" => "width: 145px"
+        class: "show-menu-arrow"
     }
 
     if topic.node_id == Node.no_point_id and !admin?
@@ -98,10 +96,11 @@ module TopicsHelper
       # 非管理员非屏蔽帖，可以选除屏蔽节点外所有节点
       nodes = :sorted_nodes
     end
-    
+
     grouped_collection_select :topic, :node_id, Section.all,
                               nodes, :name, :id, :name,
-                              {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
+                              { value: topic.node_id, prompt: "选择节点"}, opts
+
   end
 
 end
