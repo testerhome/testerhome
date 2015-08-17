@@ -52,6 +52,7 @@ module TesterHome
       allow do
         origins '*'
         resource '/api/*', headers: :any, methods: [:get, :post, :put, :delete, :destroy]
+        resource '/oauth/*', headers: :any, methods: [:get, :post, :put, :delete, :destroy]
       end
     end
 
