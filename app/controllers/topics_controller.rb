@@ -134,6 +134,8 @@ class TopicsController < ApplicationController
     case @node.try(:id)
       when Node.jobs_id
         @current = ["/jobs"]
+      when Node.bugs_id
+        @current = ["/bugs"]
     end
   end
 
