@@ -23,7 +23,7 @@ class TopicsController < ApplicationController
   end
 
   def feed
-    @topics = Topic.recent.without_body.limit(20).includes(:node, :user, :last_reply_user)
+    @topics = Topic.without_hide_nodes.recent.without_body.limit(20).includes(:node, :user, :last_reply_user)
     render layout: false
   end
 
@@ -58,7 +58,7 @@ class TopicsController < ApplicationController
   end
 
   def recent
-    @topics = Topic.recent.fields_for_list.includes(:user)
+    @topics = Topic.without_hide_nodes.recent.fields_for_list.includes(:user)
     @topics = @topics.paginate(page: params[:page], per_page: 15, total_entries: 1500)
     set_seo_meta [t('topics.topic_list.recent'), t('menu.topics')].join(' &raquo; ')
     render action: 'index'
@@ -134,6 +134,8 @@ class TopicsController < ApplicationController
     case @node.try(:id)
       when Node.jobs_id
         @current = ["/jobs"]
+      when Node.bugs_id
+        @current = ["/bugs"]
     end
   end
 

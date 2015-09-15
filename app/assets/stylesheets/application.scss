@@ -1,7 +1,7 @@
 /*
  *= require bootstrap.min
+ *= require bootstrap-select.min
  *= require font-awesome.min
- *= require jquery.chosen
  *= require roboto
  *= require highlight
  *= require social-share-button
@@ -509,6 +509,18 @@ form {
   border-radius: 0px;
   border: 0px;
   border-bottom: 1px solid #D5DCE1;
+}
+
+.bootstrap-select {
+  .btn-default,
+  .btn-default.active {
+    border: 0px;
+    background: #FFF;
+    border-bottom: 1px solid #D5DCDB;
+    transition: none;
+    padding-bottom: 7px;
+    border-radius: 0;
+  }
 }
 
 .popover {

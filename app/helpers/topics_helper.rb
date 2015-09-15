@@ -47,11 +47,12 @@ module TopicsHelper
     return "" if topic.blank?
     return "" if owner?(topic)
     class_name = "follow"
+    followed = false
     if topic.follower_ids.include?(current_user.id)
       class_name = "follow followed"
+      followed = true
     end
     icon = content_tag("i", "", class: "fa fa-eye")
-    followed = class_name == "followed"
     link_to(raw("#{icon} 关注"), "#", 'data-id' => topic.id, 'data-followed' => followed, class: class_name)
   end
 
@@ -81,14 +82,26 @@ module TopicsHelper
     return if topic.blank?
 
     opts = {
-        "data-width" => "145px",
+        "data-width" => "140px",
         "data-live-search" => "true",
-        "data-mobile"=> true,
-        "class" => "show-menu-arrow",
-        "style" => "width: 145px"
+        class: "show-menu-arrow"
     }
+
+    if topic.node_id == Node.no_point_id and !admin?
+      # 非管理员，屏蔽帖只能选屏蔽节点
+      nodes = :no_point_nodes
+    elsif current_user.admin?
+      # 管理员，可以选所有节点（包括屏蔽节点）
+      nodes = :all_sorted_nodes
+    else
+      # 非管理员非屏蔽帖，可以选除屏蔽节点外所有节点
+      nodes = :sorted_nodes
+    end
+
     grouped_collection_select :topic, :node_id, Section.all,
-                    :sorted_nodes, :name, :id, :name,
-                    {value: topic.node_id, include_blank: true, prompt: "选择节点"}, opts
+                              nodes, :name, :id, :name,
+                              { value: topic.node_id, prompt: "选择节点"}, opts
+
   end
+
 end
