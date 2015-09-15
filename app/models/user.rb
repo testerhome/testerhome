@@ -356,8 +356,6 @@ class User
   # 只是把用户信息修改了
   def soft_delete
     # assuming you have deleted_at column added already
-    self.email = "#{self.login}_#{self.id}@testerhome.com"
-    self.login = "Guest"
     self.bio = ""
     self.website = ""
     self.github = ""
