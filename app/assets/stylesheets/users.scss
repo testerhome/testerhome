@@ -169,8 +169,16 @@ table.node-topics {
 
 .sidebar {
   .profile {
+    .avatar {
+      .level { margin-top: 6px; text-align: center; }
+    }
     .item { margin-bottom: 5px; }
+    .item a { color: #666; }
     .number { color: #999; }
+    .counts {
+      color: #999;
+      span { color: #666; }
+    }
     .follow-info {
       border-top: 1px solid #f0f0f0;
       text-align: center; margin-top: 15px; padding-top: 15px;
