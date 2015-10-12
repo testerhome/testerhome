@@ -40,4 +40,33 @@ describe UsersHelper do
       it { should == link_to("http://" + user.website, "http://" + user.website, :class => "url", :target => "_blank", :rel => "nofollow") }
     end
   end
+
+  describe '.render_user_level_tag' do
+    let(:user) { Factory(:user) }
+    subject { helper.render_user_level_tag(user) }
+
+    it 'admin should work' do
+      allow(user).to receive(:admin?).and_return(true)
+      is_expected.to eq '<span class="label label-danger role">管理员</span>'
+    end
+
+    it 'vip should work' do
+      allow(user).to receive(:verified?).and_return(true)
+      is_expected.to eq '<span class="label label-success role">高级会员</span>'
+    end
+
+    it 'hr should work' do
+      allow(user).to receive(:hr?).and_return(true)
+      is_expected.to eq '<span class="label label-success role">企业 HR</span>'
+    end
+
+    it 'newbie should work' do
+      allow(user).to receive(:newbie?).and_return(true)
+      is_expected.to eq '<span class="label label-default role">新手</span>'
+    end
+
+    it 'normal should work' do
+      is_expected.to eq '<span class="label label-info role">会员</span>'
+    end
+  end
 end

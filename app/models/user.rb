@@ -64,8 +64,9 @@ class User
 
   # 是否信任用户
   field :verified, type: Mongoid::Boolean, default: false
+  # 是否是 HR
+  field :hr, type: Mongoid::Boolean, default: false
   field :state, type: Integer, default: 1
-  field :guest, type: Mongoid::Boolean, default: false
   field :tagline
   field :topics_count, type: Integer, default: 0
   field :replies_count, type: Integer, default: 0
@@ -108,6 +109,15 @@ class User
   attr_accessor :password_confirmation
   ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :qrcode, :by, :current_password, :password, :password_confirmation, :skill_list]
 
+  STATE = {
+      # 软删除
+      deleted: -1,
+      # 正常
+      normal: 1,
+      # 屏蔽
+      blocked: 2,
+  }
+
   validates :login, format: { with: ALLOW_LOGIN_CHARS_REGEXP, message: '只允许数字、大小写字母和下划线'},
                               length: {:in => 3..20}, presence: true,
                               uniqueness: {case_sensitive: false}
@@ -118,7 +128,7 @@ class User
   scope :hot, -> { desc(:replies_count, :topics_count) }
 
   scope :fields_for_list, -> {
-    only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state, :guest,
+    only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state,
          :tagline, :github, :website, :location, :location_id, :twitter, :co)
   }
 
@@ -141,7 +151,6 @@ class User
   end
 
   def password_required?
-    return false if self.guest
     (authorizations.empty? || !password.blank?) && super
   end
 
@@ -182,8 +191,16 @@ class User
 
   # 是否能发帖
   def newbie?
-    return false if self.verified == true
+    return false if verified? or hr?
     self.created_at > 1.week.ago
+  end
+
+  def hr?
+    hr == true
+  end
+
+  def verified?
+    verified == true
   end
 
   def blocked?
@@ -231,14 +248,7 @@ class User
     end
   end
 
-  STATE = {
-    # 软删除
-    deleted: -1,
-    # 正常
-    normal: 1,
-    # 屏蔽
-    blocked: 2,
-  }
+
 
   def update_with_password(params={})
     if !params[:current_password].blank? or !params[:password].blank? or !params[:password_confirmation].blank?
