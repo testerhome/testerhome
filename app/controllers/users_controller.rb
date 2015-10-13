@@ -119,6 +119,9 @@ class UsersController < ApplicationController
     end
 
     @user = User.find_login(params[:id])
+    if @user.deleted?
+      render_404
+    end
   end
 
 end
