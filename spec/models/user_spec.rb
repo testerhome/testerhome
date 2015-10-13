@@ -31,11 +31,9 @@ describe User do
     it "user can soft_delete" do
       user_for_delete1.soft_delete
       user_for_delete1.reload
-      user_for_delete1.login.should == "Guest"
       user_for_delete1.state.should == -1
       user_for_delete2.soft_delete
       user_for_delete1.reload
-      user_for_delete1.login.should == "Guest"
       user_for_delete1.state.should == -1
       user_for_delete1.authorizations.should == []
     end
