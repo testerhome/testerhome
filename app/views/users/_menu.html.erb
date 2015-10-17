@@ -1,9 +1,13 @@
 <%= render_list class: "nav nav-tabs" do |li|
+  # TODO: ruby-china now use to_param for User model
+  # https://github.com/ruby-china/ruby-china/commit/e8fe0d8ecb0ef3446e206ffc338808dbd3cb1072
+  # We should merge it later.
   li << link_to(t("users.menu.profile"), user_path(@user.login.downcase))
   li << link_to(t("users.menu.topics"), topics_user_path(@user.login.downcase))
+  li << link_to(t("users.menu.replies"), replies_user_path(@user.login.downcase))
   li << link_to(t("users.menu.favorites"), favorites_user_path(@user.login.downcase))
   li << link_to(t("users.menu.notes"), notes_user_path(@user.login.downcase))
-  li << link_to("关注者", followers_user_path(@user.login.downcase))
-  li << link_to("正在关注", following_user_path(@user.login.downcase))
-  li << link_to("已屏蔽", blocked_user_path(@user.login.downcase)) if owner?(@user) and current_user.has_blocked_users?
+  li << link_to(t("users.menu.following"), followers_user_path(@user.login.downcase))
+  li << link_to(t("users.menu.followers"), following_user_path(@user.login.downcase))
+  li << link_to(t("users.menu.blocked"), blocked_user_path(@user.login.downcase)) if owner?(@user) and current_user.blocked_users?
 end %>

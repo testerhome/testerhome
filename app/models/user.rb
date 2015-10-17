@@ -445,7 +445,7 @@ class User
     self.pull(blocked_node_ids: new_node_id)
   end
 
-  def has_blocked_users?
+  def blocked_users?
     return self.blocked_user_ids.count > 0
   end
 
