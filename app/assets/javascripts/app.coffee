@@ -119,19 +119,19 @@ AppView = Backbone.View.extend
           type : likeable_type
       if likes_count > 0
         likes_count -= 1
-      $el.data("state","").data('count', likes_count).attr("title", "喜欢").removeClass("followed")
+      $el.data("state","").data('count', likes_count).attr("title", "赞").removeClass("followed")
       if likes_count == 0
-        $('span',$el).text("喜欢")
+        $('span',$el).text("赞")
       else
-        $('span',$el).text("#{likes_count} 人喜欢")
-      $("i.fa",$el).attr("class","fa fa-heart-o")
+        $('span',$el).text("#{likes_count} 人赞")
+      $("i.fa",$el).attr("class","fa fa-thumbs-up")
     false
 
   likeableAsLiked : (el) ->
     likes_count = el.data("count")
-    el.data("state","followed").attr("title", "取消喜欢").addClass("followed")
-    $('span',el).text("#{likes_count} 人喜欢")
-    $("i.fa",el).attr("class","fa fa-heart")
+    el.data("state","followed").attr("title", "取消赞").addClass("followed")
+    $('span',el).text("#{likes_count} 人赞")
+    $("i.fa",el).attr("class","fa fa-thumbs-up")
 
 
   initNotificationSubscribe : () ->
