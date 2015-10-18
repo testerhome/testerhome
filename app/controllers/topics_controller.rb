@@ -94,11 +94,10 @@ class TopicsController < ApplicationController
       @replies = @topic.replies.unscoped.without_body.asc(:_id)
       @replies = @replies.paginate(page: @page, per_page: @per_page)
     end
+    @threads.each(&:join)
 
     check_current_user_liked_replies
     set_special_node_active_menu
-
-    @threads.each(&:join)
 
     set_seo_meta "#{@topic.title} &raquo; #{t("menu.topics")}"
 
