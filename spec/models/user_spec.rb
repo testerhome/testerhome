@@ -206,6 +206,7 @@ describe User do
 
   describe "Like" do
     let(:topic) { Factory :topic }
+    let(:reply) { create :reply }
     let(:user)  { Factory :user }
     let(:user2)  { Factory :user }
 
@@ -213,18 +214,28 @@ describe User do
       it "can like/unlike topic" do
         user.like(topic)
         topic.reload
-        topic.likes_count.should == 1
-        topic.liked_user_ids.should include(user.id)
+        expect(topic.likes_count).to eq(1)
+        expect(topic.liked_user_ids).to include(user.id)
 
         user2.like(topic)
         topic.reload
-        topic.likes_count.should == 2
-        topic.liked_user_ids.should include(user2.id)
+        expect(topic.likes_count).to eq(2)
+        expect(topic.liked_user_ids).to include(user2.id)
 
         user2.unlike(topic)
         topic.reload
-        topic.likes_count.should == 1
-        topic.liked_user_ids.should_not include(user2.id)
+        expect(topic.likes_count).to eq(1)
+        expect(topic.liked_user_ids).not_to include(user2.id)
+
+        # can't like itself
+        topic.user.like(topic)
+        topic.reload
+        expect(topic.likes_count).to eq(1)
+        expect(topic.liked_user_ids).not_to include(topic.user_id)
+
+        expect {
+          user.like(reply)
+        }.to change(reply, :likes_count).by(1)
       end
 
       it "can tell whether or not liked by a user" do
