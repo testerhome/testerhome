@@ -5,28 +5,19 @@ class TopicsController < ApplicationController
   caches_action :feed, :node_feed, expires_in: 1.hours
 
   def index
-    @threads = []
-    @threads << Thread.new do
-      @suggest_topics = Topic.without_hide_nodes.suggest.fields_for_list.limit(3).to_a
-    end
-
     @suggest_topics = Topic.without_hide_nodes.suggest.fields_for_list.limit(3).to_a
     @suggest_topic_ids = @suggest_topics.collect(&:id)
 
     @topics = Topic.last_actived.without_hide_nodes.where(:_id.nin => @suggest_topic_ids)
 
-    @threads << Thread.new do
-      @topics = Topic.last_actived.without_suggest
-      if current_user
-        @topics = @topics.without_nodes(current_user.blocked_node_ids)
-        @topics = @topics.without_users(current_user.blocked_user_ids)
-      else
-        @topics = @topics.without_hide_nodes
-      end
-      @topics = @topics.fields_for_list
-      @topics = @topics.paginate(page: params[:page], per_page: 22, total_entries: 1500)
+    if current_user
+      @topics = @topics.without_nodes(current_user.blocked_node_ids)
+      @topics = @topics.without_users(current_user.blocked_user_ids)
     end
-    @threads.each(&:join)
+
+    @topics = @topics.without_hide_nodes
+    @topics = @topics.fields_for_list
+    @topics = @topics.paginate(page: params[:page], per_page: 25, total_entries: 5000)
 
     set_seo_meta t("menu.topics"), "#{Setting.app_name}#{t("menu.topics")}"
   end
