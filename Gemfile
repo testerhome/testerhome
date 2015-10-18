@@ -126,11 +126,3 @@ group :development, :test do
 
   gem 'jasmine-rails', '~> 0.10.2'
 end
-
-gem 'newrelic_rpm'
-gem 'newrelic_moped'
-gem 'newrelic-grape'
-
-source 'http://rubygems.oneapm.com/' do
-  gem 'oneapm_rpm'
-end
