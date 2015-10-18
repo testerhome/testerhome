@@ -5,8 +5,7 @@ Rails.application.routes.draw do
   end
 
   require 'sidekiq/web'
-
-  resources :apps
+  
   resources :sites
   resources :pages, path: "wiki" do
     collection do
