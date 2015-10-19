@@ -62,6 +62,14 @@ module V3
       render current_user, meta: { time: Time.now }
     end
 
+
+    desc '获取用户详细资料'
+    get 'greet', serializer: UserDetailSerializer do
+      doorkeeper_authorize!
+      render current_user
+    end
+
+
     resource :nodes do
       # Get a list of all nodes
       desc %(获取所有节点列表
