@@ -321,6 +321,7 @@ class User
   # 收藏东西
   def like(likeable)
     return false if likeable.blank?
+    return false if likeable.user_id == self.id
     return false if likeable.liked_by_user?(self)
     likeable.push(liked_user_ids: self.id)
     likeable.inc(likes_count: 1)
@@ -445,7 +446,7 @@ class User
     self.pull(blocked_node_ids: new_node_id)
   end
 
-  def has_blocked_users?
+  def blocked_users?
     return self.blocked_user_ids.count > 0
   end
 

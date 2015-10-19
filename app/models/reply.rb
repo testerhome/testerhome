@@ -30,6 +30,8 @@ class Reply
   delegate :title, to: :topic, prefix: true, allow_nil: true
   delegate :login, to: :user, prefix: true, allow_nil: true
 
+  scope :fields_for_list, -> { only(:topic_id, :_id, :body_html, :updated_at, :created_at) }
+
   validates_presence_of :body
   validates_uniqueness_of :body, scope: [:topic_id, :user_id], message: "不能重复提交。"
   validate do
