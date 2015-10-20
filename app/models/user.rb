@@ -498,6 +498,10 @@ class User
     end
   end
 
+  def favorites_count
+    favorite_topic_ids.count
+  end
+
   def qrcode_url
     if self.qrcode?
       self.qrcode.url(:large)
