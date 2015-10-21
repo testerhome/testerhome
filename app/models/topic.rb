@@ -156,6 +156,10 @@ class Topic
     Topic.delay.notify_topic_created(self.id)
   end
 
+  def followed?(uid)
+    follower_ids.include?(uid)
+  end
+
   def push_follower(uid)
     return false if uid == self.user_id
     return false if self.follower_ids.include?(uid)
@@ -165,6 +169,7 @@ class Topic
 
   def pull_follower(uid)
     return false if uid == self.user_id
+    return false if followed?(uid)
     self.pull(follower_ids: uid)
     true
   end
