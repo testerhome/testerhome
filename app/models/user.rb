@@ -321,6 +321,7 @@ class User
   # 收藏东西
   def like(likeable)
     return false if likeable.blank?
+    return false if likeable.user_id == self.id
     return false if liked?(likeable)
 
     likeable.push(liked_user_ids: self.id)
@@ -331,6 +332,7 @@ class User
   # 取消收藏
   def unlike(likeable)
     return false if likeable.blank?
+    return false if likeable.user_id == self.id
     return false unless liked?(likeable)
     likeable.pull(liked_user_ids: self.id)
     likeable.inc(likes_count: -1)

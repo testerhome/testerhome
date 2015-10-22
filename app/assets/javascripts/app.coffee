@@ -1,6 +1,6 @@
 #= require jquery
+#= require jquery.turbolinks
 #= require jquery_ujs
-#= require jquery.turbolinks.min
 #= require bootstrap.min
 #= require bootstrap-select.min
 #= require underscore
@@ -20,10 +20,11 @@
 #= require notifier
 #= require message-bus
 #= require form_storage
-#= require turbolinks
 #= require topics
 #= require pages
 #= require notes
+#= require turbolinks
+#= require google_analytics
 #= require_self
 
 AppView = Backbone.View.extend
@@ -40,6 +41,7 @@ AppView = Backbone.View.extend
 
   initialize: ->
     FormStorage.restore()
+    Turbolinks.ProgressBar.enable()
     @initForDesktopView()
     @initComponents()
     @initNotificationSubscribe()
