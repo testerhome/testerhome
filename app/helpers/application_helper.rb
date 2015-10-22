@@ -147,45 +147,34 @@ module ApplicationHelper
     raw "<i class='fa fa-#{name}'></i> #{label}"
   end
 
-
-  def memory_cache(*keys)
-    return yield unless Rails.application.config.cache_classes
-
-    $memory_store.fetch(keys) { yield }
+  def fetch_cache_html(*keys)
+    cache_key = keys.join("/")
+    if controller.perform_caching && (html = $html_cache[cache_key])
+      return html
+    else
+      html = yield
+      # logger.info "HTML CACHE Missed: #{cache_key}"
+      $html_cache[cache_key] = html
+    end
+    html
   end
 
   def stylesheet_link_tag_with_cached(name)
-    memory_cache('stylesheets_link_tag', name) do
+    fetch_cache_html("stylesheets_link_tag",name) do
       stylesheet_link_tag(name, 'data-turbolinks-track' => true)
     end
   end
 
   def javascript_include_tag_with_cached(name)
-    memory_cache('javascript_include_tag', name) do
+    fetch_cache_html("javascript_include_tag", name) do
       javascript_include_tag(name, 'data-turbolinks-track' => true)
     end
   end
 
   def cached_asset_path(name)
-    memory_cache('asset_path', name) do
+    fetch_cache_html("asset_path", name) do
       asset_path(name)
     end
-  end
-
-  def render_list(opts = {})
-    list = []
-    yield(list)
-    items = []
-    list.each do |link|
-      item_class = EMPTY_STRING
-      urls = link.match(/href=(["'])(.*?)(\1)/) || []
-      url = urls.length > 2 ? urls[2] : nil
-      if url && current_page?(url) || (@current && @current.include?(url))
-        item_class = 'active'
-      end
-      items << content_tag('li', raw(link), class: item_class)
-    end
-    content_tag('ul', raw(items.join(EMPTY_STRING)), opts)
   end
 
 end
