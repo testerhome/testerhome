@@ -45,7 +45,48 @@ module V3
           render @user
         end
 
-        desc '获取用户创建的话题列表'
+        desc %(获取用户创建的话题列表
+## Example:
+
+### Request
+
+```
+GET /users/chenhengjie123/topics?offset=0&limit=1
+```
+
+### Returns:
+
+```json
+{
+  "topics": [
+    {
+      "id": 6,
+      "title": "少女",
+      "created_at": "2015-08-08T00:18:19.105+08:00",
+      "updated_at": "2015-08-18T21:34:00.517+08:00",
+      "replied_at": null,
+      "replies_count": 0,
+      "node_name": "lock_node",
+      "node_id": 3,
+      "last_reply_user_id": null,
+      "last_reply_user_login": null,
+      "user": {
+        "id": 1,
+        "login": "chenhengjie123",
+        "name": "a",
+        "avatar_url": "http://gravatar.com/avatar/357a20e8c56e69d6f9734d23ef9517e8.png?s=120"
+      },
+      "deleted": false,
+      "excellent": false,
+      "abilities": {
+        "update": false,
+        "destroy": false
+      }
+    }
+  ]
+}
+```
+)
         params do
           optional :order, type: String, default: 'recent', values: %w(recent likes replies)
           optional :offset, type: Integer, default: 0
@@ -60,18 +101,108 @@ module V3
           else
             @topics = @topics.recent
           end
-          @topics = @topics.offset(params[:offset]).limit(params[:limit])
+          @topics = @topics.includes(:user).offset(params[:offset]).limit(params[:limit])
           render @topics
         end
 
-        desc '用户收藏的话题列表'
+        desc %(获取用户创建的回帖列表
+## Example:
+
+### Request
+
+```
+GET /users/chenhengjie123/replies?offset=0&limit=1
+```
+
+### Returns:
+
+```json
+{
+  "replies": [
+    {
+      "id": 28,
+      "body_html": "<p>25</p>",
+      "created_at": "2015-10-17T15:43:58.191+08:00",
+      "updated_at": "2015-10-17T15:43:58.191+08:00",
+      "deleted": false,
+      "topic_id": 8,
+      "user": {
+        "id": 1,
+        "login": "chenhengjie123",
+        "name": "a",
+        "avatar_url": "http://gravatar.com/avatar/357a20e8c56e69d6f9734d23ef9517e8.png?s=120"
+      },
+      "abilities": {
+        "update": false,
+        "destroy": false
+      },
+      "body": "25",
+      "topic_title": "test"
+    }
+  ]
+}
+```
+)
+        params do
+          optional :order, type: String, default: 'recent', values: %w(recent)
+          optional :offset, type: Integer, default: 0
+          optional :limit, type: Integer, default: 20, values: 1..150
+        end
+        get 'replies', each_serializer: ReplyDetailSerializer, root: 'replies' do
+          @replies = @user.replies.recent
+          @replies = @replies.includes(:user, :topic).offset(params[:offset]).limit(params[:limit])
+          render @replies
+        end
+
+        desc %(用户收藏的话题列表
+## Example:
+
+### Request
+
+```
+GET /users/chenhengjie123/favorites
+```
+
+### Returns:
+
+```json
+{
+  "topics": [
+    {
+      "id": 9,
+      "title": "test @xx",
+      "created_at": "2015-10-14T23:13:50.447+08:00",
+      "updated_at": "2015-10-17T15:05:30.304+08:00",
+      "replied_at": "2015-10-17T15:05:30.284+08:00",
+      "replies_count": 1,
+      "node_name": "sdef",
+      "node_id": 2,
+      "last_reply_user_id": 1,
+      "last_reply_user_login": "chenhengjie123",
+      "user": {
+        "id": 4,
+        "login": "hrhr",
+        "name": "hrhr",
+        "avatar_url": "http://gravatar.com/avatar/fef071f8e7f5df6b953df23feaae331f.png?s=120"
+      },
+      "deleted": false,
+      "excellent": false,
+      "abilities": {
+        "update": false,
+        "destroy": false
+      }
+    }
+  ]
+}
+```
+)
         params do
           optional :offset, type: Integer, default: 0
           optional :limit, type: Integer, default: 20, values: 1..150
         end
         get 'favorites', each_serializer: TopicSerializer, root: 'topics' do
           @topic_ids = @user.favorite_topic_ids[params[:offset], params[:limit]]
-          @topics = Topic.where(:_id.in => @topic_ids).fields_for_list
+          @topics = Topic.where(:_id.in => @topic_ids).fields_for_list.includes(:user)
           @topics = @topics.to_a.sort do |a, b|
             @topic_ids.index(a.id) <=> @topic_ids.index(b.id)
           end
