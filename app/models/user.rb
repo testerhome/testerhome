@@ -229,7 +229,7 @@ class User
   # 注册邮件提醒
   after_create :send_welcome_mail
   def send_welcome_mail
-    UserMailer.delay.welcome(self.id)
+    UserMailer.welcome(id).deliver_later
   end
 
   # 保存用户所在城市
@@ -394,7 +394,7 @@ class User
     cache_key = self.github_repositories_cache_key
     items = Rails.cache.read(cache_key)
     if items == nil
-      User.delay.fetch_github_repositories(self.id)
+      GithubRepoFetcherJob.perform_later(id)
       items = []
     end
     items

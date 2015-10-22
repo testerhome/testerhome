@@ -36,13 +36,8 @@ module Mongoid
         end
       end
 
-      def delay
-        Sidekiq::Extensions::Proxy.new(DelayedDocument, self)
-      end
+
     end
 
-    def delay
-      Sidekiq::Extensions::Proxy.new(DelayedDocument, self)
-    end
   end
 end

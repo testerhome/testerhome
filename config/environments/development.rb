@@ -16,6 +16,7 @@ Rails.application.configure do
   # Don't care if the mailer can't send
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true
+  config.active_job.queue_adapter = :inline
   config.action_mailer.default_url_options = {:host => "testerhome.com" }
 
   config.action_mailer.delivery_method = :smtp

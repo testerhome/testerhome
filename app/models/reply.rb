@@ -58,7 +58,7 @@ class Reply
 
 
   after_create do
-    Reply.delay.notify_reply_created(self.id)
+    NotifyReplyJob.perform_later(id)
   end
 
   def self.per_page

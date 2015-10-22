@@ -153,7 +153,7 @@ class Topic
   end
 
   after_create do
-    Topic.delay.notify_topic_created(self.id)
+    NotifyTopicJob.perform_later(id)
   end
 
   def followed?(uid)

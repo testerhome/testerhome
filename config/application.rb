@@ -61,6 +61,8 @@ module TesterHome
     config.cache_store = [:dalli_store,"127.0.0.1", { namespace: "rb-cn", compress: true }]
 
     config.middleware.insert 0, Rack::UTF8Sanitizer
+    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_name_prefix = Rails.env
   end
 end
 

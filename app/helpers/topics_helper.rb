@@ -15,6 +15,7 @@ module TopicsHelper
   end
 
   def topic_favorite_tag(topic)
+    Rails.logger.error "topic_favorite_tag !!!!!!!!!!!!!!!!!!!!!!!!!!"
     return "" if current_user.blank?
     class_name = ""
     link_title = "收藏"
@@ -41,19 +42,19 @@ module TopicsHelper
     link_to(raw("#{icon} 打赏"), "#",  title: link_title, class: "pay-qrcode", 'data-url' => (topic.topic_pay_url))
   end
 
-
   def topic_follow_tag(topic)
-    return "" if current_user.blank?
-    return "" if topic.blank?
-    return "" if owner?(topic)
-    class_name = "follow"
+    Rails.logger.error "topic_follow_tag !!!!!!!!!!!!!!!!!!!!!!!!!!"
+    return '' if current_user.blank?
+    return '' if topic.blank?
+    return '' if owner?(topic)
+    class_name = 'follow'
     followed = false
     if topic.follower_ids.include?(current_user.id)
-      class_name = "follow followed"
+      class_name = 'follow followed'
       followed = true
     end
-    icon = content_tag("i", "", class: "fa fa-eye")
-    link_to(raw("#{icon} 关注"), "#", 'data-id' => topic.id, 'data-followed' => followed, class: class_name)
+    icon = content_tag('i', '', class: 'fa fa-eye')
+    link_to(raw("#{icon} 关注"), '#', 'data-id' => topic.id, 'data-followed' => followed, class: class_name)
   end
 
   def topic_title_tag(topic, opts = {})
