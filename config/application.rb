@@ -65,6 +65,7 @@ module TesterHome
 end
 
 require "markdown"
+$memory_store = ActiveSupport::Cache::MemoryStore.new
 
 I18n.config.enforce_available_locales = false
 I18n.locale = 'zh-CN'

@@ -48,8 +48,6 @@ gem 'bootstrap_tokenfield_rails'
 # 分页
 gem 'will_paginate', '3.0.7'
 
-# Bootstrap
-gem 'bootstrap_helper', '4.2.3'
 
 # 三方平台 OAuth 验证登陆
 gem 'omniauth', '~> 1.0.1'
