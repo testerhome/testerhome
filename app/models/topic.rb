@@ -215,8 +215,14 @@ class Topic
   # 所有的回复编号
   def reply_ids
     Rails.cache.fetch([self,"reply_ids"]) do
-      self.replies.only(:_id).map(&:_id)
+      # self.replies.only(:_id).map(&:_id)
+      replies.only(:_id).map(&:_id).sort
     end
+  end
+
+  def page_floor_of_reply(reply)
+    reply_index = reply_ids.index(reply.id)
+    [reply_index / Reply.per_page + 1, reply_index + 1]
   end
 
   def excellent?
