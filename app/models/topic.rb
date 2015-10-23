@@ -161,16 +161,15 @@ class Topic
   end
 
   def push_follower(uid)
-    return false if uid == self.user_id
-    return false if self.follower_ids.include?(uid)
-    self.push(follower_ids: uid)
+    return false if uid == user_id
+    return false if followed?(uid)
+    push(follower_ids: uid)
     true
   end
 
   def pull_follower(uid)
-    return false if uid == self.user_id
-    return false if followed?(uid)
-    self.pull(follower_ids: uid)
+    return false if uid == user_id
+    pull(follower_ids: uid)
     true
   end
 

@@ -93,46 +93,46 @@ AppView = Backbone.View.extend
     commenters = ({login: k, name: v, search: "#{k} #{v}"} for k, v of commenters)
     App.atReplyable(".cell_comments_new textarea", commenters)
 
-  likeable : (e) ->
-    if !App.isLogined()
-      location.href = "/account/sign_in"
-      return false
+    likeable : (e) ->
+      if !App.isLogined()
+        location.href = "/account/sign_in"
+        return false
 
-    $el = $(e.currentTarget)
-    likeable_type = $el.data("type")
-    likeable_id = $el.data("id")
-    likes_count = parseInt($el.data("count"))
-    if $el.data("state") != "followed"
-      $.ajax
-        url : "/likes"
-        type : "POST"
-        data :
-          type : likeable_type
-          id : likeable_id
+      $el = $(e.currentTarget)
+      likeable_type = $el.data("type")
+      likeable_id = $el.data("id")
+      likes_count = parseInt($el.data("count"))
+      if $el.data("state") != "followed"
+        $.ajax
+          url : "/likes"
+          type : "POST"
+          data :
+            type : likeable_type
+            id : likeable_id
 
-      likes_count += 1
-      $el.data('count', likes_count)
-      @likeableAsLiked($el)
-    else
-      $.ajax
-        url : "/likes/#{likeable_id}"
-        type : "DELETE"
-        data :
-          type : likeable_type
-      if likes_count > 0
-        likes_count -= 1
-      $el.data("state","").data('count', likes_count).attr("title", "赞").removeClass("followed")
-      if likes_count == 0
-        $('span',$el).text("赞")
+        likes_count += 1
+        $el.data('count', likes_count)
+        @likeableAsLiked($el)
       else
-        $('span',$el).text("#{likes_count} 人赞")
-      $("i.fa",$el).attr("class","fa fa-thumbs-up")
-    false
+        $.ajax
+          url : "/likes/#{likeable_id}"
+          type : "DELETE"
+          data :
+            type : likeable_type
+        if likes_count > 0
+          likes_count -= 1
+        $el.data("state","").data('count', likes_count).attr("title", "").removeClass("followed")
+        if likes_count == 0
+          $('span',$el).text("")
+        else
+          $('span',$el).text("#{likes_count} 个赞")
+        $("i.fa",$el).attr("class","fa fa-thumbs-up")
+      false
 
   likeableAsLiked : (el) ->
     likes_count = el.data("count")
     el.data("state","followed").attr("title", "取消赞").addClass("followed")
-    $('span',el).text("#{likes_count} 人赞")
+    $('span',el).text("#{likes_count} 个赞")
     $("i.fa",el).attr("class","fa fa-thumbs-up")
 
 
