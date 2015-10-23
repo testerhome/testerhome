@@ -93,31 +93,34 @@ class TopicsController < ApplicationController
     @threads << Thread.new do
       @replies = @topic.replies.unscoped.without_body.asc(:_id)
       @replies = @replies.paginate(page: @page, per_page: @per_page)
-    end
-    @threads.each(&:join)
 
-    check_current_user_liked_replies
+      check_current_user_liked_replies
+    end
+
+    check_current_user_status_for_topic
     set_special_node_active_menu
 
-    set_seo_meta "#{@topic.title} &raquo; #{t("menu.topics")}"
+    @threads.each(&:join)
+
+    set_seo_meta "#{@topic.title} &raquo; #{t('menu.topics')}"
 
     fresh_when(etag: [@topic, @has_followed, @has_favorited, @replies, @node, @show_raw])
   end
 
   def check_current_user_liked_replies
-    return false if not current_user
+    return false unless current_user
 
     # 找出用户 like 过的 Reply，给 JS 处理 like 功能的状态
     @user_liked_reply_ids = []
     @replies.each do |r|
-      if r.liked_user_ids.index(current_user.id) != nil
+      unless r.liked_user_ids.index(current_user.id).nil?
         @user_liked_reply_ids << r.id
       end
     end
   end
 
   def check_current_user_status_for_topic
-    return false if not current_user
+    return false unless current_user
 
     @threads << Thread.new do
       # 通知处理
