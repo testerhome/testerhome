@@ -318,7 +318,7 @@ class User
     Rails.cache.write("user:#{self.id}:topic_read:#{topic.id}", last_reply_id)
   end
 
-  # 收藏东西
+  # 赞东西
   def like(likeable)
     return false if likeable.blank?
     return false if likeable.user_id == self.id
@@ -329,7 +329,7 @@ class User
     likeable.touch
   end
 
-  # 取消收藏
+  # 取消赞
   def unlike(likeable)
     return false if likeable.blank?
     return false if likeable.user_id == self.id

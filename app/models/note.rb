@@ -35,4 +35,7 @@ class Note
     self.inc(changes_count: 1)
   end
 
+  def display_title
+    (title || "").gsub(/^[\#]+/, '')
+  end
 end
