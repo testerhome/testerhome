@@ -258,6 +258,16 @@ window.TopicView = Backbone.View.extend
       $("form#new_reply").submit()
     return false
 
+  # 往话题编辑器里面的光标前插入两个空白字符
+  insertSpaces : (e) ->
+    target = e.target
+    start = target.selectionStart
+    end = target.selectionEnd
+    $target = $(target)
+    $target.val($target.val().substring(0, start) + "  " + $target.val().substring(end));
+    target.selectionStart = target.selectionEnd = start + 2
+    return false
+
   # 往话题编辑器里面插入代码模版
   appendCodesFromHint : (e) ->
     link = $(e.currentTarget)
@@ -277,15 +287,20 @@ window.TopicView = Backbone.View.extend
     return false
 
   initComponents : ->
-    $("textarea").unbind "keydown.cr"
-    $("textarea").bind "keydown.cr","ctrl+return",(el) =>
+    $("textarea.topic-editor").unbind "keydown.cr"
+    $("textarea.topic-editor").bind "keydown.cr", "ctrl+return", (el) =>
       return @submitTextArea(el)
 
-    $("textarea").unbind "keydown.mr"
-    $("textarea").bind "keydown.mr","Meta+return",(el) =>
+    $("textarea.topic-editor").unbind "keydown.mr"
+    $("textarea.topic-editor").bind "keydown.mr", "Meta+return", (el) =>
       return @submitTextArea(el)
 
-    $("textarea").autogrow()
+    # 绑定文本框 tab 按键事件
+    $("textarea.topic-editor").unbind "keydown.tab"
+    $("textarea.topic-editor").bind "keydown.tab", "tab", (el) =>
+      return @insertSpaces(el)
+
+    $("textarea.topic-editor").autogrow()
 
     # also highlight if hash is reply#
     matchResult = window.location.hash.match(/^#reply(\d+)$/)
