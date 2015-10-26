@@ -13,6 +13,12 @@
     subscribe_with_rss: "Subscribe to %{name} RSS feed."
     subscribe_good_with_rss: "Subscribe to %{name} RSS excellent feed."
     submit_reply: "Reply"
+    topic_list:
+      hot_topic: "Active Topics"
+      recent: "Recent Topics"
+      popular: "Popular Topics"
+      no_reply: "Unactive Topics"
+      excellent: "Excellent Topics"
     hot_topic: "Popular Topics"
     topic_list: "Topic List"
     read_topic: "Read Topic"
