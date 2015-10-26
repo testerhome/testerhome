@@ -521,4 +521,25 @@ class User
       nil
     end
   end
+
+  # 用户的账号类型
+  def level
+    if admin?
+      return 'admin'
+    elsif verified?
+      return 'vip'
+    elsif hr?
+      return 'hr'
+    elsif blocked?
+      return 'blocked'
+    elsif newbie?
+      return 'newbie'
+    else
+      return 'normal'
+    end
+  end
+
+  def level_name
+    return I18n.t("common.#{level}_user")
+  end
 end
