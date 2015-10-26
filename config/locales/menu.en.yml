@@ -64,6 +64,8 @@
     replied_at: "Replied at"
     replies_count: "Replies count"
     likes_count: "Likes count"
+    has_deleted: "has deleted"
+    auth_with_other_services: "Sign in with other services"
   reply:
     edit_reply: "Edit Reply"
     delete_reply_success: 'Delete successfully.'

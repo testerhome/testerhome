@@ -61,6 +61,8 @@
     hot_topics: "熱門討論"
     hot_locations: "熱門城市"
     replied_at: 回應于
+    has_deleted: 已刪除
+    auth_with_other_services: "用其它服務登入"
   reply:
     edit_reply: "修改回應"
     delete_reply_success: '回應刪除成功'
