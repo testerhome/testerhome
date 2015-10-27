@@ -40,7 +40,44 @@ module V3
           @user = User.find_login(params[:login])
         end
 
-        desc '获取用户详细资料'
+        desc %(获取用户详细资料
+## Example:
+
+### Request
+
+```
+GET /users/chenhengjie123
+```
+
+### Returns:
+
+```json
+{
+  "user": {
+    "id": 1,
+    "login": "chenhengjie123",
+    "name": "a",
+    "avatar_url": "http://gravatar.com/avatar/357a20e8c56e69d6f9734d23ef9517e8.png?s=120",
+    "location": "",
+    "company": null,
+    "twitter": null,
+    "website": "",
+    "bio": "",
+    "tagline": "",
+    "github": "",
+    "created_at": "2015-02-28T20:09:58.183+08:00",
+    "email": "a@b.com",
+    "topics_count": 8,
+    "replies_count": 33,
+    "following_count": 1,
+    "followers_count": 0,
+    "favorites_count": 3,
+    "level": "admin",
+    "level_name": "管理员"
+  }
+}
+```
+)
         get '', serializer: UserDetailSerializer, root: 'user' do
           render @user
         end
