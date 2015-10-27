@@ -1431,14 +1431,20 @@ a.followed {
 }
 
 footer {
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin:0;
   color: $blackLight;
-  a {
-    color: #666;
+  a { color: #666; }
+  .links { color: #ddd; }
+  .copyright {
+    color: #333;
+    font-size: 16px;
   }
-  .links {
-    color: #ddd;
+  .friends {
+    text-align: right;
+  }
+  .row > div {
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
@@ -1468,4 +1474,3 @@ footer {
   padding-top: 3px;
   font-size: 30px;
 }
-
