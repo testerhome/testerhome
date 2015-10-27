@@ -228,6 +228,11 @@ class Topic
     self.excellent >= 1
   end
 
+  def page_floor_of_reply(reply)
+      reply_index = reply_ids.index(reply.id)
+      [reply_index / Reply.per_page + 1, reply_index + 1]
+  end
+
   def self.notify_topic_created(topic_id)
     topic = Topic.find_by_id(topic_id)
     return if topic.blank?
