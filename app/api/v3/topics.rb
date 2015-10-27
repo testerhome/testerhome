@@ -269,7 +269,6 @@ module V3
           @topic = Topic.find(params[:id])
           @reply = @topic.replies.build(body: params[:body])
           @reply.user_id = current_user.id
-          @reply.replies_count = @topic.replies_count
           meta = {current_reply_count: @topic.replies_count}
           if @reply.save
             render @reply, meta: meta
