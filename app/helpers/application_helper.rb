@@ -118,7 +118,7 @@ module ApplicationHelper
   end
 
   def birthday_tag
-    if Time.now.month == 10 && Time.now.day == 28
+    if Time.now.month == 10 && Time.now.day == 21
       age = Time.now.year - 2012
       title = "TesterHome 创立 #{age} 周年纪念日"
       html = []
