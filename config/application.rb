@@ -23,6 +23,7 @@ module TesterHome
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = "zh-CN"
     config.autoload_paths << Rails.root.join("app/api")
+    config.autoload_paths << Rails.root.join('lib')
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -58,7 +59,7 @@ module TesterHome
 
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
-    config.cache_store = [:dalli_store,"127.0.0.1", { namespace: "rb-cn", compress: true }]
+    config.cache_store = [:dalli_store,"127.0.0.1", { namespace: "th", compress: true }]
 
     config.middleware.insert 0, Rack::UTF8Sanitizer
     config.active_job.queue_adapter = :sidekiq

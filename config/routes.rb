@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 
+  mount RuCaptcha::Engine => "/rucaptcha"
   use_doorkeeper do
     controllers applications: 'oauth/applications', authorized_applications: 'oauth/authorized_applications'
   end
 
   require 'sidekiq/web'
-  
+
   resources :sites
   resources :pages, path: "wiki" do
     collection do

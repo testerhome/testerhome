@@ -22,7 +22,7 @@ gem 'md_emoji', '1.0.2'
 gem 'exception_notification'
 
 gem 'doorkeeper'
-gem 'doorkeeper-i18n', github: 'huacnlee/doorkeeper-i18n'
+gem 'doorkeeper-i18n'
 
 
 gem 'rails-perftest'
@@ -31,7 +31,9 @@ gem 'ruby-prof'
 # 上传组件
 gem 'carrierwave', '~> 0.10.0'
 gem 'carrierwave-upyun', '0.1.8'
-gem 'mini_magick','3.7.0', require: false
+gem 'mini_magick'
+gem 'rucaptcha', '0.1.4'
+gem 'letter_avatar', github: 'huacnlee/letter_avatar'
 
 # Mongoid 辅助插件
 gem 'mongoid', '4.0.2'

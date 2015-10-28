@@ -13,7 +13,7 @@ class Ability
       can :manage, :all
     elsif user.has_role?(:member)
       # Topic
-      if !user.newbie?
+      unless user.newbie? || !user.avatar?
         can :create, Topic
       end
       can :favorite, Topic

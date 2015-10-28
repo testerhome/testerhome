@@ -38,6 +38,7 @@ AppView = Backbone.View.extend
     "click a.button-block-user": "blockUser"
     "click a.button-follow-user": "followUser"
     "click a.button-block-node": "blockNode"
+    "click a.rucaptcha-image-box": "reLoadRucaptchaImage"
 
   initialize: ->
     FormStorage.restore()
@@ -204,6 +205,13 @@ AppView = Backbone.View.extend
       $.post("/#{userId}/block")
       btn.addClass('active').attr("title", "")
       span.text("取消屏蔽")
+    return false
+
+  reLoadRucaptchaImage: (e) ->
+    btn = $(e.currentTarget)
+    img = btn.find('img:first')
+    currentSrc = img.attr('src')
+    img.attr('src', currentSrc.split('?')[0] + '?' + (new Date()).getTime())
     return false
 
   blockNode: (e) ->

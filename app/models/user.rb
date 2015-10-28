@@ -107,7 +107,7 @@ class User
   end
 
   attr_accessor :password_confirmation
-  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :qrcode, :by, :current_password, :password, :password_confirmation, :skill_list]
+  ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter, :tagline, :avatar, :qrcode, :by, :current_password, :password, :password_confirmation, :skill_list, :_rucaptcha]
 
   STATE = {
       # 软删除
@@ -126,11 +126,10 @@ class User
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
   scope :hot, -> { desc(:replies_count, :topics_count) }
-
-  scope :fields_for_list, -> {
-    only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state,
-         :tagline, :github, :website, :location, :location_id, :twitter, :co)
-  }
+  scope :fields_for_list, lambda {
+                          only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state,
+                               :tagline, :github, :website, :location, :location_id, :twitter, :co)
+                        }
 
   scope :outstanding, -> {desc(:score)}
 
@@ -502,13 +501,6 @@ class User
     self.following.delete(user)
   end
 
-  def avatar_url
-    if self.avatar?
-      self.avatar.url(:large)
-    else
-      "#{Setting.gravatar_proxy}/avatar/#{self.email_md5}.png?s=120"
-    end
-  end
 
   def favorites_count
     favorite_topic_ids.count
@@ -541,5 +533,10 @@ class User
 
   def level_name
     return I18n.t("common.#{level}_user")
+  end
+
+  def letter_avatar_url(size)
+    path = LetterAvatar.generate(self.login, size).sub('public/', '/')
+    "//#{Setting.domain}#{path}"
   end
 end
