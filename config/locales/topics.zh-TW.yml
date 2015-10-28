@@ -11,6 +11,7 @@
     tips_for_create_topic: "發帖說明"
     start_a_new_topic_button: "發佈新帖"
     subscribe_with_rss: "訂閱 %{name} 社區新帖"
+    subscribe_good_with_rss: "訂閱%{name}社區精華話題"
     submit_reply: "提交回復"
     topic_list:
       hot_topic: "活躍帖子"

@@ -11,6 +11,7 @@
     tips_for_create_topic: "Tips for New Topics"
     start_a_new_topic_button: "Start a new topic"
     subscribe_with_rss: "Subscribe to %{name} RSS feed."
+    subscribe_good_with_rss: "Subscribe to %{name} RSS excellent feed."
     submit_reply: "Reply"
     topic_list:
       hot_topic: "Active Topics"
@@ -30,3 +31,5 @@
     topic_was_deleted: "[Topic was deleted]"
     have_no_new_reply: "No new activites since your last read."
     have_no_avatar: "You can't create a new Topic, before you upload a avatar."
+    has_new_replies: "contains new reply."
+    real_name: "not Anonymous"
