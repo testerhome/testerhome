@@ -29,7 +29,7 @@ class TopicsController < ApplicationController
 
   def feedgood
     @topics = Topic.excellent.recent.without_body.limit(20).includes(:node, :user, :last_reply_user)
-    render :layout => false
+    render layout: false
   end
 
   def node

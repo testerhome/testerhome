@@ -37,7 +37,7 @@ class Cpanel::UsersController < Cpanel::ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = User.find_login(params[:id])
     @user.email = params[:user][:email]
     @user.login = params[:user][:login]
     @user.state = params[:user][:state]
