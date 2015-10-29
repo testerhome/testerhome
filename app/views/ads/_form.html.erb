@@ -1,0 +1,13 @@
+<%= simple_form_for @ad do |f| %>
+    <%= render 'shared/error_messages', target: @ad %>
+    <fieldset>
+        <%= f.input :cover %>
+        <%= f.input :topic_id,readonly: true %>
+        <%= f.input :topic_title,readonly: true %>
+        <%= f.input :topic_author, readonly: true %>
+        <div class="form-actions">
+            <%= f.submit t("common.save"), class: "btn btn-primary", 'data-disable-with' => t("common.saving") %>
+            <%= link_to 'Back', ads_path %>
+        </div>
+    </fieldset>
+<% end %>
