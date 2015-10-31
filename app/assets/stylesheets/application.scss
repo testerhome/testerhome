@@ -1474,3 +1474,27 @@ footer {
   padding-top: 3px;
   font-size: 30px;
 }
+
+@media (min-width: 992px){
+  .author-info {
+    .div-follow-user {
+      width: 100%;
+    }
+    .div-block-user {
+      width: 100%;
+      padding-top: 2px;
+    }
+  }
+}
+
+@media (min-width: 1200px){
+  .author-info {
+    .div-follow-user {
+      width: 50%;
+    }
+    .div-block-user {
+      width: 50%;
+      padding-top: 0px;
+    }
+  }
+}
