@@ -15,7 +15,6 @@ module TopicsHelper
   end
 
   def topic_favorite_tag(topic)
-    Rails.logger.error "topic_favorite_tag !!!!!!!!!!!!!!!!!!!!!!!!!!"
     return "" if current_user.blank?
     class_name = ""
     link_title = "收藏"
@@ -43,7 +42,6 @@ module TopicsHelper
   end
 
   def topic_follow_tag(topic)
-    Rails.logger.error "topic_follow_tag !!!!!!!!!!!!!!!!!!!!!!!!!!"
     return '' if current_user.blank?
     return '' if topic.blank?
     return '' if owner?(topic)
