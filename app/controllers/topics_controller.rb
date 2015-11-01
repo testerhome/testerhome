@@ -104,7 +104,7 @@ class TopicsController < ApplicationController
 
     set_seo_meta "#{@topic.title} &raquo; #{t('menu.topics')}"
 
-    fresh_when(etag: [@topic, @has_followed, @has_favorited, @replies, @node, @show_raw])
+    fresh_when(etag: [@topic, @has_followed, @has_favorited, @replies, @node, @show_raw, @has_focused, @has_baned])
   end
 
   def check_current_user_liked_replies
@@ -131,6 +131,9 @@ class TopicsController < ApplicationController
     @has_followed = @topic.followed?(current_user.id)
     # 是否收藏
     @has_favorited = current_user.favorited_topic?(@topic.id)
+    # 读者是否关注作者
+    @has_focused = current_user.followed?(@topic.user)
+    @has_baned = current_user.blocked_user?(@topic.user)
   end
 
   def set_special_node_active_menu
