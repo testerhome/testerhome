@@ -133,6 +133,10 @@ class User
 
   scope :outstanding, -> {desc(:score)}
 
+  def to_param
+    login
+  end
+
   def email=(val)
     self.email_md5 = Digest::MD5.hexdigest(val || "")
     self[:email] = val

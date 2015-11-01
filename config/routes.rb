@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     resources :replies
   end
 
+  resources :ads
   resources :photos
   resources :likes
   resources :jobs

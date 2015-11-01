@@ -108,12 +108,15 @@ module UsersHelper
     end
   end
 
-  def block_user_tag(user)
+  def block_user_tag(user, opts = {})
     return '' if current_user.blank?
     return '' if user.blank?
     return '' if current_user.id == user.id
     blocked = current_user.blocked_user_ids.include?(user.id)
-    class_names = 'button-block-user btn btn-default btn-block'
+
+    opts[:class] ||= 'btn btn-default btn-block'
+    class_names = "button-block-user #{opts[:class]}"
+
     icon = '<i class="fa fa-eye-slash"></i>'
     if blocked
       link_to raw("#{icon} <span>取消屏蔽</span>"), '#', title: '忽略后，社区首页列表将不会显示此用户发布的内容。', 'data-id' => user.login, class: "#{class_names} active"

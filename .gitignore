@@ -94,7 +94,7 @@ config/config.yml
 config/mongoid.yml
 config/redis.yml
 config/secrets.yml
-config/sidekiq.yml
+# config/sidekiq.yml
 config/thin.yml
 
 ## Environment normalisation:

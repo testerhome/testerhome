@@ -22,8 +22,9 @@
       <%= render_node_name(topic.node_name,topic.node_id) %>
       •
       <% end %>
-      <%= user_name_tag(topic.user) %>
+      <%= user_name_tag(topic.user, data: { author: true }) %>
       <span class="hidden-mobile">
+      <%= raw t("common.created_at", time: timeago(topic.created_at))%>
       •
       <% if topic.last_reply_user_login.blank? %>
         <%= raw t("common.created_at", time: timeago(topic.created_at))%>
