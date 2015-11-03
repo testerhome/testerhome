@@ -32,14 +32,13 @@ gem 'ruby-prof'
 gem 'carrierwave', '~> 0.10.0'
 gem 'carrierwave-upyun', '0.1.8'
 gem 'mini_magick'
-gem 'rucaptcha', '0.2.0'
+gem 'rucaptcha', '0.2.5'
 gem 'letter_avatar'
 
 # Mongoid 辅助插件
-gem 'mongoid', '4.0.2'
-gem 'mongoid-rails'
-gem 'mongoid_auto_increment_id', '0.6.4'
-gem 'mongoid_rails_migrations', '1.0.0'
+gem 'mongoid', '5.0.0'
+gem 'mongoid_auto_increment_id', github: 'huacnlee/mongoid_auto_increment_id'
+gem 'mongoid_rails_migrations'
 
 # 用户系统
 gem 'devise', '~> 3.4.0'
@@ -125,7 +124,6 @@ group :development, :test do
   gem 'api_taster', '0.6.0'
   gem 'letter_opener'
 
-  gem 'mongoid_colored_logger'
   gem 'colorize'
 
   gem 'jasmine-rails', '~> 0.10.2'

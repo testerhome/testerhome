@@ -102,6 +102,11 @@ module ApplicationHelper
     agent_str =~ Regexp.new(MOBILE_USER_AGENTS)
   end
 
+  def android?
+    agent_str = request.user_agent.to_s.downcase
+    agent_str =~ /android/
+  end
+
   # 可按需修改
   LANGUAGES_LISTS = { "Ruby" => "ruby", "HTML / ERB" => "erb", "CSS / SCSS" => "scss", "JavaScript" => "js",
                       "YAML <i>(.yml)</i>" => "yml", "CoffeeScript" => "coffee", "Nginx / Redis <i>(.conf)</i>" => "conf",
