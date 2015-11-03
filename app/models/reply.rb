@@ -43,7 +43,8 @@ class Reply
     end
   end
 
-  after_save :update_parent_topic
+  # 只有增加回复才更新最后回复
+  after_create :update_parent_topic
   def update_parent_topic
     topic.update_last_reply(self)  if self.topic.present?
   end
