@@ -33,7 +33,7 @@
             li << link_to(t("menu.wiki"), pages_path) if !mobile?
             li << link_to(t("menu.timeline"), timeline_path) if !mobile?
             li << link_to(t("menu.sites"), sites_path) if !mobile?
-            li << link_to(t("menu.bugs"), bugs_path)
+            li << link_to(t("menu.bugs"), bugs_path) if !mobile?
           end %>
         </span>
 
@@ -63,6 +63,14 @@
         </ul>
       </div>
     </nav>
+
+      <% if mobile? %>
+      <div class="alert alert-warning" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <a id="android-app" class="btn btn-success btn-lg" href="http://fir.im/p9vs"><i class="fa fa-android"></i> Android 版</a>
+      </div>
+      <%end%>
+
   </div>
 
   <div id="main" class="main-container container">
@@ -79,6 +87,12 @@
     </div>
   </footer>
   <% end %>
+
+
+      <div class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>Warning!</strong> Better check yourself, you're not looking too good.
+      </div>
 
 
   <% if mobile? %>
