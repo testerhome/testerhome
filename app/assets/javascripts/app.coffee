@@ -17,6 +17,7 @@
 #= require jquery.qrcode.min
 #= require bootstrap-tokenfield
 #= require emoji_list
+#= require paste
 #= require notifier
 #= require message-bus
 #= require form_storage
