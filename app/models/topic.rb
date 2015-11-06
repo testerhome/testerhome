@@ -206,10 +206,6 @@ class Topic
     delete_notifiaction_mentions
   end
 
-  def last_page_with_per_page(per_page)
-    page = (self.replies_count.to_f / per_page).ceil
-    page > 1 ? page : nil
-  end
 
   # 所有的回复编号
   def reply_ids
@@ -219,9 +215,9 @@ class Topic
     end
   end
 
-  def page_floor_of_reply(reply)
-    reply_index = self.replies.unscoped.without_body.count
-    [reply_index / Reply.per_page + 1, reply_index]
+  def floor_of_reply(reply)
+    reply_index = reply_ids.index(reply.id)
+    reply_index + 1
   end
 
   def excellent?
