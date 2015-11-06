@@ -5,8 +5,9 @@ else
   source 'https://ruby.taobao.org'
 end
 
-gem 'rails', '4.2.1'
-gem 'sass-rails', '5.0.3'
+gem 'rails', '4.2.4'
+gem 'sprockets', '~> 3.3.3'
+gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 gem 'jquery-rails'
@@ -22,6 +23,7 @@ gem 'md_emoji', '1.0.2'
 gem 'exception_notification'
 
 gem 'doorkeeper'
+gem "doorkeeper-mongodb", github: "doorkeeper-gem/doorkeeper-mongodb"
 gem 'doorkeeper-i18n'
 
 
@@ -30,18 +32,18 @@ gem 'ruby-prof'
 
 # 上传组件
 gem 'carrierwave', '~> 0.10.0'
-gem 'carrierwave-upyun', '0.1.8'
 gem 'mini_magick'
-gem 'rucaptcha', '0.2.5'
+gem 'rucaptcha'
 gem 'letter_avatar'
 
 # Mongoid 辅助插件
 gem 'mongoid', '5.0.0'
-gem 'mongoid_auto_increment_id', github: 'huacnlee/mongoid_auto_increment_id'
+gem 'mongoid_auto_increment_id', '0.8.1'
 gem 'mongoid_rails_migrations'
 
 # 用户系统
-gem 'devise', '~> 3.4.0'
+gem 'devise', '~> 3.5.1'
+gem 'devise-async'
 gem 'devise-encryptable', '0.1.2'
 
 gem 'bootstrap_tokenfield_rails'
@@ -51,18 +53,18 @@ gem 'will_paginate', '3.0.7'
 
 
 # 三方平台 OAuth 验证登陆
-gem 'omniauth', '~> 1.0.1'
+gem 'omniauth', '~> 1.2.2'
 gem 'omniauth-github', '~> 1.1.0'
 
 # permission
 gem 'cancancan', '~> 1.8.4'
 
-gem 'hiredis', '~> 0.4.5'
+gem 'redis', '~> 3.2.1'
+gem 'hiredis', '~> 0.6.0'
 # Redis 命名空间
-gem 'redis-namespace','~> 1.3.1'
-
+gem 'redis-namespace', '~> 1.5.1'
 # 将一些数据存放入 Redis
-gem 'redis-objects', '0.9.1'
+gem 'redis-objects', '1.1.0'
 
 # Markdown 格式 & 文本处理
 gem 'redcarpet', '~> 3.3.3'
@@ -74,7 +76,7 @@ gem 'nokogiri', '1.6.5'
 gem 'settingslogic', '~> 2.0.9'
 
 # 队列
-gem 'sidekiq'
+gem 'sidekiq', '4.0.0.pre2'
 
 # Sidekiq Web
 gem 'sinatra', :require => nil
@@ -100,9 +102,8 @@ gem 'god'
 
 # Dalli, kgio is for Dalli
 gem 'kgio'
-gem 'dalli', '2.7.1'
+gem 'dalli', '2.7.4'
 
-gem 'puma'
 gem 'thin'
 
 # for api 跨域
@@ -114,6 +115,7 @@ gem "elasticsearch"
 gem "elasticsearch-model"
 gem "elasticsearch-rails"
 gem 'tilt'
+
 group :development, :test do
   gem 'capistrano', '2.9.0', require: false
   gem 'rvm-capistrano', require: false
@@ -123,8 +125,9 @@ group :development, :test do
   gem 'capybara', '~> 2.3.0'
   gem 'api_taster', '0.6.0'
   gem 'letter_opener'
-
+  # Better Errors
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'colorize'
-
   gem 'jasmine-rails', '~> 0.10.2'
 end
