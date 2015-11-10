@@ -15,6 +15,7 @@ gem 'jbuilder'
 
 gem 'turbolinks', github: 'rails/turbolinks'
 gem 'jquery-turbolinks'
+gem 'dropzonejs-rails'
 
 gem 'actionpack-action_caching', '1.1.1'
 gem 'rails-i18n'

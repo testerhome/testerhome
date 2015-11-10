@@ -20,8 +20,9 @@
 
       <div class="panel-body markdown">
         <%= raw SiteConfig.before_topic_html %>
-        <%= raw @topic.body_html %>
-
+          <article>
+            <%= raw @topic.body_html %>
+          </article>
 
         <%= raw SiteConfig.after_topic_html %>
         <%= social_share_button_tag h("#{@topic.title} via: @#{Setting.twitter_id} ") %>
