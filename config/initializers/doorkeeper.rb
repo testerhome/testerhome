@@ -107,7 +107,7 @@ Doorkeeper.configure do
   # end
 
   # WWW-Authenticate Realm (default "Doorkeeper").
-  realm "Ruby China"
+  realm "TesterHome"
 end
 
 Doorkeeper.configuration.token_grant_types << "password"

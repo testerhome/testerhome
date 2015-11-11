@@ -1,6 +1,5 @@
 # TopicsController 下所有页面的 JS 功能
 window.Topics =
-  replies_per_page: 50
   user_liked_reply_ids: []
 
 window.TopicView = Backbone.View.extend
@@ -22,44 +21,109 @@ window.TopicView = Backbone.View.extend
     @parentView = opts.parentView
 
     @initComponents()
-    @initUploader()
+    @initDropzone()
     @initContentImageZoom()
     @initCloseWarning()
     @checkRepliesLikeStatus()
 
-  initUploader: ->
+
+  initDropzone: ->
     self = @
-    opts =
-      url : "/photos"
-      type : "POST"
-      beforeSend : () ->
-        $("#topic-upload-image").hide()
-        $("#topic-upload-image").before("<span class='loading'><i class='fa fa-circle-o-notch fa-spin'></i></span>")
-      success : (result, status, xhr) ->
-        self.restoreUploaderStatus()
-        self.appendImageFromUpload([result])
-      error : (result, status, errorThrown) ->
-        self.restoreUploaderStatus()
-        alert(errorThrown)
+    editor = $("textarea.topic-editor")
+    editor.wrap "<div class=\"topic-editor-dropzone\"></div>"
 
-    $("#topic-upload-images").fileUpload opts
+    editor_dropzone = $('.topic-editor-dropzone')
+    editor_dropzone.on 'paste', (event) =>
+      self.handlePaste(event)
 
-    $("textarea").pastableTextarea()
-    .on 'pasteImage', (ev, data)->
-      pasteOpts =
-        data: new FormData()
-        processData: false
-        contentType: false
-      pasteOpts.data.append 'Filedata', data.blob, "pasted_image.#{data.blob.type.replace /^.+\//g, ''}"
-      for hiddenField in $('#topic-upload-images').closest('form').find 'input[type="hidden"]'
-        pasteOpts.data.append hiddenField.name, hiddenField.value
-      pasteOpts[k] = v for k, v of opts
-      $.ajax pasteOpts
+    dropzone = editor_dropzone.dropzone(
+      url: "/photos"
+      dictDefaultMessage: ""
+      clickable: true
+      paramName: "file"
+      maxFilesize: 20
+      uploadMultiple: false
+      headers:
+        "X-CSRF-Token": $("meta[name=\"csrf-token\"]").attr("content")
+      previewContainer: false
+      processing: ->
+        $(".div-dropzone-alert").alert "close"
+        self.showUploading()
+      dragover: ->
+        editor.addClass "div-dropzone-focus"
+        return
+      dragleave: ->
+        editor.removeClass "div-dropzone-focus"
+        return
+      drop: ->
+        editor.removeClass "div-dropzone-focus"
+        editor.focus()
+        return
+      success: (header, res) ->
+        self.appendImageFromUpload([res.url])
+        return
+      error: (temp, msg) ->
+        App.alert(msg)
+        return
+      totaluploadprogress: (num) ->
+        return
+      sending: ->
+        return
+      queuecomplete: ->
+        self.restoreUploaderStatus()
+        return
+    )
+
+  uploadFile: (item, filename) ->
+    self = @
+    formData = new FormData()
+    formData.append "file", item, filename
+    $.ajax
+      url: '/photos'
+      type: "POST"
+      data: formData
+      dataType: "JSON"
+      processData: false
+      contentType: false
+      beforeSend: ->
+        self.showUploading()
+      success: (e, status, res) ->
+        self.appendImageFromUpload([res.responseJSON.url])
+        self.restoreUploaderStatus()
+      error: (res) ->
+        App.alert("上传失败")
+        self.restoreUploaderStatus()
+      complete: ->
+        self.restoreUploaderStatus()
+
+  handlePaste: (e) ->
+    self = @
+    pasteEvent = e.originalEvent
+    if pasteEvent.clipboardData and pasteEvent.clipboardData.items
+      image = self.isImage(pasteEvent)
+      if image
+        e.preventDefault()
+        self.uploadFile image.getAsFile(), "image.png"
+
+  isImage: (data) ->
+    i = 0
+    while i < data.clipboardData.items.length
+      item = data.clipboardData.items[i]
+      if item.type.indexOf("image") isnt -1
+        return item
+      i++
+    return false
 
   browseUpload: (e) ->
     $(".topic-editor").focus()
-    $("#topic-upload-images").click()
+    $('.topic-editor-dropzone').click()
     return false
+
+  showUploading: () ->
+    $("#topic-upload-image").hide()
+    if $("#topic-upload-image").parent().find("span.loading").length == 0
+      $("#topic-upload-image").before("<span class='loading'><i class='fa fa-circle-o-notch fa-spin'></i></span>")
+
 
   restoreUploaderStatus: ->
     $("#topic-upload-image").parent().find("span.loading").remove()
@@ -95,10 +159,6 @@ window.TopicView = Backbone.View.extend
     reply_body.focus().val(reply_body.val() + new_text)
     return false
 
-  # Given floor, calculate which page this floor is in
-  pageOfFloor: (floor) ->
-    Math.floor((floor - 1) / Topics.replies_per_page) + 1
-
   clickAtFloor: (e) ->
     floor = $(e.target).data('floor')
     @gotoFloor(floor)
@@ -109,15 +169,7 @@ window.TopicView = Backbone.View.extend
   # -   floor: 回复的楼层数，从1开始
   gotoFloor: (floor) ->
     replyEl = $("#reply#{floor}")
-
-    if replyEl.length > 0
-      @highlightReply(replyEl)
-    else
-      page = @pageOfFloor(floor)
-      # TODO: merge existing query string
-      url = window.location.pathname + "?page=#{page}" + "#reply#{floor}"
-      App.gotoUrl url
-
+    @highlightReply(replyEl)
     replyEl
 
   # 高亮指定楼。取消其它楼的高亮
@@ -129,7 +181,6 @@ window.TopicView = Backbone.View.extend
 
   # 异步更改用户 like 过的回复的 like 按钮的状态
   checkRepliesLikeStatus : () ->
-    console.log Topics.user_liked_reply_ids
     for id in Topics.user_liked_reply_ids
       el = $("#replies a.likeable[data-id=#{id}]")
       @parentView.likeableAsLiked(el)
