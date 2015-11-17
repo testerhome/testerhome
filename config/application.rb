@@ -21,7 +21,10 @@ module TesterHome
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = "zh-CN"
+    config.i18n.default_locale = 'zh-CN'
+    config.i18n.available_locales = ['zh-CN', 'en', 'zh-TW']
+    config.i18n.fallbacks = true
+
     config.autoload_paths << Rails.root.join("app/api")
     config.autoload_paths << Rails.root.join('lib')
 
