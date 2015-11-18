@@ -53,6 +53,7 @@
     index_node_navigation: "討論節點分類導航"
     highlight_topic: "置頂話題"
     statics: "統計信息"
+    user_statics: "用戶积分"
     comments: "條評論"
     no_search_result: "沒有搜索到相關內容。"
     access_denied: "訪問被拒絕，你可能沒有權限或未登錄。"
