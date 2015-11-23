@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def index
     @total_user_count = User.count
-    @active_users = User.fields_for_list.hot.limit(100)
+    @active_users = User.fields_for_list.hot.age.limit(100)
     set_seo_meta("活跃会员")
   end
 
