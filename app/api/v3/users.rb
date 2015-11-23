@@ -79,7 +79,12 @@ GET /users/chenhengjie123
 ```
 )
         get '', serializer: UserDetailSerializer, root: 'user' do
-          render @user
+          meta = {followed: false, blocked: false}
+          if current_user
+            meta[:followed] = current_user.followed?(@user)
+            meta[:blocked] = current_user.blocked_user?(@user)
+          end
+          render @user, meta: meta
         end
 
         desc %(获取用户创建的话题列表

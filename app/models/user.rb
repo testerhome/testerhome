@@ -125,7 +125,7 @@ class User
   has_and_belongs_to_many :following, class_name: 'User', inverse_of: :followers
   has_and_belongs_to_many :followers, class_name: 'User', inverse_of: :following
 
-  scope :hot, -> { desc(:replies_count, :topics_count) }
+  scope :hot, -> { desc(:_id, :replies_count, :topics_count) }
   scope :fields_for_list, lambda {
                           only(:_id, :name, :login, :email, :email_md5, :email_public, :avatar, :verified, :state,
                                :tagline, :github, :website, :location, :location_id, :twitter, :co)
