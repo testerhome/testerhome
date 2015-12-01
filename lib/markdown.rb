@@ -29,7 +29,7 @@ module Redcarpet
       end
 
       def table(header, body)
-        %(<div class="table-responsive"><table class="table table-bordered table-striped">#{header}#{body}</table></div>)
+        %(<table class="table table-bordered table-striped">#{header}#{body}</table>)
       end
 
       def autolink(link, link_type)
