@@ -42,6 +42,6 @@ class Site
   def favicon_url
     return "" if self.url.blank?
     domain = self.url.gsub("http://","")
-    "http://www.google.com/profiles/c/favicons?domain=#{domain}"
+    "http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=url#{domain}"
   end
 end
