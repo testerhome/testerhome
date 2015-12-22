@@ -62,6 +62,8 @@ class Topic
   belongs_to :last_reply, class_name: 'Reply'
   has_many :replies, dependent: :destroy
 
+  has_one :poll, dependent: :destroy
+
   validates_presence_of :user_id, :title, :body, :node
 
   index node_id: 1

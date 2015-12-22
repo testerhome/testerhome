@@ -25,6 +25,7 @@
 #= require notes
 #= require turbolinks
 #= require google_analytics
+#= require polls
 #= require_self
 
 AppView = Backbone.View.extend
@@ -84,6 +85,12 @@ AppView = Backbone.View.extend
       if $(el.target).val().trim().length > 0
         $(el.target).parent().parent().submit()
       return false
+
+      # hide popover
+      $('body').on 'click', (e) ->
+        $('[data-bs="popover"], [data-toggle="popover"]').each ->
+          if !$(this).is(e.target) && $(this).has(e.target).length is 0 && $('.popover').has(e.target).length is 0
+            $(this).popover('hide')
 
   initForDesktopView : () ->
     return if typeof(app_mobile) != "undefined"

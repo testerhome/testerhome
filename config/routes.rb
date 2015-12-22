@@ -152,5 +152,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :polls, only: [:create, :update] do
+    member do
+      get :voters
+    end
+  end
+
   match '*path', via: :all, to: 'home#error_404'
 end

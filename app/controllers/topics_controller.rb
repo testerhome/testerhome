@@ -100,6 +100,8 @@ class TopicsController < ApplicationController
     check_current_user_status_for_topic
     set_special_node_active_menu
 
+    @poll = Poll.for_topic(@topic.id).first
+
     @threads.each(&:join)
 
     set_seo_meta "#{@topic.title} &raquo; #{t('menu.topics')}"
@@ -177,6 +179,14 @@ class TopicsController < ApplicationController
     end
 
     if @topic.save
+      if poll_params[:save] == "true"
+        @poll = @topic.build_poll(poll_attrs)
+        poll_params[:options].each_with_index do |o, i|
+          @poll.options.build({oid: i+1, description: o})
+        end
+        @poll.save
+      end
+
       topic_owner.update_score 5
       redirect_to(topic_path(@topic.id), notice: t('topics.create_topic_success'))
     else
@@ -280,4 +290,20 @@ class TopicsController < ApplicationController
   def topic_owner
     User.find_by_id @topic.user_id
   end
+
+  def poll_params
+    params.require(:poll).permit(:multiple_mode, :public_mode, :expires_in, :save, options: [])
+  end
+
+  def poll_attrs
+    h = {}
+    h[:multiple_mode] = true if poll_params[:multiple_mode]
+    h[:public_mode] = true if poll_params[:public_mode]
+    h[:expires_in] = poll_params[:expires_in].to_i
+    if h[:expires_in] < 0 || h[:expires_in] > 3650
+      h[:expires_in] = 0
+    end
+    return h
+  end
+
 end
