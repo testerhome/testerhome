@@ -25,6 +25,10 @@
             <%= raw @topic.body_html %>
           </article>
 
+        <% if @poll %>
+          <%=  render partial: "polls/poll", object: @poll %>
+        <% end %>
+
         <%= raw SiteConfig.after_topic_html %>
         <%= social_share_button_tag h("#{@topic.title} via: @#{Setting.twitter_id} ") %>
       </div>

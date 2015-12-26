@@ -19,6 +19,10 @@
     <%= f.text_area :body, class: "topic-editor form-control closewarning", rows: 20 %>
   </div>
 
+  <% if @topic.new_record? %>
+    <%= render partial: "polls/form" %>
+  <% end %>
+
   <div class="form-group">
     <%= f.submit t("common.save"), class: "btn btn-primary col-xs-2", 'data-disable-with' => t("common.saving") %>
 
