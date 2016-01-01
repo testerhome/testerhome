@@ -12,6 +12,6 @@ class VoteOption
   embedded_in :poll, inverse_of: :options
 
   validates_uniqueness_of :oid
-  validates_length_of :description, minimum: 2, maximum: 140, allow_blank: false
+  validates_length_of :description, minimum: 1, maximum: 140, allow_blank: false
 
 end

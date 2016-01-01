@@ -34,16 +34,15 @@
           </label>
         </div>
         <div class="row">
-          <div class="col-md-6">
             <div class="input-group input-group-sm">
               <span class="input-group-addon">投票有效期:</span>
               <input type="text" value="<%= Poll::DEFAULT_EXPIRES_IN %>" size="4" maxlength="4" name="poll[expires_in]" class="form-control input-sm">
               <span class="input-group-addon">天 (0表示长期有效)</span>
             </div>
-          </div>
-          <div class="col-md-6">
+          <div class="alert alert-warning">
             <p class="help-block">
-              <i class="fa fa-warning"></i>注意: 最多可以添加 <%= Poll::MAXIMUM_OPTIONS %> 个选项. 投票表单发布后不能更改!
+              <div><i class="fa fa-warning"></i>注意: option 长度不得小于1个字符,大于140字符,否者无法生成!</div>
+             <div> <i class="fa fa-warning"></i>注意: 最多可以添加 <%= Poll::MAXIMUM_OPTIONS %> 个选项. 投票表单发布后不能更改!</div>
             </p>
           </div>
         </div>
