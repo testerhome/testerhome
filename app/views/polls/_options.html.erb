@@ -34,7 +34,7 @@
             <span class="info"><%= opt.voters_count %></span>
             <% if poll.public_mode %>
                 <% if opt.voters_count > 0 %>
-                    <a href="javascript:void(0);" title="投票用户" data-placement="left" data-bs="popover" class="voters-popover" data-poll-id="<%= poll.id %>" data-oid="<%= opt.oid %>"><i class="fa fa-user"></i></a>
+                    <a tabindex="0" href="javascript:void(0);" title="投票用户" data-placement="right" data-bs="popover" class="voters-popover" data-poll-id="<%= poll.id %>" data-oid="<%= opt.oid %>"><i class="fa fa-user"></i></a>
                 <% end %>
             <% end %>
           </td>
