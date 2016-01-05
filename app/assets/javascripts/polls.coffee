@@ -122,6 +122,17 @@ window.Poll =
           $voters_list.empty()
       else
         $voters_list.empty()
+    # hide voters when clicking outside
+    $('body').on 'click', (e) ->
+      $('a.voters-popover').each ->
+        # the 'is' for buttons that trigger popups
+        # the 'has' for icons within a button that triggers a popup
+        if !$(this).is(e.target) && $(this).has(e.target).length == 0 && $('.popover').has(e.target).length == 0
+          $(this).popover('hide');
+
+
+
+
 
   formRemoveOption: ->
     $(@form).on 'click', ".poll-options button[name=remove-option]", (e) ->
