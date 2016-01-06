@@ -9,7 +9,7 @@ class PollsController < ApplicationController
     if @users.nil?
       @users = User.only(:_id, :name, :avatar, :email_md5, :login)
                    .where(_id: { '$in' => voters_ids })
-                   .paginate(page: params[:page], per_page: 50)
+                   .paginate(page: params[:page], per_page: 10)
       if Rails.env.production?
         Rails.cache.write(cache_key_for_voters, @users, expires_in: 6.hours)
       end
