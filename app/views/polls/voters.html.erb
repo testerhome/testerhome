@@ -5,5 +5,7 @@
     <% end %>
   </ul>
   <%= will_paginate @users %> <!-- hide pagination -->
-  <a href="javascript:void(0);" class="voters-next-page pull-right">更多 &#187;</a>
+  <% if @users.total_pages != @users.current_page%>
+    <a href="javascript:void(0);" class="voters-next-page pull-right">更多 &#187;</a>
+  <% end %>
 </div>
