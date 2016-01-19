@@ -51,6 +51,9 @@ class Node
       55
   end
 
+  def self.opencourse_id
+    67
+  end
 
   # Markdown 转换过后的 HTML
   def summary_html
@@ -66,6 +69,10 @@ class Node
 
   def bugs?
     self.id == self.class.bugs_id
+  end
+
+  def opencourses?
+    self.id == self.class.opencourse_id
   end
 
   def self.new_topic_dropdowns

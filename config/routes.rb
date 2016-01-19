@@ -80,6 +80,8 @@ Rails.application.routes.draw do
   resources :likes
   resources :jobs
   resources :bugs
+  resources :opencourses
+
 
   get "/search" => "search#index", as: 'search'
 

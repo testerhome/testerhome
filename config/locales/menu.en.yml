@@ -93,6 +93,7 @@
     edit_account_path: "Account Profile"
     likes: "Favorites"
     tweets: "Tweets"
+    open_course: "Open Course"
   comments:
     create_comment: "Comment"
     no_comment: "No Comment at the moment"
