@@ -1,4 +1,11 @@
 class OpencoursesController < ApplicationController
+
+  helper_method :feed_node_topics_url
+
+  def feed_node_topics_url
+    # super.feed_node_topics_url(id: 25)
+  end
+
   def index
     @node = Node.find(Node.opencourse_id)
     @suggest_topics = Topic.where(node_id: @node.id).suggest.limit(3)
