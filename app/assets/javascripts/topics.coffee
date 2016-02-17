@@ -426,6 +426,7 @@ window.TopicView = Backbone.View.extend
         connected: ->
           setTimeout =>
             @followCurrentTopic()
+            $(window).on 'unload', -> window.repliesChannel.unfollow()
             $(document).on 'page:change', -> window.repliesChannel.followCurrentTopic()
           , 1000
 
@@ -440,6 +441,9 @@ window.TopicView = Backbone.View.extend
 
         followCurrentTopic: ->
           @perform 'follow', topic_id: Topics.topic_id
+
+        unfollow: ->
+          @perform 'unfollow'
 
 
   updateReplies: () ->
