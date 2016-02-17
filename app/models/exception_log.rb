@@ -1,0 +1,2 @@
+class ExceptionLog < ApplicationRecord
+end

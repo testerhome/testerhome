@@ -1,0 +1,21 @@
+<div class="panel-heading media clearfix">
+  <div class="media-body">
+    <h1 class="media-heading"><%= topic.title %></h1>
+    <div class="info">
+      <%= render_node_name(topic.node_name,topic.node_id) %>
+       ·
+      <%= user_name_tag(topic.user, data: { author: true }) %>
+       ·
+      <%= raw t("common.created_at", time: timeago(topic.created_at))%>
+      <% if !topic.last_reply_user_login.blank? %>
+         ·
+        <%= t("common.last_by")%> <%= user_name_tag(topic.last_reply_user_login) %> <%= raw t("common.reply_at", time: timeago(topic.replied_at))%>
+      <% end %>
+       ·
+      <%= topic.hits %> <%= t("common.read_times")%>
+    </div>
+  </div>
+  <div class="avatar media-right">
+    <%= user_avatar_tag(@topic.user, :normal) %>
+  </div>
+</div>

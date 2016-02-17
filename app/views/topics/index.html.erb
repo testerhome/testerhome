@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-9">
+    <% if not mobile? %>
+        <%= raw SiteConfig.topic_list_top_html %>
+    <%end%>
+
+    <div class="topics panel panel-default">
+      <div class="panel-heading clearfix">
+        <%= render "topics/node_info", node: @node %>
+      </div>
+
+      <div class="panel-body">
+        <% if @topics.current_page == 1 %>
+          <% cache(['suggest_topics', @suggest_topics.to_a]) do %>
+            <%= render partial: "topics/topic", collection: @suggest_topics, locals: { suggest: true } %>
+          <% end %>
+        <% end %>
+
+        <% cache(['topics', @topics.to_a]) do %>
+          <%= render @topics, suggest: false %>
+        <% end %>
+      </div>
+
+      <div class="panel-footer clearfix">
+        <%= will_paginate @topics %>
+      </div>
+
+    </div>
+
+    <% if controller_name == "topics" && action_name == "index" && !mobile? %>
+      <%= render "/shared/index_sections" %>
+      <%= render "/shared/hot_locations" %>
+    <% end %>
+
+    <% if current_user %>
+    <script type="text/javascript">
+      var readed_topic_ids = <%= current_user.filter_readed_topics(@topics + (@suggest_topics || [])) %>;
+      for (var i = 0; i < readed_topic_ids.length; i++) {
+        topic_id = readed_topic_ids[i];
+        $(".topic-"+ topic_id + " .count a").addClass("state-true");
+      }
+    </script>
+    <% end %>
+  </div>
+
+
+  <div class="sidebar col-md-3">
+    <%= render "topics/sidebar_for_topic_index" %>
+  </div>
+
+</div>

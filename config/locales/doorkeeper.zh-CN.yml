@@ -1,0 +1,151 @@
+"zh-CN":
+  activerecord:
+    attributes:
+      doorkeeper/application:
+        name: '名称'
+        redirect_uri: '重定向 URI'
+    errors:
+      models:
+        doorkeeper/application:
+          attributes:
+            redirect_uri:
+              fragment_present: '不能包含 fragment.'
+              invalid_uri: '无效的 URI'
+              relative_uri: '必须使用绝对 URI'
+              secured_uri: '必须使用 https/ssl 的 URI'
+
+  mongoid:
+    attributes:
+      doorkeeper/application:
+        name: '名称'
+        redirect_uri: '重定向 URI'
+    errors:
+      models:
+        doorkeeper/application:
+          attributes:
+            redirect_uri:
+              fragment_present: '不能包含 fragment.'
+              invalid_uri: '无效的 URI'
+              relative_uri: '必须使用绝对 URI'
+              secured_uri: '必须使用 https/ssl 的 URI'
+
+  mongo_mapper:
+    attributes:
+      doorkeeper/application:
+        name: '名称'
+        redirect_uri: '重定向 URI'
+    errors:
+      models:
+        doorkeeper/application:
+          attributes:
+            redirect_uri:
+              fragment_present: '不能包含 fragment.'
+              invalid_uri: '无效的 URI'
+              relative_uri: '必须使用绝对 URI'
+              secured_uri: '必须使用 https/ssl 的 URI'
+
+  doorkeeper:
+    applications:
+      confirmations:
+        destroy: '真的要这么做？'
+      buttons:
+        edit: '编辑'
+        destroy: '删除'
+        submit: '提交'
+        cancel: '取消'
+        authorize: '授权'
+      form:
+        error: '检查表单，看是否有错？'
+      help:
+        redirect_uri: '每行使用一个 URI'
+        native_redirect_uri: '使用 %{native_redirect_uri} 来做本地调试'
+      edit:
+        title: '编辑应用'
+      index:
+        title: '你的应用'
+        new: '新应用'
+        name: '名称'
+        callback_url: '回调 URL'
+      new:
+        title: '新应用'
+      show:
+        title: '应用: %{name}'
+        application_id: '应用 Id'
+        secret: '密钥'
+        callback_urls: '回调 urls'
+        actions: '操作'
+
+    authorizations:
+      buttons:
+        authorize: '授权'
+        deny: '禁止'
+      error:
+        title: '出错了'
+      new:
+        title: '需要授权'
+        prompt: '授权 %{client_name} 使用你的账户?'
+        able_to: '这个应用将可以'
+      show:
+        title: '授权码'
+
+    authorized_applications:
+      confirmations:
+        revoke: '你确定?'
+      buttons:
+        revoke: '撤销授权'
+      index:
+        title: '你的已授权应用'
+        application: '应用'
+        created_at: '创建时间'
+        date_format: '%Y-%m-%d %H:%M:%S'
+
+    errors:
+      messages:
+        # Common error messages
+        invalid_request: 'The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed.'
+        invalid_redirect_uri: 'The redirect uri included is not valid.'
+        unauthorized_client: 'The client is not authorized to perform this request using this method.'
+        access_denied: 'The resource owner or authorization server denied the request.'
+        invalid_scope: 'The requested scope is invalid, unknown, or malformed.'
+        server_error: 'The authorization server encountered an unexpected condition which prevented it from fulfilling the request.'
+        temporarily_unavailable: 'The authorization server is currently unable to handle the request due to a temporary overloading or maintenance of the server.'
+
+        #configuration error messages
+        credential_flow_not_configured: 'Resource Owner Password Credentials flow failed due to Doorkeeper.configure.resource_owner_from_credentials being unconfigured.'
+        resource_owner_authenticator_not_configured: 'Resource Owner find failed due to Doorkeeper.configure.resource_owner_authenticator being unconfiged.'
+
+        # Access grant errors
+        unsupported_response_type: 'The authorization server does not support this response type.'
+
+        # Access token errors
+        invalid_client: 'Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.'
+        invalid_grant: 'The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.'
+        unsupported_grant_type: 'The authorization grant type is not supported by the authorization server.'
+
+        # Password Access token errors
+        invalid_resource_owner: 'The provided resource owner credentials are not valid, or resource owner cannot be found'
+
+        invalid_token:
+          revoked: "The access token was revoked"
+          expired: "The access token expired"
+          unknown: "The access token is invalid"
+
+    flash:
+      applications:
+        create:
+          notice: '应用创建成功'
+        destroy:
+          notice: '应用删除成功'
+        update:
+          notice: '应用更新成功'
+      authorized_applications:
+        destroy:
+          notice: '应用撤销授权成功'
+
+    layouts:
+      admin:
+        nav:
+          oauth2_provider: 'OAuth2 Provider'
+          applications: '应用'
+      application:
+        title: '需要 OAuth 授权'

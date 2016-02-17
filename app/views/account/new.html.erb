@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading"><%= t("users.register_user")%></div>
+      <div class="panel-body">
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: ""}) do |f| %>
+        <%= render "shared/error_messages", target: resource %>
+        <div class="form-group">
+          <%= f.text_field :login, type: :email, class: "form-control", placeholder: t("users.login"), hint: t("users.suggest_using_twitter_id") %>
+        </div>
+        <div class="form-group">
+          <%= f.text_field :name, class: "form-control", placeholder: t("activerecord.attributes.user.name") %>
+        </div>
+        <div class="form-group">
+          <%= f.text_field :email, type: :email, class: "form-control", placeholder: t("activerecord.attributes.user.email") %>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label for="user_email_public" class="checkbox"><%= f.check_box :email_public, checked: true %> <%= t("activerecord.attributes.user.email_public") %></label>
+          </div>
+        </div>
+        <div class="form-group">
+        <%= f.password_field :password, class: "form-control", placeholder: t("activerecord.attributes.user.password") %>
+        </div>
+        <div class="form-group">
+        <%= f.password_field :password_confirmation, class: "form-control", placeholder: t("activerecord.attributes.user.password_confirmation") %>
+        </div>
+        <div class="form-group">
+          <%= rucaptcha_input_tag(class: 'form-control', placeholder: t('common.captcha')) %>
+        </div>
+        <div class="form-group">
+          <a class="rucaptcha-image-box" href="#">
+            <%= rucaptcha_image_tag %>
+          </a>
+        </div>
+        <div class="form-group">
+          <%= f.submit t('users.submit_new_user'), class: "btn btn-primary", 'data-disable-with' => t("common.submitting") %>
+          / <%= link_to t("common.login"), new_session_path(resource_name), class: "btn btn-default" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
