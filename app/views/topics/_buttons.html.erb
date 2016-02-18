@@ -26,7 +26,9 @@
     <% if owner?(@topic) or admin? %>
     <%= link_to "", edit_topic_path(@topic), class: "fa fa-pencil", title: "修改本帖" %>
     <%= link_to "", topic_path(@topic.id), method: :delete, 'data-confirm' => t("common.confirm_delete"), class: "fa fa-trash", title: "删除本帖" %>
-    <%= link_to "", new_ad_path(topic_id: @topic.id), class: "fa fa-space-shuttle", title: "推送本帖到客户端头条" %>
+    <% end %>
+    <% if admin? %>
+      <%= link_to "", new_ad_path(topic_id: @topic.id), class: "fa fa-space-shuttle", title: "推送本帖到客户端头条" %>
     <% end %>
   </span>
 </div>
