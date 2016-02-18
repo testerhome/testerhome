@@ -142,8 +142,9 @@ module API
             @topic = Topic.find(params[:id])
             @reply = @topic.replies.build(body: params[:body])
             @reply.user_id = current_user.id
+            meta = {current_reply_count: @topic.replies_count}
             if @reply.save
-              render @reply
+              render @reply, meta: meta
             else
               error!({ error: @reply.errors.full_messages }, 400)
             end

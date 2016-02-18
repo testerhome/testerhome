@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Ads</div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped table-condensed">
+            <tr class="head">
+                <td class="first">Id</td>
+                <td>Cover</td>
+                <td>TopicID</td>
+                <td>Topic</td>
+                <td>Author</td>
+                <td></td>
+            </tr>
+
+            <% @ads.each do |ad| %>
+                <tr>
+                    <td class="first"><%= ad.id %></td>
+                    <td><%= image_tag(ad.cover, style: "width: 150px") %></td>
+                    <td><%=link_to(ad.topic_id, topic_path(ad.topic_id)) %></td>
+                    <td><%= ad.topic_title %></td>
+                    <td><%= ad.topic_author %></td>
+
+                    <td><%= link_to '', edit_ad_path(ad), class: "fa fa-pencil" %>
+                        <%= link_to '', ad_path(ad), 'data-confirm' => 'Are you sure?', method: :delete, class: "fa fa-trash" %></td>
+                </tr>
+            <% end %>
+        </table>
+
+    </div>
+</div>

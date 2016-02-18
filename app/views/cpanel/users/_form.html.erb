@@ -21,8 +21,8 @@
   <%= f.input :hr, as: :boolean, hint: t("cpanel.users.hr_user_can_create_topic") %>
   <%= f.input :state, as: :select, collection: User::STATE.collect { |s| [s[0],s[1]] } %>
   <%= f.input :sign_in_count, readonly: true %>
-  <%= f.input :last_sign_in_at, readonly: true %>
-  <%= f.input :current_sign_in_at, readonly: true %>
+  <%= f.input :last_sign_in_at,:as => :string,  readonly: true %>
+  <%= f.input :current_sign_in_at,:as => :string,  readonly: true %>
   <%= f.input :last_sign_in_ip, readonly: true %>
   <%= f.input :current_sign_in_ip, readonly: true %>
   <% if not @user.authorizations.blank? %>
