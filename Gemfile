@@ -1,7 +1,7 @@
 if ENV['USE_OFFICIAL_GEM_SOURCE']
   source 'https://rubygems.org'
 else
-  source 'https://ruby.taobao.org'
+  source 'http://gems.ruby-china.org'
 end
 
 ruby '2.3.0'
@@ -13,9 +13,11 @@ gem 'coffee-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'jbuilder'
-gem 'turbolinks', github: 'rails/turbolinks'
+gem 'turbolinks', git: 'https://github.com/turbolinks/turbolinks-classic.git'
 gem 'jquery-turbolinks'
 gem 'dropzonejs-rails'
+
+gem 'rack-attack'
 
 gem 'rails-i18n'
 gem 'http_accept_language'
@@ -23,7 +25,7 @@ gem 'rails_autolink'
 gem 'md_emoji'
 gem 'exception_notification'
 
-gem 'doorkeeper', github: 'doorkeeper-gem/doorkeeper'
+gem 'doorkeeper', '4.0.0.rc2'
 gem 'doorkeeper-i18n'
 
 # gem 'rails-perftest'
@@ -66,7 +68,7 @@ gem 'hiredis'
 gem 'redis-namespace'
 # 将一些数据存放入 Redis
 gem 'redis-objects'
-gem 'second_level_cache', '2.2.1'
+gem 'second_level_cache', '2.2.2'
 
 gem 'rails-settings-cached'
 
@@ -82,7 +84,7 @@ gem 'settingslogic'
 # 队列
 gem 'sidekiq'
 # Sidekiq Web
-gem 'sinatra', github: 'sinatra/sinatra', require: nil
+gem 'sinatra', git: 'https://github.com/sinatra/sinatra.git', require: false
 
 # 分享功能
 gem 'social-share-button', :git => 'https://github.com/testerhome/social-share-button.git'
@@ -100,6 +102,8 @@ gem 'grape-active_model_serializers'
 gem 'postmark'
 gem 'postmark-rails'
 
+gem 'ruby-push-notifications'
+
 # Dalli, kgio is for Dalli
 gem 'kgio'
 gem 'dalli'
@@ -113,7 +117,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'rack-utf8_sanitizer'
 
 # Mini profiler
-gem 'rack-mini-profiler', github: 'MiniProfiler/rack-mini-profiler', require: false
+gem 'rack-mini-profiler', require: false
 
 gem 'oneapm_rpm'
 
@@ -133,8 +137,6 @@ group :development, :test do
   gem 'rubocop'
 
   gem 'rspec-rails', '3.5.0.beta1'
-
-  gem 'rails-controller-testing'
 
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'database_cleaner'
