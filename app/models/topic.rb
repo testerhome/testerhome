@@ -20,11 +20,20 @@ class Topic
   include Mongoid::Mentionable
 
   # 加入 Elasticsearch
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  include Mongoid::Searchable
+
+  mapping do
+    indexes :title
+    indexes :body
+    indexes :node_name
+  end
 
   def as_indexed_json(options={})
-    self.as_json( {only: [:title, :body, :updated_at, :excellent]})
+    {
+        title: self.title,
+        body: self.full_body,
+        node_name: self.node_name
+    }
   end
 
   field :title
@@ -184,6 +193,8 @@ class Topic
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)
+    # Reindex Search document
+    SearchIndexer.perform_later('update', 'topic', self.id)
     self.save
   end
 
@@ -265,6 +276,10 @@ class Topic
     return if topic.blank?
     Notification::TopicDeleted.create user_id: topic.user_id, topic_id: topic_id
     return true
+  end
+
+  def full_body
+    ([self.body] + self.replies.pluck(:body)).join('\n\n')
   end
 
   def topic_pay_url

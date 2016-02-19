@@ -1,63 +1,25 @@
-# coding: utf-8
 class SearchController < ApplicationController
   def index
-    @topics = Topic.search(
+    search_params = {
         sort: [
             {updated_at: {order: "desc", ignore_unmapped: true}},
-            {excellent:  {order: "desc", ignore_unmapped: true}}
+            {excellent: {order: "desc", ignore_unmapped: true}}
         ],
         query: {
             multi_match: {
                 query: params[:q],
-                fields: %w(title body^10),
+                fields: ['title', 'body', 'name', 'login'],
                 fuzziness: 2,
                 prefix_length: 5,
                 operator: :and
             }
         },
-
-        # query: {
-        #     filtered: {
-        #         query: {
-        #             multi_match: {
-        #                 fields: %w(title body^10),
-        #                 query: params[:q],
-        #                 fuzziness: 2,
-        #                 prefix_length: 5,
-        #                 operator: :and
-        #             }
-        #         },
-        #         filter: {
-        #             bool: {
-        #                 must: {
-        #                     query: {
-        #                         multi_match: {
-        #                             fields: %w(title body^10),
-        #                             query: params[:q],
-        #                             fuzziness: 2,
-        #                             prefix_length: 5,
-        #                             operator: :or
-        #                         }
-        #                     }
-        #                 },
-        #                 must_not: {
-        #
-        #                 },
-        #                 should: {
-        #
-        #                 }
-        #             }
-        #         }
-        #     }
-        # },
-
         highlight: {
-            fields: {
-                title: {},
-                body: {}
-            }
+            pre_tags: ["[h]"],
+            post_tags: ["[/h]"],
+            fields: {title: {}, body: {}, name: {}, login: {}}
         }
-    ).paginate(page: params[:page], per_page: 10).records
-    @count = @topics.total_entries
+    }
+    @result = Elasticsearch::Model.search(search_params, [Topic, User, Page]).paginate(page: params[:page], per_page: 30)
   end
 end

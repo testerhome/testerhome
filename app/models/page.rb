@@ -8,6 +8,7 @@ class Page
   include Mongoid::BaseModel
   include Mongoid::SoftDelete
   include Mongoid::MarkdownBody
+  include Mongoid::Searchable
 
   # 页面地址
   field :slug
@@ -34,6 +35,16 @@ class Page
   validates_presence_of :change_desc, if: Proc.new { |p| p.version_enable == true and !p.new_record? }
   validates_format_of :slug, with: /\A[a-z0-9\-_]+\z/
   validates_uniqueness_of :slug
+
+  mapping do
+    indexes :title
+    indexes :body
+    indexes :slug
+  end
+
+  def as_indexed_json(options={})
+    as_json(only: %w(slug title body))
+  end
 
   before_save :append_editor
   def append_editor
@@ -76,5 +87,9 @@ class Page
 
   def self.find_by_slug(slug)
     where(slug: slug).first
+  end
+
+  def to_param
+    slug
   end
 end

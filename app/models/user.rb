@@ -8,6 +8,7 @@ class User
   include Mongoid::BaseModel
   include Redis::Objects
   extend OmniauthCallbacks
+  include Mongoid::Searchable
 
   ALLOW_LOGIN_CHARS_REGEXP = /\A\w+\z/
 
@@ -94,6 +95,21 @@ class User
   has_many :notifications, class_name: 'Notification::Base', dependent: :delete
   has_many :photos
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
+
+  mapping do
+    indexes :login
+    indexes :name
+    indexes :email
+    indexes :twitter
+    indexes :tagline
+    indexes :bio
+    indexes :location
+    indexes :company
+  end
+
+  def as_indexed_json(options={})
+    as_json(only: %w(login name))
+  end
 
   def read_notifications(notifications)
     unread_ids = notifications.find_all{|notification| !notification.read?}.map(&:_id)
@@ -543,5 +559,9 @@ class User
   def letter_avatar_url(size)
     path = LetterAvatar.generate(self.login, size).sub('public/', '/')
     "//#{Setting.domain}#{path}"
+  end
+
+  def to_param
+    login
   end
 end

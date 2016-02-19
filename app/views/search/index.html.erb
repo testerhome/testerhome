@@ -1,42 +1,15 @@
-<div class="search-result">
-    <div class="topics panel panel-default">
-        <div class="panel-heading clearfix">
-            <h3 class="h2">找到约 <strong><%= @count %></strong> 条结果</h3>
-        </div>
+<div class="search-results panel panel-default">
+  <div class="panel-heading clearfix">
+    关于 “<%= params[:q] %>” 的搜索结果, 共 <%= @result.results.total %> 条
+  </div>
 
-        <div class="panel-body">
-            <% @topics.each_with_hit do |record, hit| %>
+  <div class="panel-body">
+    <% @result.records.each_with_hit do |item, hit| %>
+      <%= render partial: item.class.name.downcase, locals: { item: item, hit: hit } %>
+    <% end %>
+  </div>
 
-                <div class="topic media">
-                    <div class="avatar media-left">
-                        <%= user_avatar_tag(record.user, :normal) %>
-                    </div>
-                    <div class="infos media-body">
-                        <div class="title media-heading">
-                            <%= link_to(truncate(hit.highlight.title ? (raw hit.highlight.title[0]) : record.title, length: 100), topic_path(record), title: record.title) %>
-                        </div>
-                        <div>
-                            <p class="excerpt"><%= sanitize_search_result truncate(hit.highlight.body ? (raw hit.highlight.body[0]) : record.body, length:200, escape: true) %>
-                                ...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-        <div class="panel-footer clearfix">
-        <%= will_paginate @topics, inner_window: 2 %>
-        </div>
-    </div>
+  <div class="panel-footer">
+    <%= will_paginate @result %>
+  </div>
 </div>
-
-<% if current_user %>
-    <script type="text/javascript">
-        var readed_topic_ids = <%= current_user.filter_readed_topics(@topics) %>;
-        readed_topic_ids = readed_topic_ids.concat(<%= current_user.filter_readed_topics(@suggest_topics) %>);
-        for (var i = 0; i < readed_topic_ids.length; i++) {
-            topic_id = readed_topic_ids[i];
-            $(".topic_" + topic_id + " .right_info .count").addClass("state_true");
-        }
-    </script>
-<% end %>
