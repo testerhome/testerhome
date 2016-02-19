@@ -108,7 +108,11 @@ class User
   end
 
   def as_indexed_json(options={})
-    as_json(only: %w(login name type_order))
+    {
+        login: self.login,
+        name: self.name,
+        type_order: self.type_order
+    }
   end
 
   def read_notifications(notifications)

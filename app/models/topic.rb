@@ -33,8 +33,8 @@ class Topic
         title: self.title,
         body: self.full_body,
         node_name: self.node_name,
-        type_order: self.type_order,
-        excellent: self.excellent
+        updated_at: self.updated_at,
+        type_order: self.type_order
     }
   end
 

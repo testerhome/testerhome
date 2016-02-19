@@ -39,8 +39,14 @@ class Page
     indexes :slug
   end
 
+
   def as_indexed_json(options={})
-    as_json(only: %w(slug title body type_order))
+    {
+        slug: self.slug,
+        title: self.title,
+        body: self.body,
+        type_order: self.type_order
+    }
   end
 
   before_save :append_editor
