@@ -108,7 +108,7 @@ class User
   end
 
   def as_indexed_json(options={})
-    as_json(only: %w(login name))
+    as_json(only: %w(login name type_order))
   end
 
   def read_notifications(notifications)
@@ -559,6 +559,10 @@ class User
   def letter_avatar_url(size)
     path = LetterAvatar.generate(self.login, size).sub('public/', '/')
     "//#{Setting.domain}#{path}"
+  end
+
+  def type_order
+    10
   end
 
   def to_param

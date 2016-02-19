@@ -32,7 +32,9 @@ class Topic
     {
         title: self.title,
         body: self.full_body,
-        node_name: self.node_name
+        node_name: self.node_name,
+        type_order: self.type_order,
+        excellent: self.excellent
     }
   end
 
@@ -276,6 +278,10 @@ class Topic
 
   def full_body
     ([self.body] + self.replies.pluck(:body)).join('\n\n')
+  end
+
+  def type_order
+    1
   end
 
   def topic_pay_url

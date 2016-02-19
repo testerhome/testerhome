@@ -1,6 +1,3 @@
-# coding: utf-8
-# 单页的文档页面
-# 采用 Markdown 编写
 require "redcarpet"
 class Page
   include Mongoid::Document
@@ -43,7 +40,7 @@ class Page
   end
 
   def as_indexed_json(options={})
-    as_json(only: %w(slug title body))
+    as_json(only: %w(slug title body type_order))
   end
 
   before_save :append_editor
@@ -87,6 +84,10 @@ class Page
 
   def self.find_by_slug(slug)
     where(slug: slug).first
+  end
+
+  def type_order
+    5
   end
 
   def to_param
