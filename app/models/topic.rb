@@ -32,9 +32,7 @@ class Topic
     {
         title: self.title,
         body: self.full_body,
-        node_name: self.node_name,
-        updated_at: self.updated_at,
-        excellent: self.excellent
+        node_name: self.node_name
     }
   end
 

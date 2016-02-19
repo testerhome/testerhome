@@ -1,10 +1,6 @@
 class SearchController < ApplicationController
   def index
     search_params = {
-        sort: [
-            {updated_at: {order: "desc", ignore_unmapped: true}},
-            {excellent: {order: "desc", ignore_unmapped: true}}
-        ],
         query: {
             multi_match: {
                 query: params[:q],
