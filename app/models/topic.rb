@@ -34,6 +34,7 @@ class Topic
         body: self.full_body,
         node_name: self.node_name,
         updated_at: self.updated_at,
+        excellent: self.excellent,
         type_order: self.type_order
     }
   end
