@@ -112,13 +112,8 @@
   </div>
 
 <% if !mobile? %>
-  <div class="sidebar col-md-3">
-
-    <% if @topic.node_name != "匿名吐槽" %>
-    <%= render "sidebar_box_user_info", user: @topic.user %>
-    <% end %>
-    <%= render "sidebar_box_tips" %>
-    <%= render "sidebar_box_node_recent_topics", topic: @topic %>
+  <div class="sidebar hidden-mobile col-md-3">
+    <%= render 'topic_sidebar' %>
   </div>
 <% end %>
 </div>

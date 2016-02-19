@@ -8,11 +8,13 @@ window.TopicView = Backbone.View.extend
 
   events:
     "click #replies .reply .btn-reply": "reply"
+    "click .btn-focus-reply": "reply"
     "click #topic-upload-image": "browseUpload"
     "click .insert-codes a": "appendCodesFromHint"
     "click a.at_floor": "clickAtFloor"
-    "click .topic-detail a.follow": "follow"
-    "click .topic-detail a.bookmark": "bookmark"
+    "click a.follow": "follow"
+    "click a.bookmark": "bookmark"
+    "click .btn-move-page": "scrollPage"
     "click .topic-detail a.qrcode": "testerhome_qrcode"
     "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
 
@@ -151,7 +153,10 @@ window.TopicView = Backbone.View.extend
     floor = _el.data("floor")
     login = _el.data("login")
     reply_body = $("#new_reply textarea")
-    new_text = "##{floor}楼 @#{login} "
+    if floor
+      new_text = "##{floor}楼 @#{login} "
+    else
+      new_text = ''
     if reply_body.val().trim().length == 0
       new_text += ''
     else
@@ -288,32 +293,35 @@ window.TopicView = Backbone.View.extend
 
 
   bookmark : (e) ->
-    link = $(e.currentTarget)
-    topic_id = link.data("id")
-    if link.hasClass("followed")
+    target = $(e.currentTarget)
+    topic_id = target.data("id")
+    link = $(".bookmark[data-id='#{topic_id}']")
+
+    if link.hasClass("active")
       $.ajax
         url : "/topics/#{topic_id}/unfavorite"
         type : "DELETE"
-      link.attr("title","收藏").removeClass("followed")
+      link.attr("title","收藏").removeClass("active")
     else
       $.post "/topics/#{topic_id}/favorite"
-      link.attr("title","取消收藏").addClass("followed")
+      link.attr("title","取消收藏").addClass("active")
     false
 
   follow : (e) ->
-    link = $(e.currentTarget)
-    topic_id = link.data("id")
-    followed = link.data("followed")
-    if followed
+
+    target = $(e.currentTarget)
+    topic_id = target.data("id")
+    link = $(".follow[data-id='#{topic_id}']")
+    if link.hasClass("active")
       $.ajax
         url : "/topics/#{topic_id}/unfollow"
         type : "DELETE"
-      link.data("followed", false).removeClass("followed")
+      link.removeClass("active")
     else
       $.ajax
         url : "/topics/#{topic_id}/follow"
         type : "POST"
-      link.data("followed", true).addClass("followed")
+      link.addClass("active")
     false
 
   submitTextArea : (e) ->
@@ -348,6 +356,17 @@ window.TopicView = Backbone.View.extend
     txtBox.focus()
     txtBox.trigger('click')
     return false
+
+  scrollPage: (e) ->
+    target = $(e.currentTarget)
+    moveType = target.data('type')
+    opts =
+      scrollTop: 0
+    if moveType == 'bottom'
+      opts.scrollTop = $('body').height()
+    $("body, html").animate(opts, 300)
+    return false
+
 
   initComponents : ->
     $("textarea.topic-editor").unbind "keydown.cr"
