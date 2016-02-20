@@ -1378,7 +1378,7 @@ else
 	// The default text that appears in the dialog input box when entering
 	// links.
 	var imageDefaultText = "http://";
-	var linkDefaultText = "http://";
+	var linkDefaultText = "请输入链接地址";
 
 	var defaultHelpHoverTitle = "Markdown Editing Help";
 
@@ -2427,11 +2427,13 @@ else
 			// The input text box
 			input = doc.createElement("input");
 			input.type = "text";
-			input.value = defaultInputText;
+			input.placeholder = defaultInputText;
 			input.className = "form-control";
 			style = input.style;
 			style.display = "block";
 			style.width = "80%";
+            style.border="1px solid #ccc";
+            style.paddingLeft="2px";
 			style.marginLeft = style.marginRight = "auto";
 			form.appendChild(input);
 
@@ -2440,14 +2442,14 @@ else
 			okButton.className = "btn btn-primary";
 			okButton.type = "button";
 			okButton.onclick = function () { return close(false); };
-			okButton.innerHTML = "OK";
+			okButton.innerHTML = "确定";
 
 			// The cancel button
 			var cancelButton = doc.createElement("button");
 			cancelButton.className = "btn btn-danger";
 			cancelButton.type = "button";
 			cancelButton.onclick = function () { return close(true); };
-			cancelButton.innerHTML = "Cancel";
+			cancelButton.innerHTML = "取消";
 
 			footer.appendChild(okButton);
 			footer.appendChild(cancelButton);
@@ -2714,36 +2716,36 @@ else
 			}
 
 			group1 = makeGroup(1);
-			buttons.bold = makeButton("wmd-bold-button", "Bold - Ctrl+B", "fa fa-bold", bindCommand("doBold"), group1);
-			buttons.italic = makeButton("wmd-italic-button", "Italic - Ctrl+I", "fa fa-italic", bindCommand("doItalic"), group1);
+			buttons.bold = makeButton("wmd-bold-button", "加粗 <strong> Ctrl+B", "fa fa-bold", bindCommand("doBold"), group1);
+			buttons.italic = makeButton("wmd-italic-button", "斜体 <em> Ctrl+I", "fa fa-italic", bindCommand("doItalic"), group1);
 
 			group2 = makeGroup(2);
-			buttons.link = makeButton("wmd-link-button", "Link - Ctrl+L", "fa fa-link", bindCommand(function (chunk, postProcessing) {
+			buttons.link = makeButton("wmd-link-button", "链接 <a> Ctrl+L", "fa fa-link", bindCommand(function (chunk, postProcessing) {
 				return this.doLinkOrImage(chunk, postProcessing, false);
 			}), group2);
-			buttons.quote = makeButton("wmd-quote-button", "Blockquote - Ctrl+Q", "fa fa-quote-left", bindCommand("doBlockquote"), group2);
+			buttons.quote = makeButton("wmd-quote-button", "引用 <blockquote> Ctrl+Q", "fa fa-quote-left", bindCommand("doBlockquote"), group2);
 			//buttons.code = makeButton("wmd-code-button", "Code Sample - Ctrl+K", "fa fa-code", bindCommand("doCode"), group2);
 			//buttons.image = makeButton("wmd-image-button", "Image - Ctrl+G", "fa fa-picture-o", bindCommand(function (chunk, postProcessing) {
 			//	return this.doLinkOrImage(chunk, postProcessing, true);
 			//}), group2);
 
 			group3 = makeGroup(3);
-			buttons.olist = makeButton("wmd-olist-button", "Numbered List - Ctrl+O", "fa fa-list-ol", bindCommand(function (chunk, postProcessing) {
+			buttons.olist = makeButton("wmd-olist-button", "数字列表 <ol> Ctrl+O", "fa fa-list-ol", bindCommand(function (chunk, postProcessing) {
 				this.doList(chunk, postProcessing, true);
 			}), group3);
-			buttons.ulist = makeButton("wmd-ulist-button", "Bulleted List - Ctrl+U", "fa fa-list-ul", bindCommand(function (chunk, postProcessing) {
+			buttons.ulist = makeButton("wmd-ulist-button", "普通列表 <ul> Ctrl+U", "fa fa-list-ul", bindCommand(function (chunk, postProcessing) {
 				this.doList(chunk, postProcessing, false);
 			}), group3);
-			buttons.heading = makeButton("wmd-heading-button", "Heading - Ctrl+H", "fa fa-header", bindCommand("doHeading"), group3);
-			buttons.hr = makeButton("wmd-hr-button", "Horizontal Rule - Ctrl+R", "fa fa-ellipsis-h", bindCommand("doHorizontalRule"), group3);
+			buttons.heading = makeButton("wmd-heading-button", "标题 <h1>/<h2> Ctrl+H", "fa fa-header", bindCommand("doHeading"), group3);
+			buttons.hr = makeButton("wmd-hr-button", "分割线 <hr> Ctrl+R", "fa fa-ellipsis-h", bindCommand("doHorizontalRule"), group3);
 
 			group4 = makeGroup(4);
-			buttons.undo = makeButton("wmd-undo-button", "Undo - Ctrl+Z", "fa fa-undo", null, group4);
+			buttons.undo = makeButton("wmd-undo-button", "撤销 - Ctrl+Z", "fa fa-undo", null, group4);
 			buttons.undo.execute = function (manager) { if (manager) manager.undo(); };
 
 			var redoTitle = /win/.test(nav.platform.toLowerCase()) ?
-				"Redo - Ctrl+Y" :
-				"Redo - Ctrl+Shift+Z"; // mac and other non-Windows platforms
+				"重做 - Ctrl+Y" :
+				"重做 - Ctrl+Shift+Z"; // mac and other non-Windows platforms
 
 			buttons.redo = makeButton("wmd-redo-button", redoTitle, "fa fa-rotate-right", null, group4);
 			buttons.redo.execute = function (manager) { if (manager) manager.redo(); };
@@ -3033,7 +3035,7 @@ else
 					ui.prompt('Insert Image', imageDialogText, imageDefaultText, linkEnteredCallback);
 			}
 			else {
-				ui.prompt('Insert Link', linkDialogText, linkDefaultText, linkEnteredCallback);
+				ui.prompt('插入链接', "", linkDefaultText, linkEnteredCallback);
 			}
 			return true;
 		}
