@@ -16,7 +16,7 @@
   <%= render "editor_toolbar" %>
 
   <div class="form-group">
-    <%= f.text_area :body, class: "topic-editor form-control closewarning", rows: 20 %>
+    <%= f.text_area :body, id: "topic-editor-textarea", class: "topic-editor form-control closewarning", rows: 20 %>
   </div>
 
   <% if @topic.new_record? %>

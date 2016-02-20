@@ -26,6 +26,7 @@
 #= require turbolinks
 #= require google_analytics
 #= require polls
+#= require jquery.pagedown-bootstrap.combined
 #= require_self
 
 AppView = Backbone.View.extend
@@ -58,6 +59,9 @@ AppView = Backbone.View.extend
       window._noteView = new NoteView({parentView: @})
 
     $('#user_skill_list').tokenfield()
+    $("textarea#topic-editor-textarea").pagedownBootstrap()
+
+
 
   initComponents: () ->
     $("abbr.timeago").timeago()

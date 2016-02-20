@@ -242,6 +242,7 @@ window.TopicView = Backbone.View.extend
     preview_box.hide()
 
     $(".edit a",switcher).click ->
+      $(".wmd-panel").show();
       $(".preview",switcher).removeClass("active")
       $(this).parent().addClass("active")
       $(preview_box).hide()
@@ -249,6 +250,7 @@ window.TopicView = Backbone.View.extend
       return false
 
     $(".preview a",switcher).click ->
+      $(".wmd-panel").hide();
       $(".edit",switcher).removeClass("active")
       $(this).parent().addClass("active")
       $(preview_box).show()
