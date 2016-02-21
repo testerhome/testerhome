@@ -19,11 +19,12 @@ module TesterHome
 
     config.time_zone = 'Beijing'
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+    # The default locale is :zh-CN and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = 'zh-CN'
     config.i18n.available_locales = ['zh-CN', 'en', 'zh-TW']
     config.i18n.fallbacks = true
+    config.middleware.use I18n::JS::Middleware
 
     config.autoload_paths << Rails.root.join("app/api")
     config.autoload_paths << Rails.root.join('lib')

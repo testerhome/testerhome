@@ -27,6 +27,9 @@
 #= require google_analytics
 #= require polls
 #= require jquery.pagedown-bootstrap.combined
+#= require i18n
+#= require i18n.js
+#= require i18n/translations
 #= require_self
 
 AppView = Backbone.View.extend
