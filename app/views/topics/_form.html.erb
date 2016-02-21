@@ -16,7 +16,15 @@
   <%= render "editor_toolbar" %>
 
   <div class="form-group">
-    <%= f.text_area :body, id: "topic-editor-textarea", class: "topic-editor form-control closewarning", rows: 20 %>
+    <%= f.text_area :body, placeholder: "1. 描述清楚你的主题
+
+2. 贴上相关代码，请使用代码块
+
+3. 贴上相关信息
+
+4. 贴上相关截图（代码，请不要用截图）
+
+5. 已经尝试过哪些方法仍然没解决（附上相关链接）" , id: "topic-editor-textarea", class: "topic-editor form-control closewarning", rows: 20 %>
   </div>
 
   <% if @topic.new_record? %>
