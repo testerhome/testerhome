@@ -19,6 +19,7 @@ gem 'dropzonejs-rails'
 
 gem 'actionpack-action_caching', '1.1.1'
 gem 'rails-i18n'
+gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
 gem 'rails_autolink', '>= 1.1.0'
 gem 'md_emoji', '1.0.2'
