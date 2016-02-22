@@ -28,7 +28,5 @@
 fallbacks: :default_locale
 
 translations:
-#- file: 'app/assets/javascripts/jquery.pagedown-bootstrap.combined.js'
-#  only: '*'
-- file: "app/assets/javascripts/%{locale}.js"
-  only: '*'
+- file: "app/assets/javascripts/i18n/%{locale}.js"
+  only: '*.topics.*'

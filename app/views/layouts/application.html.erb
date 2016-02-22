@@ -99,6 +99,9 @@
       App.root_url = "<%= root_url %>";
       App.asset_url = "<%= Setting.upload_url %>";
       App.locale = "<%= I18n.locale %>";
+      I18n.defaultLocale = "<%= I18n.default_locale %>";
+      I18n.locale = "<%= I18n.locale %>";
+      I18n.fallbacks = true;
       <% if current_user %>
       App.current_user_id = <%= current_user.id %>;
       App.access_token = "<%= current_user.temp_access_token %>";
