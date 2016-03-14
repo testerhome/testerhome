@@ -98,6 +98,10 @@ SiteConfig.save_default('twitter_page_html', %(
 </div>
 ))
 
+SiteConfig.save_default('apns_pem', '')
+
+SiteConfig.save_default('blacklist_ips', '')
+
 # ========================= init Section, Node =========================
 
 s1 = Section.create(:name => "Ruby")

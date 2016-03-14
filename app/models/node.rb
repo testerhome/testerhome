@@ -1,4 +1,5 @@
 class Node < ApplicationRecord
+  acts_as_cached version: 1, expires_in: 1.week
 
   delegate :name, to: :section, prefix: true, allow_nil: true
 
@@ -22,7 +23,7 @@ class Node < ApplicationRecord
   # Markdown 转换过后的 HTML
   def summary_html
     Rails.cache.fetch("#{cache_key}/summary_html") do
-      MarkdownConverter.convert(summary)
+      MarkdownTopicConverter.convert(summary)
     end
   end
 

@@ -1,27 +1,6 @@
 GIT
-  remote: git://github.com/MiniProfiler/rack-mini-profiler.git
-  revision: cb7a6cf4d4cd7febb587bcffb4719233034c331b
-  specs:
-    rack-mini-profiler (0.9.8)
-      rack (>= 1.2.0)
-
-GIT
-  remote: git://github.com/doorkeeper-gem/doorkeeper.git
-  revision: 56bfa579484ae9e554028b081227ec8d1b74c21d
-  specs:
-    doorkeeper (3.1.0)
-      railties (>= 4.2)
-
-GIT
-  remote: git://github.com/rails/turbolinks.git
-  revision: dd31f4b2996f2300631f89339ada82c65b95f4c2
-  specs:
-    turbolinks (3.0.0)
-      coffee-rails
-
-GIT
-  remote: git://github.com/sinatra/sinatra.git
-  revision: f8d4e9b332c15c22cbe8bad32aefbeeaaaed1e3f
+  remote: https://github.com/sinatra/sinatra.git
+  revision: 4c7d38eb1b2cc02ce51029f28e0c3c34ca12ccfd
   specs:
     sinatra (2.0.0.pre.alpha)
       rack (= 2.0.0.alpha)
@@ -36,8 +15,15 @@ GIT
       coffee-rails
       sass-rails
 
+GIT
+  remote: https://github.com/turbolinks/turbolinks-classic.git
+  revision: 37a7c296232d20a61bd1946f600da7f2009189db
+  specs:
+    turbolinks (3.0.0)
+      coffee-rails
+
 GEM
-  remote: https://ruby.taobao.org/
+  remote: http://gems.ruby-china.org/
   specs:
     actioncable (5.0.0.beta2)
       actionpack (= 5.0.0.beta2)
@@ -164,6 +150,8 @@ GEM
     devise-encryptable (0.2.0)
       devise (>= 2.1.0)
     diff-lcs (1.2.5)
+    doorkeeper (4.0.0.rc2)
+      railties (>= 4.2)
     doorkeeper-i18n (3.0.0)
     dropzonejs-rails (0.7.2)
       rails (> 3.1)
@@ -278,9 +266,9 @@ GEM
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
-    omniauth-github (1.0.1)
+    omniauth-github (1.1.2)
       omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
+      omniauth-oauth2 (~> 1.1)
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -290,7 +278,7 @@ GEM
     parser (2.3.0.2)
       ast (~> 2.2)
     pg (0.18.4)
-    phantomjs (1.9.8.0)
+    phantomjs (2.1.1.0)
     posix-spawn (0.3.11)
     postmark (1.7.0)
       json
@@ -299,12 +287,16 @@ GEM
       actionmailer (>= 3.0.0)
       postmark (~> 1.7.0)
     powerpack (0.1.1)
-    puma (2.16.0)
+    puma (3.1.0)
     rack (2.0.0.alpha)
       json
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-attack (4.4.1)
+      rack
     rack-cors (0.4.0)
+    rack-mini-profiler (0.9.9.2)
+      rack (>= 1.2.0)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
     rack-protection (1.5.3)
@@ -325,8 +317,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 5.0.0.beta2)
       sprockets-rails (>= 2.0.0)
-    rails-controller-testing (0.0.3)
-      rails (>= 4.2)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -382,6 +372,8 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
     ruby-progressbar (1.7.5)
+    ruby-push-notifications (0.3.1)
+      builder (~> 3.0)
     rucaptcha (0.3.2)
       posix-spawn (>= 0.3.0)
     rvm-capistrano (1.4.1)
@@ -393,6 +385,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    second_level_cache (2.2.2)
+      activerecord (>= 5.0.0.beta1, < 5.1.0)
+      activesupport (>= 5.0.0.beta1, < 5.1.0)
     settingslogic (2.0.9)
     sidekiq (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -452,7 +447,7 @@ DEPENDENCIES
   derailed
   devise (~> 4.0.0.rc1)
   devise-encryptable
-  doorkeeper!
+  doorkeeper (= 4.0.0.rc2)
   doorkeeper-i18n
   dropzonejs-rails
   elasticsearch-model
@@ -482,11 +477,11 @@ DEPENDENCIES
   postmark
   postmark-rails
   puma
+  rack-attack
   rack-cors
-  rack-mini-profiler!
+  rack-mini-profiler
   rack-utf8_sanitizer
   rails (= 5.0.0.beta2)
-  rails-controller-testing
   rails-i18n
   rails-settings-cached
   rails_autolink
@@ -497,9 +492,11 @@ DEPENDENCIES
   rouge (~> 1.8.0)
   rspec-rails (= 3.5.0.beta1)
   rubocop
+  ruby-push-notifications
   rucaptcha
   rvm-capistrano
   sass-rails
+  second_level_cache (= 2.2.2)
   settingslogic
   sidekiq
   simple_form

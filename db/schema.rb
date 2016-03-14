@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160126061903) do
+ActiveRecord::Schema.define(version: 20160302043713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,18 @@ ActiveRecord::Schema.define(version: 20160126061903) do
   add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
   add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "devices", force: :cascade do |t|
+    t.integer  "platform",        null: false
+    t.integer  "user_id",         null: false
+    t.string   "token",           null: false
+    t.datetime "last_actived_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "devices", ["user_id", "platform"], name: "index_devices_on_user_id_and_platform", using: :btree
+  add_index "devices", ["user_id"], name: "index_devices_on_user_id", using: :btree
 
   create_table "exception_logs", force: :cascade do |t|
     t.string   "title",      null: false
@@ -99,8 +111,8 @@ ActiveRecord::Schema.define(version: 20160126061903) do
     t.datetime "updated_at"
   end
 
-  add_index "notifications", ["read"], name: "index_notifications_on_read", using: :btree
   add_index "notifications", ["user_id", "read"], name: "index_notifications_on_user_id_and_read", using: :btree
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id",           null: false
@@ -201,8 +213,6 @@ ActiveRecord::Schema.define(version: 20160126061903) do
     t.datetime "updated_at"
   end
 
-  add_index "replies", ["deleted_at"], name: "index_replies_on_deleted_at", using: :btree
-  add_index "replies", ["topic_id", "deleted_at"], name: "index_replies_on_topic_id_and_deleted_at", using: :btree
   add_index "replies", ["topic_id"], name: "index_replies_on_topic_id", using: :btree
   add_index "replies", ["user_id"], name: "index_replies_on_user_id", using: :btree
 
@@ -246,8 +256,6 @@ ActiveRecord::Schema.define(version: 20160126061903) do
     t.datetime "updated_at"
   end
 
-  add_index "sites", ["deleted_at"], name: "index_sites_on_deleted_at", using: :btree
-  add_index "sites", ["site_node_id", "deleted_at"], name: "index_sites_on_site_node_id_and_deleted_at", using: :btree
   add_index "sites", ["site_node_id"], name: "index_sites_on_site_node_id", using: :btree
   add_index "sites", ["url"], name: "index_sites_on_url", using: :btree
 
@@ -277,11 +285,9 @@ ActiveRecord::Schema.define(version: 20160126061903) do
     t.datetime "updated_at"
   end
 
-  add_index "topics", ["deleted_at"], name: "index_topics_on_deleted_at", using: :btree
   add_index "topics", ["excellent"], name: "index_topics_on_excellent", using: :btree
   add_index "topics", ["last_active_mark"], name: "index_topics_on_last_active_mark", using: :btree
   add_index "topics", ["likes_count"], name: "index_topics_on_likes_count", using: :btree
-  add_index "topics", ["node_id", "deleted_at"], name: "index_topics_on_node_id_and_deleted_at", using: :btree
   add_index "topics", ["node_id"], name: "index_topics_on_node_id", using: :btree
   add_index "topics", ["suggested_at"], name: "index_topics_on_suggested_at", using: :btree
   add_index "topics", ["user_id"], name: "index_topics_on_user_id", using: :btree
