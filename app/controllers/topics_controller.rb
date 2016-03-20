@@ -280,7 +280,7 @@ class TopicsController < ApplicationController
   private
 
   def topic_params
-    params.require(:topic).permit(:title, :body, :node_id)
+    params.require(:topic).permit(:title, :body, :node_id, :cannot_be_shared)
   end
 
   def topic_owner
