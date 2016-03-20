@@ -68,7 +68,7 @@ class PagesController < ApplicationController
   end
 
   def update
-    @page = Page.find(params[:id])
+    @page = Page.find_by_slug(params[:id])
     @page.version_enable = true
     @page.user_id = current_user.id
 
