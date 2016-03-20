@@ -35,6 +35,7 @@
     node_recent_topics: "节点下其他话题"
     have_no_avatar: "你还未设置头像，不能发布新话题。"
     real_name: "显示名字"
+    cannot_be_shared: "保留所有权利，禁止转载"
     editor:
       link_default_text: "请输入链接地址"
       ok: "确定"

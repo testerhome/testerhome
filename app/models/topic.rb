@@ -63,6 +63,9 @@ class Topic
   # 精华帖 0 否， 1 是
   field :excellent, type: Integer, default: 0
 
+  # 保留所有权利，禁止转载.默认不允许转载
+  field :cannot_be_shared, type: Mongoid::Boolean, default: true
+
   # 临时存储检测用户是否读过的结果
   attr_accessor :read_state, :admin_editing, :admin_deleting
 

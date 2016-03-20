@@ -43,12 +43,19 @@
         </div>
       <% end %>
 
+      <% if @topic.cannot_be_shared? %>
+          <div class="label-legal">
+            <i class="fa fa-legal"></i>「<%= t("topics.cannot_be_shared")%>」
+          </div>
+      <% end %>
+
       <div class="panel-footer clearfix">
         <%= render "buttons" %>
       </div>
     </div>
 
       <%= render partial: "ban_reason" %>
+      <%= render partial: "cannot_be_shared" %>
 
   <% if @replies.blank? %>
     <div class="no-result">

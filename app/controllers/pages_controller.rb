@@ -22,7 +22,7 @@ class PagesController < ApplicationController
         render_404
         return
       end
-      
+
       redirect_to new_page_path(title: params[:id]), notice: 'Page not Found, Please create a new page'
       return
     end
@@ -36,8 +36,8 @@ class PagesController < ApplicationController
     if @page.blank?
       render_404
     end
-    
-    
+
+
   end
 
   def new
@@ -51,7 +51,7 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @page = Page.find(params[:id])
+    @page = Page.find_by_slug(params[:id])
     set_seo_meta t('pages.edit_wiki_page')
   end
 

@@ -24,16 +24,26 @@
 
 4. 贴上相关截图（代码，请不要用截图）
 
-5. 已经尝试过哪些方法仍然没解决（附上相关链接）" , id: "topic-editor-textarea", class: "topic-editor form-control closewarning", rows: 20 %>
+5. 已经尝试过哪些方法仍然没解决（附上相关链接）
+
+6. 我们是原创社区,鼓励原创,如果转发请得到原作者同意并注明出处
+
+" , id: "topic-editor-textarea", class: "topic-editor form-control closewarning", rows: 20 %>
   </div>
 
   <% if @topic.new_record? %>
     <%= render partial: "polls/form" %>
   <% end %>
 
-  <div class="form-group">
-    <%= f.submit t("common.save"), class: "btn btn-primary col-xs-2", 'data-disable-with' => t("common.saving") %>
+    <span class="help-inline">
+                    <label>
+                      <%= f.check_box :cannot_be_shared %>  <%= t("topics.cannot_be_shared")%>
+                    </label>
+                  </span>
 
+
+    <div class="form-group">
+    <%= f.submit t("common.save"), class: "btn btn-primary col-xs-2", 'data-disable-with' => t("common.saving") %>
     <div class="pull-right"><a href="/markdown" target="_blank"><i class="fa fa-tip"></i> 排版说明</a></div>
   </div>
 <% end %>

@@ -34,6 +34,8 @@
     more_like_this: "相關帖子"
     node_recent_topics: "節點下其他話題"
     have_no_avatar: "你還未設置頭像，不能創建新帖子。"
+    real_name: "显示名字"
+    cannot_be_shared: "保留所有权利，禁止转载"
     editor:
       link_default_text: "請輸入鏈接地址"
       ok: "確定"
