@@ -216,6 +216,7 @@ class TopicsController < ApplicationController
     end
     @topic.title = topic_params[:title]
     @topic.body = topic_params[:body]
+    @topic.cannot_be_shared = topic_params[:cannot_be_shared]
 
     if @topic.save
       redirect_to(topic_path(@topic.id), notice: t('topics.update_topic_success'))
