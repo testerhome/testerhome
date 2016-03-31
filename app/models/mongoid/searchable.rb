@@ -4,6 +4,7 @@ module Searchable
 
   included do
     include Elasticsearch::Model
+    include Elasticsearch::Model::Callbacks
 
     after_update do
       SearchIndexer.perform_later('index', self.class.name, self.id)
