@@ -44,12 +44,12 @@
 
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-search hidden-xs">
-            <form class="navbar-form form-search" action="/search" method="GET">
+            <form class="navbar-form form-search active" action="/search" method="GET">
               <div class="form-group">
                 <input class="form-control" name="q" type="text" value="<%= params[:q] %>" placeholder="搜索本站内容" />
               </div>
               <i class="fa btn-search fa-search"></i>
-              <i class="fa btn-close fa-times-circle"></i>
+              <!--<i class="fa btn-close fa-times-circle"></i>-->
             </form>
           </li>
           <% if current_user %>
