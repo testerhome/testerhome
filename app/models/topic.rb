@@ -222,7 +222,6 @@ class Topic
 
   def destroy
     super
-    SearchIndexer.perform('delete', 'topic', self.id)
     delete_notifiaction_mentions
   end
 

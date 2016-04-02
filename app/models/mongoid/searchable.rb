@@ -14,7 +14,6 @@ module Searchable
     end
 
     after_destroy do
-      Rails.logger.error("perform_later('delete')")
       SearchIndexer.perform('delete', self.class.name, self.id)
     end
   end

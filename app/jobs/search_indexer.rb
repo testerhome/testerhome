@@ -1,5 +1,7 @@
-class SearchIndexer
-  def self.perform(operation, type, id)
+class SearchIndexer < ActiveJob::Base
+  queue_as :search_indexer
+
+  def perform(operation, type, id)
     obj = nil
     type.downcase!
 
