@@ -4,18 +4,18 @@ module Searchable
 
   included do
     include Elasticsearch::Model
-    include Elasticsearch::Model::Callbacks
 
     after_update do
-      SearchIndexer.perform_later('index', self.class.name, self.id)
+      SearchIndexer.perform('index', self.class.name, self.id)
     end
 
     after_save do
-      SearchIndexer.perform_later('index', self.class.name, self.id)
+      SearchIndexer.perform('index', self.class.name, self.id)
     end
 
     after_destroy do
-      SearchIndexer.perform_later('delete', self.class.name, self.id)
+      Rails.logger.error("perform_later('delete')")
+      SearchIndexer.perform('delete', self.class.name, self.id)
     end
   end
 end

@@ -173,10 +173,6 @@ class Topic
     NotifyTopicJob.perform_later(id)
   end
 
-  after_update do
-    SearchIndexer.perform_later('update', 'topic', self.id)
-  end
-
   def followed?(uid)
     follower_ids.include?(uid)
   end
@@ -226,7 +222,7 @@ class Topic
 
   def destroy
     super
-    SearchIndexer.perform_later('delete', 'topic', self.id)
+    SearchIndexer.perform('delete', 'topic', self.id)
     delete_notifiaction_mentions
   end
 
