@@ -42,6 +42,23 @@
 
 </div>
 
+<% cache([@user, "user-skill"]) do %>
+    <% if !@user.skills.blank? %>
+
+        <div class="panel panel-default user-skills">
+          <div class="panel-heading">个人技能</div>
+          <div class="panel-body">
+            <ul class="nav nav-pills" role="tablist">
+              <% @user.skills.each do |skill,count| %>
+                  <li><span class="label label-info label-skill"><%=skill%></span></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+<%end%>
+
+
 <% cache([@user, "bio-markdown"]) do %>
   <% if !@user.bio.blank? %>
     <div class="panel panel-default bio">

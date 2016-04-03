@@ -29,6 +29,8 @@ gem 'doorkeeper', '4.0.0.rc2'
 gem 'doorkeeper-i18n'
 
 gem "i18n-js", ">= 3.0.0.rc11"
+gem 'bootstrap_tokenfield_rails'
+
 
 # gem 'rails-perftest'
 # gem 'ruby-prof'

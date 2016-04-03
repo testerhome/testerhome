@@ -27,6 +27,8 @@
 #= require i18n
 #= require i18n.js
 #= require i18n/translations
+#= require bootstrap-tokenfield
+#= require jquery.pagedown-bootstrap.combined
 #= require_self
 
 AppView = Backbone.View.extend
@@ -58,6 +60,9 @@ AppView = Backbone.View.extend
 
     if $('body').data('controller-name') in ['notes']
       window._noteView = new NoteView({parentView: @})
+
+    $('#user_skill_list').tokenfield()
+    $("textarea#topic-editor-textarea").pagedownBootstrap()
 
   initComponents: () ->
     $("abbr.timeago").timeago()
