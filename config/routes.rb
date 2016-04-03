@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # Serve websocket cable requests in-process
-  mount ActionCable.server => '/cable'
   mount RuCaptcha::Engine => "/rucaptcha"
 
   use_doorkeeper do
@@ -39,12 +38,7 @@ Rails.application.routes.draw do
   delete 'account/auth/:provider/unbind' => 'users#auth_unbind', as: 'unbind_account'
   post 'account/update_private_token' => 'users#update_private_token', as: 'update_private_token_account'
 
-  resources :notifications, only: [:index, :destroy] do
-    collection do
-      post :clear
-      get :unread
-    end
-  end
+  mount Notifications::Engine => '/notifications'
 
   resources :nodes do
     member do

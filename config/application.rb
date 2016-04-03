@@ -51,6 +51,11 @@ module TesterHome
       Doorkeeper::AuthorizedApplicationsController.layout 'simple'
     end
 
+    config.action_cable.log_tags = [
+        :action_cable,
+        -> request { request.uuid }
+    ]
+
     config.cache_store = [:dalli_store, '127.0.0.1', { namespace: 'th', compress: true }]
 
     config.active_job.queue_adapter = :sidekiq

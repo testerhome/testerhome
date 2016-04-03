@@ -48,6 +48,8 @@ gem 'mongo', require: false
 gem 'devise', '~> 4.0.0.rc1'
 gem 'devise-encryptable'
 
+gem 'notifications'
+
 # 分页
 gem 'will_paginate'
 
@@ -144,7 +146,6 @@ group :development, :test do
 
   gem 'jasmine-rails', '~> 0.10.2'
 
-  gem 'colorize'
   gem 'letter_opener'
 
   gem 'bundler-audit', require: false

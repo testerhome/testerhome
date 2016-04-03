@@ -11,7 +11,7 @@ module Mentionable
 
   # Wait for https://github.com/mongoid/mongoid/commit/2f94b5fab018b22a9e84ac2e988d4a3cf97e7f2e
   def delete_notifiaction_mentions
-    Notification::Mention.where(mentionable_id: id, mentionable_type: self.class.name).delete_all
+    Notification.where(notify_type: 'mention', target: self).delete_all
   end
 
   def mentioned_users
@@ -39,7 +39,14 @@ module Mentionable
 
   def send_mention_notification
     (mentioned_users - no_mention_users).each do |user|
-      Notification::Mention.create user: user, mentionable: self
+      opts = {
+          notify_type: 'mention',
+          actor_id: self.user_id,
+          user_id: user.id,
+          target: self
+      }
+      opts[:second_target] = self.send(:topic) if self.class.name == 'Reply'
+      Notification.create(opts)
     end
   end
 end
