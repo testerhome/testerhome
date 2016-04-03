@@ -33,6 +33,7 @@
     have_no_avatar: "You can't create a new Topic, before you upload a avatar."
     has_new_replies: "contains new reply."
     real_name: "not Anonymous"
+    cannot_be_shared: "All right reserved, any unauthorized reproduction or transfer is prohibitted"
     editor:
       link_default_text: "http://"
       ok: "OK"
