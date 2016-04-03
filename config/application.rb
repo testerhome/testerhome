@@ -32,6 +32,7 @@ module TesterHome
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.i18n.fallbacks = true
+    config.middleware.use I18n::JS::Middleware
 
     config.autoload_paths.push(*%W(#{config.root}/lib))
     config.eager_load_paths.push(*%W(#{config.root}/lib/exception_notifier))

@@ -24,6 +24,9 @@
 #= require notes
 #= require turbolinks
 #= require google_analytics
+#= require i18n
+#= require i18n.js
+#= require i18n/translations
 #= require_self
 
 AppView = Backbone.View.extend
