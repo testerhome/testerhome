@@ -27,6 +27,29 @@ class User < ApplicationRecord
   has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
   has_many :devices
 
+  mapping do
+    indexes :login
+    indexes :name
+    indexes :email
+    indexes :twitter
+    indexes :tagline
+    indexes :bio
+    indexes :location
+    indexes :company
+  end
+
+  def as_indexed_json(options={})
+    {
+        login: self.login,
+        name: self.name,
+        type_order: self.type_order
+    }
+  end
+
+  def type_order
+    10
+  end
+
   attr_accessor :password_confirmation
 
   ACCESSABLE_ATTRS = [:name, :email_public, :location, :company, :bio, :website, :github, :twitter,

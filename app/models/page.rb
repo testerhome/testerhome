@@ -19,6 +19,26 @@ class Page < ApplicationRecord
   validates :slug, format: /\A[a-z0-9\-_]+\z/
   validates :slug, uniqueness: true
 
+  mapping do
+    indexes :title
+    indexes :body
+    indexes :slug
+  end
+
+
+  def as_indexed_json(options={})
+    {
+        slug: self.slug,
+        title: self.title,
+        body: self.body,
+        type_order: self.type_order
+    }
+  end
+
+  def type_order
+    5
+  end
+
   before_save :append_editor
   def append_editor
     unless editor_ids.include?(user_id.to_i)

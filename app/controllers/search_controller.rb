@@ -2,6 +2,7 @@ class SearchController < ApplicationController
   def index
     search_params = {
         sort: [
+            {type_order: {order: "desc", ignore_unmapped: true}},
             {updated_at: {order: "desc", ignore_unmapped: true}},
             {excellent: {order: "desc", ignore_unmapped: true}}
         ],
@@ -20,6 +21,6 @@ class SearchController < ApplicationController
             fields: {title: {}, body: {}, name: {}, login: {}}
         }
     }
-    @result = Elasticsearch::Model.search(search_params, [Topic, User, Page]).paginate(page: params[:page], per_page: 30)
+    @result = Elasticsearch::Model.search(search_params, [User, Page, Topic]).paginate(page: params[:page], per_page: 30)
   end
 end

@@ -69,10 +69,17 @@ class Topic < ApplicationRecord
 
   def as_indexed_json(options={})
     {
-      title: self.title,
-      body: self.full_body,
-      node_name: self.node_name
+        title: self.title,
+        body: self.full_body,
+        node_name: self.node_name,
+        updated_at: self.updated_at,
+        excellent: self.excellent,
+        type_order: self.type_order
     }
+  end
+
+  def type_order
+    1
   end
 
   def self.fields_for_list
