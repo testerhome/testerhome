@@ -199,7 +199,7 @@ class Topic
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)
-    self.__elasticsearch__.index_document
+    self.__elasticsearch__.update_document
     self.save
   end
 
