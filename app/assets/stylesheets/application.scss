@@ -209,10 +209,10 @@ body {
     .control-label.checkbox { text-align: left; }
     .form-control {
       font-size: 12px;
-      border: none;
+      border:none;
       width: 0px;
       height: 100%;
-      padding: 6px 1px 4px 1px;
+      padding:6px 1px 4px 1px;
       margin-left: 4px;
       background: transparent;
       transition: all .3s;
@@ -357,35 +357,26 @@ a {
   }
 }
 
+.control-label { color: #333; font-weight: normal; }
+.control-label.checkbox { text-align: left; }
 .form-control {
-  border-radius: 0px;
-  border-color: #D5DCE1;
-  border: 0px;
-  border-bottom: 1px solid #D5DCE1;
-  box-shadow: inset 0 0px 0px #fff !important;
-  padding: 6px 0px 6px 0;
-  transition: none;
-  &:focus {
-    box-shadow: inset 0 0px 0px #fff;
-    padding: 6px 0px 5px 0;
-    border-bottom: 2px solid $blueLight;
-  }
+  border-radius: 3px;
+  border-color: #ddd;
+  box-shadow: inset 0 0 0px rgba(0,0,0, 0) !important;
+  transition:none;
+  &:focus { box-shadow: inset 0 0px 0px #fff; border-color: $blueLight; }
   &[disabled], &[readonly] {
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    background: #f9f9f9;
+    background: #f0f0f0;
   }
 }
-
+textarea.form-control {border-radius: 0px;}
 textarea.form-control,
 #preview.form-control { border: 1px solid #D5DCE1; }
-#preview.form-control {
-  border: 1px solid #D5DCE1;
-}
 
 textarea.form-control,
 #preview.form-control,
 textarea.form-control:focus { padding: 6px; border-bottom-width: 1px; }
+#preview.form-control { display:none; }
 
 .editor-toolbar {
   .nav-pills {

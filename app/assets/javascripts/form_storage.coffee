@@ -1,6 +1,6 @@
 @FormStorage =
   key: (element) ->
-    "#{location.pathname} #{$(element).prop('id')}"
+    "#{location.pathname} #{$(element).prop('identify')}"
 
   init: ->
     if window.localStorage
