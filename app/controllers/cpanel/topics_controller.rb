@@ -48,8 +48,14 @@ class Cpanel::TopicsController < Cpanel::ApplicationController
   end
 
   def undestroy
-    @topic = Topic.unscoped.find(params[:id])
-    @topic.update_attribute(:deleted_at, nil)
+    begin
+      @topic = Topic.unscoped.find(params[:id])
+      @topic.update_attribute(:deleted_at, nil)
+    rescue => e
+      puts "do nothing"
+    ensure
+      @topic.__elasticsearch__.index_document
+    end
     redirect_to(cpanel_topics_path)
   end
 

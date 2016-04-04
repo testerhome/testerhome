@@ -199,8 +199,7 @@ class Topic
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)
-    # Reindex Search document
-    SearchIndexer.perform_later('update', 'topic', self.id)
+    self.__elasticsearch__.index_document
     self.save
   end
 
