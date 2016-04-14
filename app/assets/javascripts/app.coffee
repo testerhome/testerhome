@@ -30,8 +30,8 @@
 #= require i18n
 #= require i18n.js
 #= require i18n/translations
-#= require cal-heatmap.min
 #= require d3.min
+#= require cal-heatmap.min
 #= require_self
 
 AppView = Backbone.View.extend
