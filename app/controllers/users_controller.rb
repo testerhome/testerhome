@@ -3,7 +3,7 @@ require 'will_paginate/array'
 class UsersController < ApplicationController
   before_action :require_user, only: [:block, :unblock, :auth_unbind, :follow, :unfollow]
   before_action :find_user, only: [:show, :topics, :replies, :favorites, :notes,
-                                   :block, :unblock, :blocked,
+                                   :block, :unblock, :blocked, :calendar,
                                    :follow, :unfollow, :followers, :following]
 
   def index
@@ -29,6 +29,11 @@ class UsersController < ApplicationController
     @replies = @user.replies.fields_for_list.recent.paginate(page: params[:page], per_page: 20)
     set_seo_meta("#{@user.login} 的回复")
   end
+
+  def calendar
+    render json: @user.calendar_data
+  end
+
 
   def favorites
     @topic_ids = @user.favorite_topic_ids.reverse.paginate(page: params[:page], per_page: 40)

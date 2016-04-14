@@ -572,4 +572,24 @@ class User
   def to_param
     login
   end
+
+  def calendar_data
+    user = self
+    Rails.cache.fetch(["user", self.id, 'calendar_data', Date.today, 'by-months']) do
+      date_from = 12.months.ago.beginning_of_month.to_date
+      dates = (date_from..Date.today).to_a
+
+
+
+      replies = user.replies.where(:created_at.gte => date_from).group_by { |d| d.created_at.strftime("%Y-%m-%d")}
+      first_date = Date.parse(replies.keys.min)
+      date_replies_mapping = {}
+      (first_date..Date.today).map do |n_date|
+        day = n_date.strftime("%Y-%m-%d")
+        date_replies_mapping[day.to_time.to_i.to_s] = replies[day] ? replies[day].size : 0
+      end
+      date_replies_mapping
+    end
+  end
+
 end
