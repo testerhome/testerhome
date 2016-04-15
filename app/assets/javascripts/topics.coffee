@@ -1,5 +1,6 @@
 # TopicsController 下所有页面的 JS 功能
 window.Topics =
+  topic_id: null
   user_liked_reply_ids: []
 
 window.TopicView = Backbone.View.extend
@@ -17,6 +18,7 @@ window.TopicView = Backbone.View.extend
     "click .btn-move-page": "scrollPage"
     "click .topic-detail a.qrcode": "testerhome_qrcode"
     "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
+    "click .notify-updated .update": "updateReplies"
 
 
   initialize: (opts) ->
@@ -27,6 +29,15 @@ window.TopicView = Backbone.View.extend
     @initContentImageZoom()
     @initCloseWarning()
     @checkRepliesLikeStatus()
+    @initReplyNotificationSubscribe()
+    @resetClearReplyHightTimer()
+
+  resetClearReplyHightTimer: ->
+    clearTimeout(@clearHightTimer)
+    @clearHightTimer = setTimeout ->
+      $(".reply").removeClass("light")
+    , 10000
+
 
 
   initDropzone: ->
@@ -411,3 +422,30 @@ window.TopicView = Backbone.View.extend
     # polls
     if $('body').data('controller-name') is 'topics'
       Poll.setup()
+
+  initReplyNotificationSubscribe: () ->
+    return if not App.access_token?
+    return if App.access_token.length < 5
+    console.log 'initReplyNotificationSubscribe'
+    MessageBus.start()
+    MessageBus.callbackInterval = 1000
+    MessageBus.subscribe "/topics/" + Topics.topic_id, (json) ->
+      console.log 'receivedNotificationCount', json
+      if json.user_id == App.current_user_id
+        return false
+      if json.action == 'create'
+        if App.windowInActive
+          @updateReplies()
+        else
+          $(".notify-updated").show()
+    true
+
+  updateReplies: () ->
+    lastId = $("#replies .reply:last").data('id')
+    if(!lastId)
+      Turbolinks.visit(location.href)
+      return false
+    $.get "/topics/#{Topics.topic_id}/replies.js?last_id=#{lastId}", =>
+      $(".notify-updated").hide()
+      $("#new_reply textarea").focus()
+    false

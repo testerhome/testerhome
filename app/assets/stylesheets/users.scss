@@ -224,7 +224,7 @@ table.node-topics {
 }
 
 .user-activity-graph {
-  //overflow-x: scroll;
+  overflow-x: auto;
   text-align: center;
   svg { margin: 0 auto;
   }

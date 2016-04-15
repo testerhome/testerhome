@@ -76,6 +76,8 @@ class Reply
     topic = Topic.find_by_id(reply.topic_id)
     return if topic.blank?
 
+    MessageBus.publish "/topics/#{reply.topic_id}", { id: reply.id, user_id: reply.user_id, action: :create }
+
     notified_user_ids = reply.mentioned_user_ids
 
     # 给发帖人发回帖通知

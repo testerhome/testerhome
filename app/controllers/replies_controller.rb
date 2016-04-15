@@ -24,6 +24,19 @@ class RepliesController < ApplicationController
     end
   end
 
+  def index
+    last_id = params[:last_id].to_i
+    if last_id == 0
+      render text: ''
+      return
+    end
+
+    @replies = Reply.unscoped.where(:topic_id => @topic.id).where(:id.gt=>last_id).without_body.asc(:id).all
+    if current_user
+      current_user.read_topic(@topic)
+    end
+  end
+
   def edit
     @reply = Reply.find(params[:id])
   end

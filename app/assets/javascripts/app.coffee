@@ -37,6 +37,7 @@
 AppView = Backbone.View.extend
   el: "body"
   repliesPerPage: 50
+  windowInActive: true
 
   events:
     "click a.likeable": "likeable"
@@ -100,6 +101,9 @@ AppView = Backbone.View.extend
         $('[data-bs="popover"], [data-toggle="popover"]').each ->
           if !$(this).is(e.target) && $(this).has(e.target).length is 0 && $('.popover').has(e.target).length is 0
             $(this).popover('hide')
+
+    $(window).off "blur.inactive focus.inactive"
+    $(window).on "blur.inactive focus.inactive", @updateWindowActiveState
 
   initForDesktopView : () ->
     return if typeof(app_mobile) != "undefined"
@@ -248,6 +252,18 @@ AppView = Backbone.View.extend
       btn.addClass('active').attr("title", "")
       span.text("取消屏蔽")
     return false
+
+  updateWindowActiveState: (e) ->
+    prevType = $(this).data("prevType")
+
+    if prevType != e.type
+      switch (e.type)
+        when "blur"
+          @windowInActive = false
+        when "focus"
+          @windowInActive = true
+
+    $(this).data("prevType", e.type)
 
 
 window.App =
