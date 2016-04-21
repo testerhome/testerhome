@@ -85,7 +85,7 @@ Rails.application.routes.draw do
 
   get "/search" => "search#index", as: 'search'
 
-  namespace :cpanel do
+  namespace :admin do
     root to: "home#index"
     resources :site_configs
     resources :replies

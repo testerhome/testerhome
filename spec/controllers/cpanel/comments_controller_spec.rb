@@ -1,59 +1,57 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Cpanel::CommentsController do
-  let(:comment) { Factory :comment }
+describe Admin::CommentsController, type: :controller do
+  let(:user) {create :user}
+  let(:comment) { create :comment, user: user }
 
   before do
-    sign_in Factory(:admin)
+    sign_in create(:admin)
   end
 
-  describe "GET index" do
-    it "assigns all cpanel_comments as @comments" do
+  describe 'GET index' do
+    it 'should work' do
       comment
       get :index
-      assigns(:comments).should include(comment)
+      expect(response.status).to eq 200
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested comment as @comment" do
-      get :edit, :id => comment.id
-      assigns(:comment).should eq(comment)
+  describe 'GET edit' do
+    it 'assigns the requested comment as @comment' do
+      get :edit, params: { id: comment.id }
+      expect(response.status).to eq 200
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested comment" do
-        Comment.any_instance.should_receive(:update_attributes).with({'body' => 'params'})
-        put :update, :id => comment.id, :comment => {'body' => 'params'}
+  describe 'PUT update' do
+    describe 'with valid params' do
+      it 'updates the requested comment' do
+        comment_param = { body: '123' }
+        # expect_any_instance_of(Comment).to receive(:update_attributes).with("body" => '123')
+        put :update, params: { id: comment.id, comment: comment_param }
+        comment.reload
+        expect(comment.body).to eq '123'
       end
 
-      it "assigns the requested comment as @comment" do
-        put :update, :id => comment.id, :comment => {'body' => 'body'}
-        assigns(:comment).should eq(comment)
-      end
-
-      it "redirects to the comment" do
-        put :update, :id => comment.id, :comment => {'body' => 'body'}
-        response.should redirect_to(cpanel_comments_url)
+      it 'redirects to the comment' do
+        put :update, params: { id: comment.id, comment: { 'body' => 'body' } }
+        expect(response).to redirect_to(admin_comments_url)
       end
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested comment" do
+  describe 'DELETE destroy' do
+    it 'destroys the requested comment' do
       comment
-      expect {
-        delete :destroy, :id => comment.id
-      }.to change(Comment, :count).by(-1)
+      expect do
+        delete :destroy, params: { id: comment.id }
+      end.to change(Comment, :count).by(-1)
     end
 
-    it "redirects to the comments list" do
+    it 'redirects to the comments list' do
       comment
-      delete :destroy, :id => comment.id
-      response.should redirect_to(cpanel_comments_url)
+      delete :destroy, params: { id: comment.id }
+      expect(response).to redirect_to(admin_comments_url)
     end
   end
-
 end
