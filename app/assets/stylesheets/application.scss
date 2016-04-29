@@ -2,7 +2,6 @@
  *= require bootstrap.min
  *= require bootstrap-select.min
  *= require font-awesome.min
- *= require roboto
  *= require highlight
  *= require social-share-button
  *= require jquery.atwho
@@ -31,7 +30,7 @@
 body {
   background: #E7EAEC;
   color: $black;
-  font-family: "RobotoDraft", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
 }
 
 .header {
@@ -39,13 +38,14 @@ body {
     background-color: #FFF;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     border: 0px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: sans-serif;
     font-weight: bold;
     color: $blueText;
   }
 
   .navbar-brand {
     color: #666 !important;
+    font-family: sans-serif;
     font-weight: bold;
     b {
       color: $red;
@@ -1245,7 +1245,7 @@ img.emoji {
   font-size: 14px;
   text-overflow: ellipsis;
   word-wrap: break-word;
-  font-family: "RobotoDraft", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-family: sans-serif;
   img { max-width: 100%; }
   p,
   pre,
