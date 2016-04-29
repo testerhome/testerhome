@@ -37,7 +37,7 @@ module Admin
     end
 
     def update
-      @user = User.find_login!(params[:id])
+      @user = User.find_login(params[:id])
       @user.email = params[:user][:email]
       @user.login = params[:user][:login]
       @user.state = params[:user][:state]
