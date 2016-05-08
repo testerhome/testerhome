@@ -68,12 +68,7 @@
     <% if mobile? %>
         <div class="container">
           <form id="mobile-search-form" class="form-horizontal" action="/search" method="GET">
-            <div class="input-group">
-              <input class="form-control" name="q" type="text" value="<%= params[:q] %>" placeholder="搜索本站内容"/>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Go!</button>
-          </span>
-            </div>
+            <input class="form-control" name="q" type="text" value="<%= params[:q] %>" placeholder="搜索本站内容"/>
           </form>
         </div>
     <%end%>
