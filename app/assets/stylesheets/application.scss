@@ -250,7 +250,7 @@ body {
 }
 
 a {
-  color: $blue;
+  color: $black;
 }
 
 .btn {
@@ -1548,3 +1548,7 @@ footer {
 
 .dz-preview { display: none; }
 textarea.div-dropzone-focus { border-color: #BBE1C9; background: #fafafa; }
+
+#mobile-search-form {
+  margin-bottom: 20px;
+}
