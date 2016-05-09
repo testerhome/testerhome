@@ -1181,12 +1181,15 @@ img.emoji {
     .clean-button {
       margin-left: 10px;
     }
+    font-size: 16px;
+    line-height: 32px
   }
   .notification {
     position: relative;
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid $gray;
+    color: #999;
     &:last-child {
       margin-bottom: 0px;
       border-bottom: 0px;
@@ -1210,6 +1213,14 @@ img.emoji {
     .date {
       font-size: 12px;
       color: #aaa;
+    }
+    .media-content {
+      p:last-chind {
+        margin-bottom: 0;
+      }
+    }
+    .user-avatar {
+      img { width: 32px; height: 32px; border-radius: 120px; }
     }
   }
 }
