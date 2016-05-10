@@ -662,7 +662,7 @@ html.turbolinks-progress-bar::before {
 .avatar {
   .uface,
   .media-object {
-    border-radius: 3px;
+    border-radius: 120px;
   }
 }
 
@@ -1218,9 +1218,6 @@ img.emoji {
       p:last-chind {
         margin-bottom: 0;
       }
-    }
-    .user-avatar {
-      img { width: 32px; height: 32px; border-radius: 120px; }
     }
   }
 }

@@ -58,7 +58,7 @@ module UsersHelper
     end
 
     if link
-      link_to(raw(img), user_path(user), class: "user-avatar")
+      link_to(raw(img), user_path(user))
     else
       raw img
     end
