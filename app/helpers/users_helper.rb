@@ -157,5 +157,8 @@ module UsersHelper
     raw img
   end
 
+  def render_user_tagline(user)
+    user.tagline
+  end
 
 end
