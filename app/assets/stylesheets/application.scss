@@ -662,7 +662,7 @@ html.turbolinks-progress-bar::before {
 .avatar {
   .uface,
   .media-object {
-    border-radius: 3px;
+    border-radius: 120px;
   }
 }
 
@@ -1181,12 +1181,15 @@ img.emoji {
     .clean-button {
       margin-left: 10px;
     }
+    font-size: 16px;
+    line-height: 32px
   }
   .notification {
     position: relative;
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid $gray;
+    color: #999;
     &:last-child {
       margin-bottom: 0px;
       border-bottom: 0px;
@@ -1210,6 +1213,11 @@ img.emoji {
     .date {
       font-size: 12px;
       color: #aaa;
+    }
+    .media-content {
+      p:last-chind {
+        margin-bottom: 0;
+      }
     }
   }
 }
@@ -1245,7 +1253,7 @@ img.emoji {
   font-size: 14px;
   text-overflow: ellipsis;
   word-wrap: break-word;
-  font-family: sans-serif;
+  font-family: "PingFang SC","Hiragino Sans GB",Helvetica,Arial,"Source Han Sans CN",Roboto,"Heiti SC","Microsoft Yahei",sans-serif !important;
   img { max-width: 100%; }
   p,
   pre,

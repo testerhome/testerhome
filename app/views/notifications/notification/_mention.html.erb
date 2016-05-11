@@ -11,9 +11,6 @@
   </div>
   <div class="media-body">
     <div class="media-heading">
-      <span class="user">
-        <%= user_name_tag(reply.user) %>
-      </span>
       <span class="info">在 <%= topic_title_tag(topic, reply: reply) %> 提及你：</span>
       <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= timeago(notification.created_at) %></span>
 
@@ -22,7 +19,7 @@
       <% end %>
     </div>
     <%- if reply.present? -%>
-      <div class="summary markdown">
+      <div class="summary markdown media-content">
         <%= raw reply.body_html %>
       </div>
     <%- end -%>
@@ -47,7 +44,7 @@
       <% end %>
     </div>
     <%- if topic.present? -%>
-      <div class="summary markdown">
+      <div class="summary markdown media-content">
         <%= raw topic.body_html %>
       </div>
     <%- end -%>

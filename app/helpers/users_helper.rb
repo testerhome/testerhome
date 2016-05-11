@@ -64,23 +64,6 @@ module UsersHelper
     end
   end
 
-  def render_user_join_time(user)
-    I18n.l(user.created_at.to_date, format: :long)
-  end
-
-  def render_user_tagline(user)
-    user.tagline
-  end
-
-  def render_user_github_url(user)
-    link_to(user.github_url, user.github_url, target: '_blank', rel: 'nofollow')
-  end
-
-  def render_user_personal_website(user)
-    website = user.website[%r{^https?://}] ? user.website : 'http://' + user.website
-    link_to(website, website, target: '_blank', class: 'url', rel: 'nofollow')
-  end
-
   def render_user_level_tag(user)
     return '' if user.blank?
     level_class = case user.level
@@ -173,6 +156,4 @@ module UsersHelper
     img = image_tag(user.qrcode.url(user_qrcode_size_name_for_2x(size)), class: img_class)
     raw img
   end
-
-
 end

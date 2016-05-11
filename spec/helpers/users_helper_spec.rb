@@ -1,48 +1,34 @@
-# coding: utf-8
-require "spec_helper"
+require 'rails_helper'
 
-describe UsersHelper do
-  describe "user_avatar_width_for_size" do
-    it "should calculate avatar width correctly" do
-      helper.user_avatar_width_for_size(:normal).should == 48
-      helper.user_avatar_width_for_size(:small).should == 16
-      helper.user_avatar_width_for_size(:large).should == 64
-      helper.user_avatar_width_for_size(:big).should == 120
-      helper.user_avatar_width_for_size(233).should == 233
+describe UsersHelper, type: :helper do
+  describe 'user_avatar_width_for_size' do
+    it 'should calculate avatar width correctly' do
+      expect(helper.user_avatar_width_for_size(:normal)).to eq(48)
+      expect(helper.user_avatar_width_for_size(:small)).to eq(16)
+      expect(helper.user_avatar_width_for_size(:large)).to eq(96)
+      expect(helper.user_avatar_width_for_size(:big)).to eq(120)
+      expect(helper.user_avatar_width_for_size(233)).to eq(233)
     end
   end
 
-  describe "user_name_tag" do
-    it "should result right html in normal" do
-      user = Factory(:user)
-      helper.user_name_tag(user).should == link_to(user.login, user_path(user.login), 'data-name' => user.name)
+  describe 'user_name_tag' do
+    it 'should result right html in normal' do
+      user = create(:user)
+      expect(helper.user_name_tag(user)).to eq(link_to(user.login, user_path(user.login), 'data-name' => user.name))
     end
 
-    it "should result right html with string param and downcase url" do
-      login = "Monster"
-      helper.user_name_tag(login).should == link_to(login, user_path(login.downcase), 'data-name' => login)
+    it 'should result right html with string param and downcase url' do
+      login = 'Monster'
+      expect(helper.user_name_tag(login)).to eq(link_to(login, user_path(login), 'data-name' => login))
     end
 
-    it "should result empty with nil param" do
-      helper.user_name_tag(nil).should == "匿名"
-    end
-  end
-
-  describe "user personal website" do
-    let(:user) { Factory(:user, :website => 'http://example.com') }
-    subject { helper.render_user_personal_website(user) }
-
-    it { should == link_to(user.website, user.website, :target => "_blank", :class => "url", :rel => "nofollow") }
-
-    context "url without protocal" do
-      before { user.update_attribute(:website, 'example.com') }
-
-      it { should == link_to("http://" + user.website, "http://" + user.website, :class => "url", :target => "_blank", :rel => "nofollow") }
+    it 'should result empty with nil param' do
+      expect(helper.user_name_tag(nil)).to eq('匿名')
     end
   end
 
   describe '.render_user_level_tag' do
-    let(:user) { Factory(:user) }
+    let(:user) { create(:user) }
     subject { helper.render_user_level_tag(user) }
 
     it 'admin should work' do
@@ -58,6 +44,11 @@ describe UsersHelper do
     it 'hr should work' do
       allow(user).to receive(:hr?).and_return(true)
       is_expected.to eq '<span class="label label-success role">企业 HR</span>'
+    end
+
+    it 'blocked should work' do
+      allow(user).to receive(:blocked?).and_return(true)
+      is_expected.to eq '<span class="label label-warning role">禁言用户</span>'
     end
 
     it 'newbie should work' do

@@ -1,47 +1,4 @@
-<div class="panel panel-default userinfo">
-  <ul class="list-group vcard">
-
-    <% if !@user.company.blank? %>
-        <li class="adr list-group-item">
-          <label><%= t("users.company") %>:</label>
-          <span class="org"><%= @user.company %></span>
-        </li>
-    <% end %>
-
-    <% if !@user.email.blank? && @user.email_public %>
-        <li class="list-group-item">
-          <label>Email:</label>
-          <span><%= auto_link @user.email %></span>
-        </li>
-    <% end %>
-
-    <% if !@user.twitter.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.twitter") %>:</label>
-          <span><%= link_to "@#{@user.twitter}", @user.twitter_url, class: "twitter", rel: "nofollow" %></span>
-        </li>
-    <% end %>
-
-    <% if !@user.website.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.personal_website") %>:</label>
-          <span><%= render_user_personal_website(@user) %></span>
-        </li>
-    <% end %>
-
-    <% if !@user.tagline.blank? %>
-        <li class="list-group-item">
-          <label><%= t("users.signature") %>:</label>
-          <span><%= render_user_tagline(@user) %></span>
-        </li>
-    <% end %>
-
-    <li class="list-group-item">
-      <label><%= t("users.score") %>:</label>
-      <span><%= @user.score %></span>
-    </li>
-
-  </ul>
+<div class="panel panel-default userinfo">    
   <div class="panel-body">
     <div id="cal-heatmap" class="user-activity-graph"></div>
     <%
