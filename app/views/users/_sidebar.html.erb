@@ -1,117 +1,125 @@
 <div class="sidebar col-md-4">
-    <div class="panel profile panel-default">
-        <div class="panel-body">
-            <div class="media">
-                <div class="avatar media-left">
-                    <div class='image'><%= user_avatar_tag(@user,:big, link: false) %></div>
-                    <div class="level"><%= render_user_level_tag(@user) %></div>
-                </div>
-                <div class="media-body">
-                    <div class="item">
-                        <%= @user.fullname %>
-                        <span class="opts pull-right">
+  <div class="panel profile panel-default">
+    <div class="panel-body">
+      <div class="media">
+        <div class="avatar media-left">
+          <div class='image'>
+            <%= user_avatar_tag(@user, :big, link: false) %>
+          </div>
+          <div class="level">
+            <%= render_user_level_tag(@user) %>
+          </div>
+        </div>
+        <div class="media-body">
+          <div class="item">
+            <%= @user.fullname %>
+            <span class="opts pull-right">
               <% if admin? %>
                 <%= link_to icon_tag("pencil", label: "修改"), edit_admin_user_path(@user.id) %>
               <% end %>
             </span>
-                    </div>
-                    <div class="item number">
-                      第 <%= @user.id %> 位<%= t("menu.users")%> / <span title="注册日期"><%= @user.created_at.to_date %></span>
-                    </div>
+          </div>
+          <div class="item number">
+            第
+            <%= @user.id %> 位
+            <%= t("menu.users") %> / <span title="注册日期"><%= @user.created_at.to_date %></span>
+          </div>
           <% if !@user.company.blank? %>
-          <div class="item company">
-            <%= @user.company %>
-            <% if @user.location.present? %> @ <span title="所在地"><%= location_name_tag(@user.location) %></span><% end %>
-                    </div>
+              <div class="item company">
+                <%= @user.company %>
+                <% if @user.location.present? %> @ <span title="所在地"><%= location_name_tag(@user.location) %></span>
+                <% end %>
+              </div>
           <% end %>
-                    <div class="item counts">
-                        <span><%= @user.topics_count %></span> 篇帖子 • <span><%= @user.replies_count %></span> 条回帖
-                    </div>
+          <div class="item counts">
+            <span><%= @user.topics_count %></span> 篇帖子 • <span><%= @user.replies_count %></span> 条回帖
+            • <span><%= @user.score %></span>
+            <%= t("users.score") %>
+          </div>
           <div class="item social">
 
             <% if !@user.twitter.blank? %>
-              <%= link_to raw('<i class="fa fa-twitter"></i>'), @user.twitter_url, class: "twitter", rel: "nofollow" %>
+                <%= link_to raw('<i class="fa fa-twitter"></i>'), @user.twitter_url, class: "twitter", rel: "nofollow" %>
             <% end %>
 
             <% if !@user.website.blank? %>
-              <%= link_to(raw('<i class="fa fa-globe"></i>'), @user.website_url, target: '_blank', rel: 'nofollow') %>
+                <%= link_to(raw('<i class="fa fa-globe"></i>'), @user.website_url, target: '_blank', rel: 'nofollow') %>
             <% end %>
 
             <% if !@user.github.blank? %>
-              <%= link_to(raw('<i class="fa fa-github"></i>'), @user.github_url, target: '_blank', rel: 'nofollow') %>
+                <%= link_to(raw('<i class="fa fa-github"></i>'), @user.github_url, target: '_blank', rel: 'nofollow') %>
             <% end %>
 
             <% if !@user.email.blank? && @user.email_public %>
-              <a href="mailto: <%= @user.email %>"><i class="fa fa-envelope-o"></i></a>
+                <a href="mailto: <%= @user.email %>"><i class="fa fa-envelope-o"></i></a>
             <% end %>
           </div>
-                </div>
-            </div>
-            <div class="follow-info row">
-                <div class="col-sm-4 followers" data-login="<%= @user.login %>">
-                    <%= link_to @user.followers_count, followers_user_path(@user), class: "counter" %>
-                    <%= link_to "关注者", followers_user_path(@user), class: "text" %>
-                </div>
-                <div class="col-sm-4 following">
-                    <%= link_to @user.following_count, following_user_path(@user), class: "counter" %>
-                    <%= link_to "正在关注", following_user_path(@user), class: "text" %>
-                </div>
-                <div class="col-sm-4 stars">
-                    <%= link_to @user.favorite_topics_count, favorites_user_path(@user), class: "counter" %>
-                    <%= link_to "收藏", favorites_user_path(@user), class: "text" %>
-                </div>
-            </div>
-            <% if !owner? @user %>
-                <div class="buttons row">
-                    <div class="col-sm-6">
-                        <%= follow_user_tag(@user) %>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <%= block_user_tag(@user) %>
-                    </div>
-      </div>
-      <% end %>
-
-      <% if !@user.tagline.blank? %>
-      <div class="tagline row">
-        <%= @user.tagline %>
-                </div>
-            <% end %>
         </div>
-    </div>
-
-<% if not user.qrcode.blank? %>
-  <div class="panel panel-default" id="user_qrcode">
-      <div class="panel-heading">我的打赏二维码</div>
-      <div class="panel-body">
-          <%= user_qrcode_tag(@user,:large, link: false) %>
       </div>
-  </div>
-<% end %>
+      <% if !@user.tagline.blank? %>
+          <div class="tagline row">
+            <%= @user.tagline %>
+          </div>
+      <% end %>
+      <div class="follow-info row">
+        <div class="col-sm-4 followers" data-login="<%= @user.login %>">
+          <%= link_to @user.followers_count, followers_user_path(@user), class: "counter" %>
+          <%= link_to "关注者", followers_user_path(@user), class: "text" %>
+        </div>
+        <div class="col-sm-4 following">
+          <%= link_to @user.following_count, following_user_path(@user), class: "counter" %>
+          <%= link_to "正在关注", following_user_path(@user), class: "text" %>
+        </div>
+        <div class="col-sm-4 stars">
+          <%= link_to @user.favorite_topics_count, favorites_user_path(@user), class: "counter" %>
+          <%= link_to "收藏", favorites_user_path(@user), class: "text" %>
+        </div>
+      </div>
+      <% if current_user and !owner? @user %>
+          <div class="buttons row">
+            <div class="col-sm-6">
+              <%= follow_user_tag(@user) %>
+            </div>
 
-<div class="panel panel-default" id="user_github_repos">
+            <div class="col-sm-6">
+              <%= block_user_tag(@user) %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if not user.qrcode.blank? %>
+      <div class="panel panel-default" id="user_qrcode">
+        <div class="panel-heading">我的打赏二维码</div>
+        <div class="panel-body">
+          <%= user_qrcode_tag(@user, :large, link: false) %>
+        </div>
+      </div>
+  <% end %>
+
+  <div class="panel panel-default" id="user_github_repos">
     <% if not user.github.blank? %>
         <div class="panel-heading">GitHub Public Repos</div>
         <ul class="list-group">
-            <% user.github_repositories.each do |item| %>
-                <li class="list-group-item">
-                    <div class="title">
-                        <%= link_to truncate(item[:name], length: 25), item[:url], target: "_blank", rel: "nofollow" %>
-                        <span class="watchers" title="<%= item[:watchers] %> Watchers"><%= item[:watchers] %></span>
-                    </div>
-                    <p class="desc">
-                        <%= truncate(item[:description], length: 100)  %>
-                </li>
-            <% end %>
+          <% user.github_repositories.each do |item| %>
+              <li class="list-group-item">
+                <div class="title">
+                  <%= link_to truncate(item[:name], length: 25), item[:url], target: "_blank", rel: "nofollow" %>
+                  <span class="watchers" title="<%= item[:watchers] %> Watchers"><%= item[:watchers] %></span>
+                </div>
+                <p class="desc">
+                  <%= truncate(item[:description], length: 100) %>
+              </li>
+          <% end %>
         </ul>
         <div class="panel-footer more">
-            <%= link_to "More on GitHub", user.github_url, target: "_blank", rel: "nofollow" %>
+          <%= link_to "More on GitHub", user.github_url, target: "_blank", rel: "nofollow" %>
         </div>
     <% else %>
         <div class="panel-body">
-            未设置 GitHub 信息.
+          未设置 GitHub 信息.
         </div>
     <% end %>
-</div>
+  </div>
 </div>

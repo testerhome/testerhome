@@ -156,9 +156,4 @@ module UsersHelper
     img = image_tag(user.qrcode.url(user_qrcode_size_name_for_2x(size)), class: img_class)
     raw img
   end
-
-  def render_user_tagline(user)
-    user.tagline
-  end
-
 end
