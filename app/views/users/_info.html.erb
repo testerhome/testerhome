@@ -1,9 +1,12 @@
-<script src="//ruby-china-files.b0.upaiyun.com/assets/d3.min.js" data-turbolinks-track="true" type="text/javascript"></script>
-<script src="//ruby-china-files.b0.upaiyun.com/assets/cal-heatmap.min.js" data-turbolinks-track="true" type="text/javascript"></script>
-
 <div class="panel panel-default userinfo">
 
-
+    <% if !@user.tagline.blank? %>
+        <li class="list-group-item">
+          <label><%= t("users.signature") %>:</label>
+          <span><%= render_user_tagline(@user) %></span>
+        </li>
+    <% end %>
+    
     <li class="list-group-item">
       <label><%= t("users.score") %>:</label>
       <span><%= @user.score %></span>
