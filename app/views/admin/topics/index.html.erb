@@ -9,7 +9,8 @@
     <td>Node</td>
     <td>User</td>
     <td>Replies</td>
-    <td>at</td>
+    <td>At</td>
+    <td>Modified by admin</td>
     <td style="width:100px"></td>
   </tr>
 
@@ -28,6 +29,13 @@
       <% else %>
         <%= link_to topic.who_deleted, user_path(topic.who_deleted) if not topic.who_deleted.blank? %> 删除于 <br />
         <%= l topic.deleted_at, format: :long %>
+      <% end %>
+    </td>
+    <td>
+      <% if !topic.modified_admin.blank? %>
+        <%= link_to topic.modified_admin.login, user_path(topic.modified_admin.login) if not topic.modified_admin.blank? %>
+      <% else %>
+        无
       <% end %>
     </td>
     <td>
