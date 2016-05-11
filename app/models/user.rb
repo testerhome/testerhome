@@ -183,6 +183,10 @@ class User
     "https://github.com/#{self.github.split('/').last}"
   end
 
+  def website_url
+    website[%r{^https?://}] ? website : "http://#{website}"
+  end
+
   def twitter_url
     return "" if self.twitter.blank?
     "https://twitter.com/#{self.twitter}"
