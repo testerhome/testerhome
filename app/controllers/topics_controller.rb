@@ -264,6 +264,9 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.update_attributes(excellent: 1)
     topic_owner.update_score 10
+    if current_user.admin?
+      @topic.update_attributes(modified_admin: current_user)
+    end
     redirect_to @topic, success: '加精成功。'
   end
 
@@ -271,6 +274,9 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:excellent, 0)
     topic_owner.update_score -10
+    if current_user.admin?
+      @topic.update_attributes(modified_admin: current_user)
+    end
     redirect_to @topic, success: '加精已经取消。'
   end
 
@@ -278,6 +284,9 @@ class TopicsController < ApplicationController
   def ban
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:node_id, Node.no_point_id)
+    if current_user.admin?
+      @topic.update_attributes(modified_admin: current_user)
+    end
     redirect_to @topic, success: '已转移到 NoPoint 节点。'
   end
 
