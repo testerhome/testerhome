@@ -27,6 +27,7 @@
     last_by: "最後由"
     floor: "樓"
     reply_at: "於 %{time}回覆"
+    modified_by_admin: "更新自管理員"
     create_item: "中發起"
     read_times: "次閱讀"
     confirm_delete: "確定要刪除麼？"
