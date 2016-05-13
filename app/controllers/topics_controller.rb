@@ -1,7 +1,7 @@
 # coding: utf-8
 class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
-                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban]
+                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban, :knot, :unknot]
   caches_action :feed, :node_feed, expires_in: 1.hours
 
   def index
@@ -272,6 +272,18 @@ class TopicsController < ApplicationController
     @topic.update_attribute(:excellent, 0)
     topic_owner.update_score -10
     redirect_to @topic, success: '加精已经取消。'
+  end
+
+  def knot
+    @topic = Topic.find(params[:id])
+    @topic.update_attributes(knot: 1)
+    redirect_to @topic, success: '已结贴。'
+  end
+
+  def unknot
+    @topic = Topic.find(params[:id])
+    @topic.update_attribute(:knot, 0)
+    redirect_to @topic, success: '打开帖子。'
   end
 
 
