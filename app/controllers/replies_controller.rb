@@ -1,8 +1,8 @@
-# coding: utf-8
 class RepliesController < ApplicationController
   load_and_authorize_resource :reply
 
   before_action :find_topic
+  before_action :knot_reply, only: [:create, :edit, :update]
 
   def create
     @reply = Reply.new(reply_params)
@@ -14,7 +14,6 @@ class RepliesController < ApplicationController
     if node.name.index("匿名") and @reply.anonymous == 0
       @reply.user_id = 12
     end
-
     if @reply.save
       current_user.read_topic(@topic)
       @msg = t('topics.reply_success')
@@ -65,6 +64,13 @@ class RepliesController < ApplicationController
 
   def find_topic
     @topic = Topic.find(params[:topic_id])
+  end
+
+  def knot_reply
+    # 结贴处理
+    if @topic.knot?
+      redirect_to(topic_path(@topic), notice: '已结贴,无法修改。')
+    end
   end
 
   def reply_params

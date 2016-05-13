@@ -19,7 +19,11 @@
         <div class="total">
           共收到 <b><%= @topic.replies_count %></b> 条回复
         </div>
-        <a href="#reply" class="btn btn-success btn-block btn-focus-reply">参与回复</a>
+        <% if not @topic.knot? %>
+          <a href="#reply" class="btn btn-success btn-block btn-focus-reply">参与回复</a>
+        <% else %>
+          <a href="#reply" class="btn disabled btn-success btn-block btn-focus-reply">结贴</a>
+        <% end %>
       </div>
       <hr />
       <div class="group opts">
