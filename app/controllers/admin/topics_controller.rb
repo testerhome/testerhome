@@ -29,6 +29,11 @@ module Admin
     def update
       @topic = Topic.unscoped.find(params[:id])
 
+      if current_user.id != @topic.user_id
+        # 管理员且非本帖作者
+        @topic.modified_admin = current_user
+      end
+
       if @topic.update_attributes(params[:topic].permit!)
         redirect_to(admin_topics_path, notice: 'Topic was successfully updated.')
       else

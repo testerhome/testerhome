@@ -66,6 +66,9 @@ class Topic
   # 保留所有权利，禁止转载.默认允许转载
   field :cannot_be_shared, type: Mongoid::Boolean, default: false
 
+  # 修改了帖子的管理员
+  belongs_to :modified_admin, class_name: 'User'
+
   # 临时存储检测用户是否读过的结果
   attr_accessor :read_state, :admin_editing, :admin_deleting
 

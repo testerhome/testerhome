@@ -11,6 +11,10 @@
          ·
         <%= t("common.last_by")%> <%= user_name_tag(topic.last_reply_user_login) %> <%= raw t("common.reply_at", time: timeago(topic.replied_at))%>
       <% end %>
+
+      <% if !topic.modified_admin.blank? %>
+        ·<%= t("common.modified_by_admin")%> <%= user_name_tag(topic.modified_admin) %>
+      <% end %>
        ·
       <%= topic.hits %> <%= t("common.read_times")%>
     </div>

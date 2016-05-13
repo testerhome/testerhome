@@ -203,6 +203,11 @@ class TopicsController < ApplicationController
       @topic.admin_editing = true
     end
 
+    if current_user.admin? && current_user.id != @topic.user_id
+      # 管理员且非本帖作者
+      @topic.modified_admin = current_user
+    end
+
     if @topic.lock_node == false || current_user.admin?
       # 锁定接点的时候，只有管理员可以修改节点
       @topic.node_id = topic_params[:node_id]
