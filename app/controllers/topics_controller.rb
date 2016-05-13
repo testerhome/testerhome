@@ -290,6 +290,9 @@ class TopicsController < ApplicationController
   def ban
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:node_id, Node.no_point_id)
+    if current_user.admin?
+      @topic.update_attributes(modified_admin: current_user)
+    end
     redirect_to @topic, success: '已转移到 NoPoint 节点。'
   end
 

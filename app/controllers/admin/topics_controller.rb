@@ -44,7 +44,7 @@ module Admin
     def destroy
       @topic = Topic.unscoped.find(params[:id])
       @topic.destroy_by(current_user)
-
+      @topic.update_attributes(modified_admin: current_user)
       redirect_to(admin_topics_path)
     end
 
@@ -52,6 +52,7 @@ module Admin
       begin
         @topic = Topic.unscoped.find(params[:id])
         @topic.update_attribute(:deleted_at, nil)
+        @topic.update_attributes(modified_admin: current_user)
       rescue => e
         puts "do nothing"
       ensure
@@ -63,6 +64,7 @@ module Admin
     def suggest
       @topic = Topic.unscoped.find(params[:id])
       @topic.update_attribute(:suggested_at, Time.now)
+      @topic.update_attributes(modified_admin: current_user)
       CacheVersion.topic_last_suggested_at = Time.now
       redirect_to(admin_topics_path, notice: "Topic:#{params[:id]} suggested.")
     end
@@ -70,6 +72,7 @@ module Admin
     def unsuggest
       @topic = Topic.unscoped.find(params[:id])
       @topic.update_attribute(:suggested_at, nil)
+      @topic.update_attributes(modified_admin: current_user)
       CacheVersion.topic_last_suggested_at = Time.now
       redirect_to(admin_topics_path, notice: "Topic:#{params[:id]} unsuggested.")
     end
