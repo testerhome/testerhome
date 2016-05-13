@@ -1,3 +1,11 @@
+<% if mobile? %>
+  <div class="container">
+    <form id="mobile-search-form" class="form-horizontal" action="/search" method="GET">
+      <input class="form-control" name="q" type="text" value="<%= params[:q] %>" placeholder="搜索本站内容"/>
+    </form>
+  </div>
+<%end%>
+
 <div class="panel panel-default">
   <div class="panel-body">
     <%= raw SiteConfig.index_html %>
