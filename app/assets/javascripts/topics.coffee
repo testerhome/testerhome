@@ -15,10 +15,12 @@ window.TopicView = Backbone.View.extend
     "click a.at_floor": "clickAtFloor"
     "click a.follow": "follow"
     "click a.bookmark": "bookmark"
+    "click a.knot": "knot"
     "click .btn-move-page": "scrollPage"
     "click .topic-detail a.qrcode": "testerhome_qrcode"
     "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
     "click .notify-updated .update": "updateReplies"
+
 
 
   initialize: (opts) ->
@@ -303,7 +305,20 @@ window.TopicView = Backbone.View.extend
       show : true
     false
 
+  knot : (e) ->
+    target = $(e.currentTarget)
+    topic_id = target.data("id")
+    link = $(".knot[data-id='#{topic_id}']")
 
+    if link.hasClass("active")
+      $.ajax
+        url : "/topics/#{topic_id}/unknot"
+        type : "DELETE"
+      link.attr("title","结贴").removeClass("active")
+    else
+      $.post "/topics/#{topic_id}/knot"
+      link.attr("title","打开帖子").addClass("active")
+    false
 
   bookmark : (e) ->
     target = $(e.currentTarget)

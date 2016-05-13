@@ -58,6 +58,22 @@ module TopicsHelper
     link_to(raw("#{icon} 关注"), '#', 'data-id' => topic.id, class: class_name)
   end
 
+  def topic_knot_tag(topic, opts = {})
+    return '' if current_user.blank?
+    return '' if topic.blank?
+    return '' if not owner?(topic) and not admin?
+    opts[:class] ||= ""
+    class_name = 'knot'
+    knoted = false
+    if topic.knot?
+      class_name = 'knot active'
+      knoted = true
+    end
+    class_name = "#{opts[:class]} #{class_name}"
+    icon = content_tag('i', '', class: 'fa fa-lock')
+    link_to(raw("#{icon} 结贴"), '#', 'data-id' => topic.id, class: class_name)
+  end
+
   def topic_title_tag(topic, opts = {})
     return t('topics.topic_was_deleted') if topic.blank?
     if opts[:reply]
@@ -72,6 +88,11 @@ module TopicsHelper
   def topic_excellent_tag(topic)
     return "" if !topic.excellent?
     content_tag(:i,"", title: "精华帖", class: "fa fa-star")
+  end
+
+  def topic_knoted_tag(topic)
+    return "" if !topic.knot?
+    content_tag(:i,"", title: "结帖", class: "fa fa-lock")
   end
 
   def render_topic_last_reply_time(topic)

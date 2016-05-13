@@ -75,7 +75,7 @@
     </div>
   <% end %>
 
-  <% if current_user %>
+  <% if current_user and not @topic.knot?%>
     <div id="reply" class="panel panel-default">
       <div class="panel-heading">回帖</div>
       <div class="panel-body">
@@ -110,7 +110,7 @@
       <% end %>
       </div>
     </div>
-  <% else %>
+  <% elsif not @topic.knot? %>
     <div class="panel panel-default">
       <div class="panel-body">
         <%= render partial: "topics/translation/need_login_to_reply" %>

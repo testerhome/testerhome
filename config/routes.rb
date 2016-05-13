@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       delete :unfollow
       patch :suggest
       delete :unsuggest
+      post :knot
+      delete :unknot
       post :ban
     end
     collection do

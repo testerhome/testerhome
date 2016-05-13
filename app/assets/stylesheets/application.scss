@@ -953,7 +953,7 @@ img.emoji {
     color: red
   }
 
-  margin-bottom: 30px;
+  margin-bottom: 0px;
   .panel-heading {
     padding: 15px;
     h1 {
@@ -1559,4 +1559,8 @@ textarea.div-dropzone-focus { border-color: #BBE1C9; background: #fafafa; }
 
 #mobile-search-form {
   margin-bottom: 20px;
+}
+
+#main {
+  min-height: 500px;
 }
