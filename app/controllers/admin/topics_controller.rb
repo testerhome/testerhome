@@ -1,5 +1,13 @@
 module Admin
   class TopicsController < ApplicationController
+
+    before_action :add_modified_admin, only: [:destory, :undestory, :suggest, :unsuggest]
+
+    def add_modified_admin
+      @topic = Topic.unscoped.find(params[:id])
+      @topic.update_attributes(modified_admin: current_user)
+    end
+
     def index
       @topics = Topic.unscoped.desc(:_id).includes(:user).paginate page: params[:page], per_page: 30
     end

@@ -3,6 +3,7 @@ class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
                                      :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban]
   caches_action :feed, :node_feed, expires_in: 1.hours
+  before_action :add_modified_admin, only: [:ban, :update]
 
   def index
     @suggest_topics = Topic.without_hide_nodes.suggest.fields_for_list.limit(3).to_a
@@ -203,11 +204,6 @@ class TopicsController < ApplicationController
       @topic.admin_editing = true
     end
 
-    if current_user.admin? && current_user.id != @topic.user_id
-      # 管理员且非本帖作者
-      @topic.modified_admin = current_user
-    end
-
     if @topic.lock_node == false || current_user.admin?
       # 锁定接点的时候，只有管理员可以修改节点
       @topic.node_id = topic_params[:node_id]
@@ -274,14 +270,18 @@ class TopicsController < ApplicationController
     redirect_to @topic, success: '加精已经取消。'
   end
 
-
   def ban
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:node_id, Node.no_point_id)
-    if current_user.admin?
+    redirect_to @topic, success: '已转移到 NoPoint 节点。'
+  end
+
+  def add_modified_admin
+    @topic = Topic.find(params[:id])
+    if current_user.admin? && current_user.id != @topic.user_id
+      # 管理员且非本帖作者
       @topic.update_attributes(modified_admin: current_user)
     end
-    redirect_to @topic, success: '已转移到 NoPoint 节点。'
   end
 
   private
