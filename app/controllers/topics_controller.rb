@@ -77,19 +77,13 @@ class TopicsController < ApplicationController
     @threads = []
     @topic = Topic.without_body.includes(:user).find(params[:id])
 
-    @threads << Thread.new do
-      @topic.hits.incr(1)
-    end
-    @threads << Thread.new do
-      @node = @topic.node
-    end
+    @topic.hits.incr(1)
+    @node = @topic.node
 
     @show_raw = params[:raw] == '1'
 
-    @threads << Thread.new do
-      @replies = @topic.replies.unscoped.without_body.asc(:_id).all
-      check_current_user_liked_replies
-    end
+    @replies = @topic.replies.unscoped.without_body.asc(:_id).all
+    check_current_user_liked_replies
 
     check_current_user_status_for_topic
     set_special_node_active_menu
