@@ -313,7 +313,7 @@ window.App =
       callbacks:
         remoteFilter: (query, callback) ->
           $.getJSON '/search/users.json', { q: query }, (data) ->
-            callback(data.search)
+            callback(data)
       displayTpl : "<li data-value='${login}'><img src='${avatar_url}' height='20' width='20'/> ${login} <small>${name}</small></li>"
       insertTpl : "@${login}"
     .atwho
