@@ -13,7 +13,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'jbuilder'
 
-gem 'turbolinks', github: 'rails/turbolinks'
+gem 'turbolinks', git: 'https://github.com/turbolinks/turbolinks-classic.git'
 gem 'jquery-turbolinks'
 gem 'dropzonejs-rails'
 
@@ -118,6 +118,10 @@ gem "elasticsearch"
 gem "elasticsearch-model"
 gem "elasticsearch-rails"
 gem 'tilt'
+
+gem 'jquery-atwho-rails'
+gem 'redis-search', '1.0.0.beta2'
+
 
 group :development, :test do
   gem 'capistrano', '2.9.0', require: false

@@ -7,6 +7,7 @@ class User
   include Mongoid::Timestamps
   include Mongoid::BaseModel
   include Redis::Objects
+  include Redis::Search
   extend OmniauthCallbacks
   include Mongoid::Searchable
 
@@ -81,6 +82,8 @@ class User
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :qrcode, QrcodeUploader
+
+  redis_search title_field: :login, alias_field: :name, ext_fields: [:large_avatar_url, :name]
 
   index login: 1
   index email: 1
@@ -540,6 +543,14 @@ class User
       self.qrcode.url(:large)
     else
       nil
+    end
+  end
+
+  def large_avatar_url
+    if self[:avatar].present?
+      self.avatar.url(:large)
+    else
+      self.letter_avatar_url(240)
     end
   end
 
