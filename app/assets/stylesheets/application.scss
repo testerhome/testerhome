@@ -31,15 +31,15 @@ body {
   background: #E7EAEC;
   color: $black;
   font-family: Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Source Han Sans CN",Roboto,"Heiti SC","Microsoft Yahei",sans-serif;
+  padding-top: 65px;
 }
 
 .header {
   .navbar {
     background-color: #FFF;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 1px rgba(0, 0, 0,.11);
+    margin-bottom: 15px;
     border: 0px;
-    font-family: sans-serif;
-    font-weight: bold;
     color: $blueText;
   }
 
@@ -47,80 +47,52 @@ body {
     color: #666 !important;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
-    b {
-      color: $red;
-    }
+    margin-left: 0 !important;
+    b { color: $red; }
   }
   .navbar-default .navbar-brand,
-  .navbar-default .navbar-nav > li > a {
-    color: #333;
-    border-bottom: 3px solid #FFF;
-    padding-bottom: 12px;
-  }
-  .navbar-default .navbar-nav > li > a:active {
-    background-color: $grayDark;
-    border-bottom-color: #999;
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
-    color: #999 !important;
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu li.active a {
-    border-bottom: 0px;
-    color: $red;
-  }
-  .navbar-inverse .navbar-toggle {
-    color: #333;
-    padding: 3px 9px;
-    font-size: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-  .navbar-inverse .navbar-toggle:focus {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-  .navbar-inverse .navbar-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
+  .navbar-default .navbar-nav>li>a  { color: #333; border-bottom: 3px solid #FFF; padding-bottom: 12px; }
+  .navbar-default .navbar-nav>li>a:active { background-color: $grayDark; border-bottom-color: #999; }
+  .navbar-inverse .navbar-nav .open .dropdown-menu .divider { color: #999 !important; }
+  .navbar-inverse .navbar-nav .open .dropdown-menu li.active a { border-bottom: 0px; color: $red; }
+  .navbar-inverse .navbar-toggle { color: #333; padding: 3px 9px; font-size: 18px; border:1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.05); }
+  .navbar-inverse .navbar-toggle:focus { background-color: rgba(255,255,255,0.05);}
+  .navbar-inverse .navbar-toggle:hover { background-color: rgba(255,255,255,0.1); }
   .navbar-inverse .navbar-collapse,
-  .navbar-inverse .navbar-form {
-    border-color: $blueText;
-  }
-  nav.navbar-collapse.bs-navbar-collapse {
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-  .navbar-inverse .navbar-nav > .open > a,
-  .navbar-inverse .navbar-nav > .open > a:focus,
-  .navbar-inverse .navbar-nav > .open > a:hover {
-    background: $grayDark;
-    color: #333;
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu {
-    position: absolute;
-    left: auto;
-    right: 0;
-    background: #FFF;
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-    color: #333;
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-  .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
-    background-color: #F0F0F0;
-  }
+  .navbar-inverse .navbar-form { border-color: $blueText; }
+  nav.navbar-collapse.bs-navbar-collapse { border-color: rgba(255,255,255,0.3); }
+  .navbar-inverse .navbar-nav>.open>a,
+  .navbar-inverse .navbar-nav>.open>a:focus,
+  .navbar-inverse .navbar-nav>.open>a:hover { background: $grayDark; color: #333; }
+  .navbar-inverse .navbar-nav .open .dropdown-menu { position: absolute; left: auto; right: 0; background: #FFF; }
+  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a { color: #333; }
+  .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover { background-color: rgba(255,255,255,0.05); }
+  .navbar-inverse .navbar-nav .open .dropdown-menu .divider { background-color: #F0F0F0; }
   .navbar-nav {
-    margin: 0px;
-    a {
-      color: #333;
-    }
     li.active a,
     li.active a:focus,
-    li.active a:hover {
-      border-bottom: 3px solid $red;
-      color: $red;
-      background: transparent;
-      padding-bottom: 12px;
+    li.active a:hover { color: $red; background: transparent; }
+  }
+
+  .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+  }
+  .navbar-fixed-top, .navbar-fixed-bottom{
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+  }
+
+  #main-nav-menu {
+    .navbar-nav {
+      margin: 0px;
+      a { color: #333; transition: all .2s ease-in-out; }
+      li a:hover,
+      li.active a,
+      li.active a:focus,
+      li.active a:hover { border-bottom:3px solid $red; color: $red; background: transparent; padding-bottom: 12px;}
     }
   }
 
@@ -138,13 +110,13 @@ body {
   @media (max-width: 767px) {
     .navbar-header {
       text-align: center;
-      padding: 2px 0;
+      padding: 0;
+      margin-bottom: -41px;
       .navbar-brand {
         font-size: 12px;
         float: none;
         margin: 0 auto;
-        height: auto;
-        padding: 0px 10px;
+        line-height: 46px;
       }
     }
     .navbar-nav {
