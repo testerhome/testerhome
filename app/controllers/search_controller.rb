@@ -29,6 +29,6 @@ class SearchController < ApplicationController
     if params[:q].present?
       @users = User.prefix_match(params[:q])
     end
-    render json: @users.collect { |u| { login: u['title'], name: u['name'], avatar_url: u['large_avatar_url'] } }
+    render json: @users.collect { |u| { login: u['title'], name: u['name'], avatar_url: u['large_avatar_url'] } },:root => false
   end
 end
