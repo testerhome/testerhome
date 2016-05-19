@@ -61,14 +61,4 @@
     </div>
 <% end %>
 
-<% cache(["sidebar_hot_users",Time.now.strftime("%Y-%m-%d %H")]) do %>
-    <div class="panel panel-default">
-        <div class="panel-heading"><%= t("common.user_statics")%></div>
-        <ul class="list-group">
-            <% for user in User.outstanding.limit(10) do %>
-                <li class="list-group-item"><%= user_name_tag(user) %>: <%= user.score %> </li>
-            <% end %>
-        </ul>
-    </div>
-<% end %>
 
