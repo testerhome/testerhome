@@ -6,19 +6,19 @@ GIT
       doorkeeper (>= 3.0.0)
 
 GIT
-  remote: git://github.com/rails/turbolinks.git
-  revision: 37a7c296232d20a61bd1946f600da7f2009189db
-  specs:
-    turbolinks (3.0.0)
-      coffee-rails
-
-GIT
   remote: https://github.com/testerhome/social-share-button.git
   revision: 2d3c416167e3d4c62ca487dc30fb279519ffcf4e
   specs:
     social-share-button (0.1.9)
       coffee-rails
       sass-rails
+
+GIT
+  remote: https://github.com/turbolinks/turbolinks-classic.git
+  revision: 37a7c296232d20a61bd1946f600da7f2009189db
+  specs:
+    turbolinks (3.0.0)
+      coffee-rails
 
 GEM
   remote: https://ruby.taobao.org/
@@ -203,6 +203,7 @@ GEM
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
+    jquery-atwho-rails (1.3.2)
     jquery-rails (4.1.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -337,9 +338,14 @@ GEM
       redis (~> 3.0, >= 3.0.4)
     redis-objects (1.1.0)
       redis (>= 3.0.2)
+    redis-search (1.0.0.beta2)
+      redis (>= 3.0.0)
+      redis-namespace (>= 1.3.0)
+      ruby-pinyin (~> 0.3, >= 0.3.0)
     remotipart (1.2.1)
     responders (2.1.2)
       railties (>= 4.2.0, < 5.1)
+    rmmseg-cpp-new (0.3.1)
     rouge (1.8.0)
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
@@ -358,6 +364,8 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    ruby-pinyin (0.5.0)
+      rmmseg-cpp-new (~> 0.3.1)
     ruby-prof (0.15.9)
     rucaptcha (0.4.0)
       posix-spawn (>= 0.3.0)
@@ -451,6 +459,7 @@ DEPENDENCIES
   i18n-js (>= 3.0.0.rc11)
   jasmine-rails (~> 0.10.2)
   jbuilder
+  jquery-atwho-rails
   jquery-rails
   jquery-turbolinks
   kgio
@@ -477,6 +486,7 @@ DEPENDENCIES
   redis (~> 3.2.1)
   redis-namespace (~> 1.5.1)
   redis-objects (= 1.1.0)
+  redis-search (= 1.0.0.beta2)
   rouge (~> 1.8.0)
   rspec-rails (~> 3.1)
   ruby-prof
