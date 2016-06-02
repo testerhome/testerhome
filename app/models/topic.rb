@@ -129,6 +129,26 @@ class Topic
     where(:node_id.nin => self.topic_index_hide_node_ids)
   end
 
+  def related_topics(size = 5)
+    self.class.__elasticsearch__.search({
+      query: {
+        more_like_this: {
+          fields: [:title, :body],
+          docs: [
+            {
+              _index: self.class.index_name,
+              _type: self.class.document_type,
+              _id: id
+            }
+          ],
+          min_term_freq: 2,
+          min_doc_freq: 5
+        }
+      },
+      size: size
+    }).records.to_a
+  end
+
   def self.without_nodes(node_ids)
     where(:node_id.nin => node_ids)
   end
