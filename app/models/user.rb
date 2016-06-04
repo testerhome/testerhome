@@ -83,7 +83,11 @@ class User
   mount_uploader :avatar, AvatarUploader
   mount_uploader :qrcode, QrcodeUploader
 
-  redis_search title_field: :login, alias_field: :name, ext_fields: [:large_avatar_url, :name]
+  redis_search title_field: :login, alias_field: :name, score_field: :index_score, ext_fields: [:large_avatar_url, :name]
+
+  def index_score
+    0
+  end
 
   index login: 1
   index email: 1
