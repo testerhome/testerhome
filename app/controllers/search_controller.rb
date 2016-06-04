@@ -37,6 +37,6 @@ class SearchController < ApplicationController
       @result = users.collect { |u| { login: u.login, name: u.name, avatar_url: u.large_avatar_url } }
     end
 
-    render json: @result
+    render json: @result, :root => false
   end
 end
