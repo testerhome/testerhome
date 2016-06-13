@@ -327,7 +327,7 @@ window.App =
         searchKey: 'code'
         data : window.EMOJI_LIST
         displayTpl : "<li data-value='${code}'><img src='#{App.twemoji_url}/svg/${url}.svg' class='twemoji' /> ${code} </li>"
-        insertTpl: ":${code}:"
+        insertTpl: "${code}"
     true
 
 $(document).on 'page:change',  ->
