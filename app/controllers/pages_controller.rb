@@ -80,7 +80,7 @@ class PagesController < ApplicationController
   end
 
   def preview
-    render text: MarkdownConverter.convert(params[:body])
+    render text: MarkdownTopicConverter.convert(params[:body])
   end
 
   protected
