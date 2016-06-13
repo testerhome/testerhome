@@ -2,7 +2,10 @@
  *= require application
  *= require_self
  */
-body { color: #333; }
+body {
+  color: #333;
+  padding-top: 0px;
+}
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
