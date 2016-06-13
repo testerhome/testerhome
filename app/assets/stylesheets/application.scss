@@ -594,6 +594,33 @@ kbd {
   border-color: $redLight;
 }
 
+/* Modal */
+.modal {
+  .modal-content {
+    h4.title { margin-bottom: 20px; font-size: 15px; }
+    border: 0px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15), 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
+
+    p { margin-bottom: 5px; }
+  }
+  .modal-header {
+    border: 0px;
+    padding-bottom: 0px;
+    .close { margin-top: -8px; font-weight: normal; outline: none !important; }
+    .modal-title {
+      font-size: 16px;
+    }
+  }
+  .modal-footer {
+    border-color: #e5e5e5;
+  }
+}
+
+.modal-backdrop.in {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .fa-spin {
   -webkit-animation: fa-spin 0.8s infinite linear;
   animation: fa-spin 0.8s infinite linear;
@@ -1459,6 +1486,7 @@ img.emoji {
   a.at_user {
     color: #0069D6 !important;
   }
+  img.twemoji { width: 20px; }
 }
 
 footer {

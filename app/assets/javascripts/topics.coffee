@@ -20,6 +20,7 @@ window.TopicView = Backbone.View.extend
     "click .topic-detail a.qrcode": "testerhome_qrcode"
     "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
     "click .notify-updated .update": "updateReplies"
+    "click .pickup-emoji": "pickupEmoji"
 
 
 
@@ -145,16 +146,10 @@ window.TopicView = Backbone.View.extend
     $("#topic-upload-image").show()
 
   appendImageFromUpload : (srcs) ->
-    txtBox = $(".topic-editor")
-    caret_pos = txtBox.caret('pos')
     src_merged = ""
     for src in srcs
       src_merged = "![](#{src})\n"
-    source = txtBox.val()
-    before_text = source.slice(0, caret_pos)
-    txtBox.val(before_text + src_merged + source.slice(caret_pos+1, source.count))
-    txtBox.caret('pos',caret_pos + src_merged.length)
-    txtBox.focus()
+    @insertString(src_merged)
     return false
 
   # 回复
@@ -219,7 +214,7 @@ window.TopicView = Backbone.View.extend
 
   # 图片点击增加全屏预览功能
   initContentImageZoom : () ->
-    exceptClasses = ["emoji"]
+    exceptClasses = ["emoji", "twemoji"]
     imgEls = $(".markdown img")
     for el in imgEls
       if exceptClasses.indexOf($(el).attr("class")) == -1
@@ -359,12 +354,7 @@ window.TopicView = Backbone.View.extend
 
   # 往话题编辑器里面的光标前插入两个空白字符
   insertSpaces : (e) ->
-    target = e.target
-    start = target.selectionStart
-    end = target.selectionEnd
-    $target = $(target)
-    $target.val($target.val().substring(0, start) + "  " + $target.val().substring(end));
-    target.selectionStart = target.selectionEnd = start + 2
+    @insertString('  ')
     return false
 
   # 往话题编辑器里面插入代码模版
@@ -384,6 +374,15 @@ window.TopicView = Backbone.View.extend
     txtBox.focus()
     txtBox.trigger('click')
     return false
+
+  insertString: (str) ->
+    $target = $(".topic-editor")
+    start = $target[0].selectionStart
+    end = $target[0].selectionEnd
+    $target.val($target.val().substring(0, start) + str + $target.val().substring(end));
+    $target[0].selectionStart = $target[0].selectionEnd = start + str.length
+    $target.focus()
+
 
   scrollPage: (e) ->
     target = $(e.currentTarget)
@@ -460,4 +459,10 @@ window.TopicView = Backbone.View.extend
     $.get "/topics/#{Topics.topic_id}/replies.js?last_id=#{lastId}", =>
       $(".notify-updated").hide()
       $("#new_reply textarea").focus()
+    false
+
+  pickupEmoji: () ->
+    if !window._emojiModal
+      window._emojiModal = new EmojiModalView()
+    window._emojiModal.show()
     false

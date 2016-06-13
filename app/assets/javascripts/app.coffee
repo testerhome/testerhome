@@ -16,7 +16,8 @@
 #= require jquery.atwho
 #= require jquery.qrcode.min
 #= require bootstrap-tokenfield
-#= require emoji_list
+#= require emoji-data
+#= require emoji-modal
 #= require notifier
 #= require message-bus
 #= require form_storage
@@ -269,6 +270,7 @@ window.App =
   current_user_id: null
   access_token : ''
   asset_url : ''
+  twemoji_url: 'https://twemoji.maxcdn.com/'
   root_url : ''
 
   isLogined : ->
@@ -322,9 +324,10 @@ window.App =
       insertTpl : "@${login}"
     .atwho
         at : ":"
+        searchKey: 'code'
         data : window.EMOJI_LIST
-        displayTpl : "<li data-value='${name}:'><img src='#{App.asset_url}/assets/emojis/${name}.png' height='20' width='20'/> ${name} </li>"
-        insertTpl: ":${name}:"
+        displayTpl : "<li data-value='${code}'><img src='#{App.twemoji_url}/svg/${url}.svg' class='twemoji' /> ${code} </li>"
+        insertTpl: ":${code}:"
     true
 
 $(document).on 'page:change',  ->

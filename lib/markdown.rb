@@ -1,9 +1,7 @@
-# coding: utf-8
 require 'rails'
 require 'rails_autolink'
 require 'redcarpet'
 require 'singleton'
-require 'md_emoji'
 require 'rouge/plugins/redcarpet'
 
 module Redcarpet
@@ -11,20 +9,19 @@ module Redcarpet
     class HTMLwithSyntaxHighlight < HTML
       include Rouge::Plugins::Redcarpet
 
-      def initialize(extensions={})
+      def initialize(extensions = {})
         super(extensions.merge(xhtml: true,
                                no_styles: true,
                                escape_html: true,
                                hard_wrap: true,
-                               link_attributes: {target: '_blank'}))
+                               link_attributes: { target: '_blank' }))
       end
-
 
       def block_code(code, language)
         language.downcase! if language.is_a?(String)
         html = super(code, language)
         # 将最后行的 "\n\n" 替换成回 "\n", rouge 0.3.2 的 Bug 导致
-        html.gsub!(/([\n]+)<\/code>/, "</code>")
+        html.gsub!(%r{([\n]+)</code>}, '</code>')
         html
       end
 
@@ -32,9 +29,34 @@ module Redcarpet
         %(<div class="table-responsive"><table class="table table-bordered table-striped">#{header}#{body}</table></div>)
       end
 
+      # Extend to support img width
+      # ![](foo.jpg =300x)
+      # ![](foo.jpg =300x200)
+      # Example: https://gist.github.com/uupaa/f77d2bcf4dc7a294d109
+      def image(link, title, alt_text)
+        links = link.split(' ')
+        link = links[0]
+        if links.count > 1
+          # 原本 Markdown 的 title 部分是需要引号的 ![](foo.jpg "Title")
+          # ![](foo.jpg =300x)
+          title = links[1]
+        end
+
+        if title =~ /=(\d+)x(\d+)/
+          %(<img src="#{link}" width="#{Regexp.last_match(1)}px" height="#{Regexp.last_match(2)}px" alt="#{alt_text}">)
+        elsif title =~ /=(\d+)x/
+          %(<img src="#{link}" width="#{Regexp.last_match(1)}px" alt="#{alt_text}">)
+        elsif title =~ /=x(\d+)/
+          %(<img src="#{link}" height="#{Regexp.last_match(1)}px" alt="#{alt_text}">)
+        else
+          %(<img src="#{link}" title="#{title}" alt="#{alt_text}">)
+        end
+      end
+
+      # Fix Chinese neer the URL
       def autolink(link, link_type)
         # return link
-        if link_type.to_s == "email"
+        if link_type.to_s == 'email'
           link
         else
           begin
@@ -46,9 +68,9 @@ module Redcarpet
             return link
           end
           # Fix Chinese neer the URL
-          bad_text = link.match(/[^\w:@\/\-\~\,\$\!\.=\?&#+\|\%]+/im).to_s
+          bad_text = link.match(%r{[^\w:@/\-~,$!.=?&#+|%]+}im).to_s
           link.gsub!(bad_text, '')
-          "<a href=\"#{link}\" rel=\"nofollow\" target=\"_blank\">#{link}</a>#{bad_text}"
+          %(<a href="#{link}" rel="nofollow" target="_blank">#{link}</a>#{bad_text})
         end
       end
     end
@@ -56,36 +78,26 @@ module Redcarpet
     class HTMLwithTopic < HTMLwithSyntaxHighlight
       def header(text, header_level)
         l = header_level <= 2 ? 2 : header_level
-        %(<h#{l} id="#{text}">#{text}</h#{l}>)
+        raw_text = Nokogiri::HTML(text).xpath('//text()')
+        %(<h#{l} id="#{raw_text}">#{text}</h#{l}>)
       end
     end
   end
 end
 
-class MarkdownConverter
+class MarkdownTopicConverter
   include Singleton
 
   def self.convert(text)
-    self.instance.convert(text)
+    instance.convert(text)
+  end
+
+  def self.format(raw)
+    instance.format(raw)
   end
 
   def convert(text)
     @converter.render(text)
-  end
-
-  private
-  def initialize
-    @converter = Redcarpet::Markdown.new(Redcarpet::Render::HTMLwithSyntaxHighlight.new, {
-                                                                                           autolink: true,
-                                                                                           fenced_code_blocks: true,
-                                                                                           no_intra_emphasis: true
-                                                                                       })
-  end
-end
-
-class MarkdownTopicConverter < MarkdownConverter
-  def self.format(raw)
-    self.instance.format(raw)
   end
 
   def format(raw)
@@ -96,10 +108,9 @@ class MarkdownTopicConverter < MarkdownConverter
     users = normalize_user_mentions(text)
 
     # 如果 ``` 在刚刚换行的时候 Redcapter 无法生成正确，需要两个换行
-    text.gsub!("\n```","\n\n```")
+    text.gsub!("\n```", "\n\n```")
 
     result = convert(text)
-
     doc = Nokogiri::HTML.fragment(result)
     link_mention_floor(doc)
     link_mention_user(doc, users)
@@ -107,14 +118,15 @@ class MarkdownTopicConverter < MarkdownConverter
 
     return doc.to_html.strip
   rescue => e
-    puts "MarkdownTopicConverter.format ERROR: #{e}"
+    Rails.logger.error "MarkdownTopicConverter.format ERROR: #{e}"
     return text
   end
 
   private
+
   # convert bbcode-style image tag [img]url[/img] to markdown syntax ![alt](url)
   def convert_bbcode_img(text)
-    text.gsub!(/\[img\](.+?)\[\/img\]/i) {"![#{image_alt $1}](#{$1})"}
+    text.gsub!(%r{\[img\](.+?)\[/img\]}i) { "![#{image_alt Regexp.last_match(1)}](#{Regexp.last_match(1)})" }
   end
 
   def image_alt(src)
@@ -122,41 +134,54 @@ class MarkdownTopicConverter < MarkdownConverter
   end
 
   # borrow from html-pipeline
-  def has_ancestors?(node, tags)
-    while node = node.parent
-      if tags.include?(node.name.downcase)
-        break true
-      end
+  def ancestors?(node, tags)
+    while (node = node.parent)
+      break true if tags.include?(node.name.downcase)
     end
   end
 
   # convert '#N楼' to link
   # Refer to emoji_filter in html-pipeline
   def link_mention_floor(doc)
-    doc.search('text()').each do |node|
+    # More info about xpath('.//text()'):
+    # https://github.com/sparklemotion/nokogiri/issues/1233
+    doc.xpath('.//text()').each do |node|
       content = node.to_html
-      next if !content.include?('#')
-      next if has_ancestors?(node, %w(pre code))
+      next unless content.include?('#')
+      next if ancestors?(node, %w(pre code))
 
-      html = content.gsub(/#(\d+)([楼樓Ff])/) {
-        %(<a href="#reply#{$1}" class="at_floor" data-floor="#{$1}">##{$1}#{$2}</a>)
-      }
+      html = content.gsub(/#(\d+)([楼樓Ff])/) do
+        %(<a href="#reply#{Regexp.last_match(1)}" class="at_floor" data-floor="#{Regexp.last_match(1)}">##{Regexp.last_match(1)}#{Regexp.last_match(2)}</a>)
+      end
 
       next if html == content
       node.replace(html)
     end
   end
 
-  NORMALIZE_USER_REGEXP = /(^|[^a-zA-Z0-9_!#\$%&*@＠])@([a-zA-Z0-9_]{1,20})/io
-  LINK_USER_REGEXP = /(^|[^a-zA-Z0-9_!#\$%&*@＠])@(user[0-9]{1,6})/io
+  def replace_emoji(doc)
+    doc.xpath('.//text()').each do |node|
+      content = node.to_html
+      next unless content.include?(':')
+      next if ancestors?(node, %w(pre code))
+
+      html = Twemoji.parse(content)
+
+      next if html == content
+      node.replace(html)
+    end
+  end
+
+  NORMALIZE_USER_REGEXP = /(^|[^a-zA-Z0-9_!#\/\$%&*@＠])@([a-zA-Z0-9_]{1,20})/io
+  LINK_USER_REGEXP      = /(^|[^a-zA-Z0-9_!#\$%&*@＠])@(user[0-9]{1,6})/io
 
   # rename user name using incremental id
   def normalize_user_mentions(text)
     users = []
 
     text.gsub!(NORMALIZE_USER_REGEXP) do
-      prefix = $1
-      user = $2
+      prefix = Regexp.last_match(1)
+      user = Regexp.last_match(2)
       users.push(user)
       "#{prefix}@user#{users.size}"
     end
@@ -172,13 +197,13 @@ class MarkdownTopicConverter < MarkdownConverter
   # convert '@user' to link
   # match any user even not exist.
   def link_mention_user_in_text(doc, users)
-    doc.search('text()').each do |node|
+    doc.xpath('.//text()').each do |node|
       content = node.to_html
-      next if !content.include?('@')
-      in_code = has_ancestors?(node, %w(pre code))
-      content.gsub!(LINK_USER_REGEXP) {
-        prefix = $1
-        user_placeholder = $2
+      next unless content.include?('@')
+      in_code = ancestors?(node, %w(pre code))
+      content.gsub!(LINK_USER_REGEXP) do
+        prefix = Regexp.last_match(1)
+        user_placeholder = Regexp.last_match(2)
         user_id = user_placeholder.sub(/^user/, '').to_i
         user = users[user_id - 1] || user_placeholder
 
@@ -187,7 +212,7 @@ class MarkdownTopicConverter < MarkdownConverter
         else
           %(#{prefix}<a href="/#{user}" class="at_user" title="@#{user}"><i>@</i>#{user}</a>)
         end
-      }
+      end
 
       node.replace(content)
     end
@@ -197,39 +222,10 @@ class MarkdownTopicConverter < MarkdownConverter
   # syntax class.
   def link_mention_user_in_code(doc, users)
     doc.css('pre.highlight span').each do |node|
-      if node.previous && node.previous.inner_html == '@' && node.inner_html =~ /\Auser(\d+)\z/
-        user_id = $1
-        user = users[user_id.to_i - 1]
-        if user
-          node.inner_html = user
-        end
-      end
-    end
-  end
-
-  def replace_emoji(doc)
-    doc.search('text()').each do |node|
-      content = node.to_html
-      next if !content.include?(':')
-      next if has_ancestors?(node, %w(pre code))
-
-      html = content.gsub(/:(\S+):/) do |emoji|
-
-        emoji_code = emoji #.gsub("|", "_")
-        emoji      = emoji_code.gsub(":", "")
-
-        if MdEmoji::EMOJI.include?(emoji)
-          file_name    = "#{emoji.gsub('+', 'plus')}.png"
-
-          %{<img src="#{upload_url}/assets/emojis/#{file_name}" class="emoji" } +
-              %{title="#{emoji_code}" alt="" />}
-        else
-          emoji_code
-        end
-      end
-
-      next if html == content
-      node.replace(html)
+      next unless node.previous && node.previous.inner_html.to_s =~ /(^|[^a-zA-Z0-9_!#\$%&*@＠])@\z/i && node.inner_html =~ /\Auser(\d+)\z/
+      user_id = Regexp.last_match(1)
+      user = users[user_id.to_i - 1]
+      node.inner_html = user if user
     end
   end
 
@@ -239,16 +235,17 @@ class MarkdownTopicConverter < MarkdownConverter
   end
 
   def initialize
-    @converter = Redcarpet::Markdown.new(Redcarpet::Render::HTMLwithTopic.new, {
-                                                                                 autolink: true,
-                                                                                 fenced_code_blocks: true,
-                                                                                 strikethrough: true,
-                                                                                 tables: true,
-                                                                                 space_after_headers: true,
-                                                                                 disable_indented_code_blocks: true,
-                                                                                 no_intra_emphasis: true
-                                                                             })
-    @emoji = MdEmoji::Render.new
+    opts = {
+        autolink: true,
+        fenced_code_blocks: true,
+        strikethrough: true,
+        tables: true,
+        space_after_headers: true,
+        disable_indented_code_blocks: true,
+        no_intra_emphasis: true
+    }
+    html_topic_render = Redcarpet::Render::HTMLwithTopic.new
+    @converter = Redcarpet::Markdown.new(html_topic_render, opts)
   end
 end
 
@@ -282,9 +279,9 @@ TesterHome 支持表情符号，你可以用系统默认的 Emoji 符号（无�
 
 #### 一些表情例子
 
-:smile: :laughing: :dizzy_face: :sob: :cold_sweat: :sweat_smile:  :cry: :triumph: :heart_eyes:  :satisfied: :relaxed: :sunglasses: :weary:
+:smile: :laughing: :dizzy_face: :sob: :cold_sweat: :sweat_smile:  :cry: :triumph: :heart_eyes: :relaxed: :sunglasses: :weary:
 
-:+1: :-1: :100: :clap: :bell: :gift: :question: :bomb: :heart: :coffee: :cyclone: :bow: :kiss: :pray: :shit: :sweat_drops: :exclamation: :anger:
+:+1: :-1: :100: :clap: :bell: :gift: :question: :bomb: :heart: :coffee: :cyclone: :bow: :kiss: :pray: :sweat_drops: :hankey: :exclamation: :anger:
 
 更多表情请访问：[http://www.emoji-cheat-sheet.com](http://www.emoji-cheat-sheet.com)
 
@@ -299,6 +296,16 @@ TesterHome 支持表情符号，你可以用系统默认的 Emoji 符号（无�
 ##### Heading 5
 
 ###### Heading 6
+
+### 图片
+
+```
+![alt 文本](http://image-path.png)
+![alt 文本](http://image-path.png "图片 Title 值")
+![设置图片宽度高度](http://image-path.png =300x200)
+![设置图片宽度](http://image-path.png =300x)
+![设置图片高度](http://image-path.png =x200)
+```
 
 ### 代码块
 
