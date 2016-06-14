@@ -596,8 +596,10 @@ class User
     user = self
     Rails.cache.fetch(["user", self.id, 'calendar_data', Date.today, 'by-months']) do
       date_from = 12.months.ago.beginning_of_month.to_date
-      dates = (date_from..Date.today).to_a
       replies = user.replies.where(:created_at.gte => date_from).group_by { |d| d.created_at.strftime("%Y-%m-%d")}
+      if replies.blank?
+        return {}
+      end
       first_date = Date.parse(replies.keys.min)
       date_replies_mapping = {}
       (first_date..Date.today).map do |n_date|
