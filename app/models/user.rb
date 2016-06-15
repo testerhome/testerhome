@@ -597,16 +597,17 @@ class User
     Rails.cache.fetch(["user", self.id, 'calendar_data', Date.today, 'by-months']) do
       date_from = 12.months.ago.beginning_of_month.to_date
       replies = user.replies.where(:created_at.gte => date_from).group_by { |d| d.created_at.strftime("%Y-%m-%d")}
-      if replies.blank?
+      topics = user.topics.where(:created_at.gte => date_from).group_by { |d| d.created_at.strftime("%Y-%m-%d")}
+      if replies.blank? and topics.blank?
         return {}
       end
-      first_date = Date.parse(replies.keys.min)
-      date_replies_mapping = {}
+      first_date = Date.parse([replies.keys.min, topics.keys.min].min)
+      date_replies_and_topics_mapping = {}
       (first_date..Date.today).map do |n_date|
         day = n_date.strftime("%Y-%m-%d")
-        date_replies_mapping[day.to_time.to_i.to_s] = replies[day] ? replies[day].size : 0
+        date_replies_and_topics_mapping[day.to_time.to_i.to_s] = (replies[day] ? replies[day].size : 0) + (topics[day] ? topics[day].size * 2: 0)
       end
-      date_replies_mapping.select{|k,v| v != 0}
+      date_replies_and_topics_mapping.select{|k,v| v != 0}
     end
   end
 
