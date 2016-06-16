@@ -1,5 +1,5 @@
 module Admin
-  class ExceptionLogsController < ApplicationController
+  class ExceptionLogsController < Admin::ApplicationController
     def index
       @exception_logs = ExceptionLog.order(id: :desc).paginate(page: params[:page], per_page: 20)
 

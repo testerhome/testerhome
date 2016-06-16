@@ -1,5 +1,5 @@
 module Admin
-  class PagesController < ApplicationController
+  class PagesController < Admin::ApplicationController
     def index
       @pages = Page.unscoped.desc(:_id).paginate page: params[:page], per_page: 30
     end

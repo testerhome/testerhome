@@ -1,5 +1,5 @@
 module Admin
-  class SectionsController < ApplicationController
+  class SectionsController < Admin::ApplicationController
     def index
       @sections = Section.all
     end

@@ -1,5 +1,5 @@
 module Admin
-  class LocationsController < ApplicationController
+  class LocationsController < Admin::ApplicationController
     def index
       @locations = Location.hot.paginate(page: params[:page], per_page: 20)
 

@@ -1,5 +1,5 @@
 module Admin
-  class SiteNodesController < ApplicationController
+  class SiteNodesController < Admin::ApplicationController
     def index
       @site_nodes = SiteNode.desc('_id').paginate(page: params[:page], per_page: 20)
 

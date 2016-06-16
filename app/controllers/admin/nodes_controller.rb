@@ -1,5 +1,5 @@
 module Admin
-  class NodesController < ApplicationController
+  class NodesController < Admin::ApplicationController
     def index
       @nodes = Node.sorted.includes(:section)
     end

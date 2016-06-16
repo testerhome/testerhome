@@ -1,5 +1,5 @@
 module Admin
-  class SiteConfigsController < ApplicationController
+  class SiteConfigsController < Admin::ApplicationController
 
     def index
       @site_configs = SiteConfig.desc(:_id)

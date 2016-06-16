@@ -1,5 +1,5 @@
 module Admin
-  class SitesController < ApplicationController
+  class SitesController < Admin::ApplicationController
     def index
       @sites = Site.unscoped.recent.includes(:user, :site_node)
       if params[:q]

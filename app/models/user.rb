@@ -601,7 +601,12 @@ class User
       if replies.blank? and topics.blank?
         return {}
       end
-      first_date = Date.parse([replies.keys.min, topics.keys.min].min)
+      min_date = [replies.keys.min, topics.keys.min]
+      min_date.delete nil
+      if min_date.blank?
+        return {}
+      end
+      first_date = Date.parse(min_date.min)
       date_replies_and_topics_mapping = {}
       (first_date..Date.today).map do |n_date|
         day = n_date.strftime("%Y-%m-%d")

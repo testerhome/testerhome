@@ -1,5 +1,5 @@
 module Admin
-  class RepliesController < ApplicationController
+  class RepliesController < Admin::ApplicationController
     def index
       @replies = Reply.unscoped.desc(:_id).includes(:topic, :user).paginate page: params[:page], per_page: 30
     end

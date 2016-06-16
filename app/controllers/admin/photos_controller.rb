@@ -1,5 +1,5 @@
 module Admin
-  class PhotosController < ApplicationController
+  class PhotosController < Admin::ApplicationController
     def index
       @photos = Photo.recent.includes(:user).paginate page: params[:page], per_page: 20
     end

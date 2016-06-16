@@ -1,5 +1,5 @@
 module Admin
-  class CommentsController < ApplicationController
+  class CommentsController < Admin::ApplicationController
     respond_to :js, :html, only: [:destroy]
 
   def index

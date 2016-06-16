@@ -1,5 +1,5 @@
 module Admin
-  class ApplicationsController < ApplicationController
+  class ApplicationsController < Admin::ApplicationController
     def index
       @applications = Doorkeeper::Application.order(id: :desc).paginate(page: params[:page], per_page: 20)
 
