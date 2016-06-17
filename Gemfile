@@ -24,6 +24,7 @@ gem 'http_accept_language'
 gem 'rails_autolink', '>= 1.1.0'
 gem 'twemoji'
 gem 'exception_notification'
+gem 'font-awesome-rails'
 
 gem 'doorkeeper', '= 3.0.0'
 gem "doorkeeper-mongodb", github: "doorkeeper-gem/doorkeeper-mongodb"

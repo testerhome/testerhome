@@ -318,6 +318,7 @@ class Topic
   end
 
   def topic_pay_url
+    return nil if not self.user
     self.user.qrcode_url
   end
 end
