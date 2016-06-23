@@ -18,8 +18,8 @@ class Ability
       end
       can :favorite, Topic
       can :unfavorite, Topic
-      can :knot, Topic
-      can :unknot, Topic
+      can :close, Topic
+      can :open, Topic
       can :follow, Topic
       can :unfollow, Topic
       can :update, Topic do |topic|

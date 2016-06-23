@@ -9,13 +9,20 @@ class Reply
   include Mongoid::MarkdownBody
   include Mongoid::Mentionable
   include Mongoid::Likeable
+  include Mongoid::MentionTopic
 
   UPVOTES = %w(+1 :+1: :thumbsup: :plus1: 👍 👍🏻 👍🏼 👍🏽 👍🏾 👍🏿)
+
+
+  belongs_to :user, counter_cache: true
+  belongs_to :topic, touch: true
+  belongs_to :target, polymorphic: true
 
   field :body
   field :body_html
   field :source
   field :message_id
+  field :action
   # 匿名答复 0 否， 1 是
   field :anonymous, type: Integer, default: 0
 
@@ -33,8 +40,10 @@ class Reply
   delegate :login, to: :user, prefix: true, allow_nil: true
 
   scope :fields_for_list, -> { only(:topic_id, :_id, :body_html, :updated_at, :created_at) }
+  scope :without_system, -> { where(action: nil) }
+  scope :without_body, -> { without(:body) }
 
-  validates_presence_of :body
+  validates_presence_of :body, unless: -> { system_event? }
   validates_uniqueness_of :body, scope: [:topic_id, :user_id], message: "不能重复提交。"
   validate do
     ban_words = (SiteConfig.ban_words_on_reply || "").split("\n").collect { |word| word.strip }
@@ -73,6 +82,7 @@ class Reply
   def self.notify_reply_created(reply_id)
     reply = Reply.find_by_id(reply_id)
     return if reply.blank?
+    return if reply.system_event?
     topic = Topic.find_by_id(reply.topic_id)
     return if topic.blank?
 
@@ -98,7 +108,14 @@ class Reply
       puts "Post Notification to: #{uid}"
       Notification::TopicReply.create user_id: uid, reply_id: reply.id
     end
+
+    self.broadcast_to_client(reply)
+
     true
+  end
+
+  def self.broadcast_to_client(reply)
+    ActionCable.server.broadcast("topics/#{reply.topic_id}/replies", id: reply.id, user_id: reply.user_id, action: :create)
   end
 
   # 是否热门
@@ -107,7 +124,7 @@ class Reply
   end
 
   def upvote?
-    body.strip.start_with?(*UPVOTES)
+    (body || '').strip.start_with?(*UPVOTES)
   end
 
   def destroy
@@ -118,5 +135,19 @@ class Reply
 
   def topic_title
     self.topic.title
+  end
+
+  # 是否是系统事件
+  def system_event?
+    # return true
+    @system_event ||= action.present?
+  end
+
+  def self.create_system_event(opts = {})
+    opts[:body] = ''
+    opts[:user] ||= User.current
+    return false if opts[:action].blank?
+    return false if opts[:user].blank?
+    self.create(opts)
   end
 end

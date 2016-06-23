@@ -2,7 +2,7 @@ class RepliesController < ApplicationController
   load_and_authorize_resource :reply
 
   before_action :find_topic
-  before_action :knot_reply, only: [:create, :edit, :update]
+  before_action :close_reply, only: [:create, :edit, :update]
 
   def create
     @reply = Reply.new(reply_params)
@@ -66,7 +66,7 @@ class RepliesController < ApplicationController
     @topic = Topic.find(params[:topic_id])
   end
 
-  def knot_reply
+  def close_reply
     # 结贴处理
     if @topic.knot?
       redirect_to(topic_path(@topic), notice: '已结贴,无法修改。')

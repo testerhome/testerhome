@@ -18,6 +18,7 @@ class Topic
   include Mongoid::MarkdownBody
   include Redis::Objects
   include Mongoid::Mentionable
+  include MentionTopic
 
   # 加入 Elasticsearch
   include Mongoid::Searchable
@@ -130,7 +131,7 @@ class Topic
   end
 
   def related_topics(size = 5)
-    self.class.__elasticsearch__.search({
+    opts = {
       query: {
         more_like_this: {
           fields: [:title, :body],
@@ -146,7 +147,8 @@ class Topic
         }
       },
       size: size
-    }).records.to_a
+    }
+    self.class.__elasticsearch__.search(opts).records.to_a
   end
 
   def self.without_nodes(node_ids)
@@ -222,6 +224,7 @@ class Topic
 
     self.last_active_mark = Time.now.to_i if self.created_at > 3.months.ago
     self.replied_at = reply.try(:created_at)
+    self.replies_count = replies.without_system.count
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)
@@ -234,7 +237,7 @@ class Topic
     return false if deleted_reply.blank?
     return false if self.last_reply_user_id != deleted_reply.user_id
 
-    previous_reply = self.replies.where(:_id.nin => [deleted_reply.id]).recent.first
+    previous_reply = self.replies.without_system.where(:_id.nin => [deleted_reply.id]).recent.first
     self.update_last_reply(previous_reply, force: true)
   end
 
@@ -266,6 +269,18 @@ class Topic
 
   def excellent?
     self.excellent >= 1
+  end
+
+  def excellent!
+      update_attributes(excellent: 1)
+  end
+
+  def unexcellent!
+    update_attributes(excellent: 0)
+  end
+  
+  def ban!
+    update_attributes(lock_node: true, node_id: Node.no_point_id, admin_editing: true)
   end
 
   def knot?

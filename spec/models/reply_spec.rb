@@ -71,6 +71,7 @@ describe Reply do
       lambda do
         Reply.send_topic_reply_notification(reply.id)
       end.should change(user.notifications.unread.where(:_type => 'Notification::TopicReply'), :count).by(1)
+        create :reply, action: 'nopoint', topic: topic, user: replyer
     end
   end
 
@@ -132,4 +133,13 @@ describe Reply do
       r.destroy
     end
   end
+    end
+  end
+
+  describe '#create_system_event' do
+    it 'should create system event with empty body' do
+      allow(User).to receive(:current).and_return(user)
+      reply = Reply.create_system_event(topic_id: 1, action: 'bbb')
+      expect(reply.system_event?).to eq true
+      expect(reply.new_record?).to eq false
 end

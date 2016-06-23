@@ -1,9 +1,10 @@
 # coding: utf-8
 class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
-                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban, :knot, :unknot]
+                                     :favorite, :unfavorite, :follow, :unfollow,
+                                     :action]
   caches_action :feed, :node_feed, expires_in: 1.hours
-
+                                     
   def index
     @suggest_topics = Topic.without_hide_nodes.suggest.fields_for_list.limit(3).to_a
     @suggest_topic_ids = @suggest_topics.collect(&:id)
@@ -254,40 +255,24 @@ class TopicsController < ApplicationController
     render text: '1'
   end
 
-  def suggest
-    @topic = Topic.find(params[:id])
-    @topic.update_attributes(excellent: 1)
-    topic_owner.update_score 10
-    redirect_to @topic, success: '加精成功。'
-  end
-
-  def unsuggest
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:excellent, 0)
-    topic_owner.update_score -10
-    redirect_to @topic, success: '加精已经取消。'
-  end
-
-  def knot
-    @topic = Topic.find(params[:id])
-    @topic.update_attributes(knot: 1)
-    redirect_to @topic, success: '已结贴。'
-  end
-
-  def unknot
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:knot, 0)
-    redirect_to @topic, success: '打开帖子。'
-  end
-
-
-  def ban
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:node_id, Node.no_point_id)
-    if current_user.admin?
-      @topic.update_attributes(modified_admin: current_user)
+  def action
+    case params[:type]
+    when 'excellent'
+      @topic.excellent!
+      redirect_to @topic, notice: '加精成功。'
+    when 'unexcellent'
+      @topic.unexcellent!
+      redirect_to @topic, notice: '加精已经取消。'
+    when 'ban'
+      @topic.ban!
+      redirect_to @topic, notice: '已转移到 NoPoint 节点。'
+    when 'knot'
+      @topic.close!
+      redirect_to @topic, notice: '话题已关闭，将不再接受任何新的回复。'
+    when 'unknot'
+      @topic.open!
+      redirect_to @topic, notice: '话题已重启开启。'
     end
-    redirect_to @topic, success: '已转移到 NoPoint 节点。'
   end
 
   private

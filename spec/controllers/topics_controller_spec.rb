@@ -1,156 +1,156 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe TopicsController do
+describe TopicsController, type: :controller do
   render_views
-  let(:topic) { Factory :topic, :user => user }
-  let(:user) { Factory :user }
-  let(:newbie) { Factory :newbie }
-  let(:admin) { Factory :admin }
+  let(:topic) { create :topic, user: user }
+  let(:user) { create :avatar_user }
+  let(:newbie) { create :newbie }
+  let(:admin) { create :admin }
 
-  describe ":index" do
-    it "should have an index action" do
+  describe ':index' do
+    it 'should have an index action' do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
-  describe ":feed" do
-    it "should have a feed action" do
+  describe ':feed' do
+    it 'should have a feed action' do
       get :feed
-      response.headers['Content-Type'].should == 'application/xml; charset=utf-8'
-      response.should be_success
+      expect(response.headers['Content-Type']).to eq('application/xml; charset=utf-8')
+      expect(response).to be_success
     end
   end
 
-  describe ":recent" do
-    it "should have a recent action" do
+  describe ':recent' do
+    it 'should have a recent action' do
       get :recent
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
-  describe ":node" do
-
-    it "should have a node action" do
-      get :node, :id => topic.id
-      response.should be_success
+  describe ':node' do
+    it 'should have a node action' do
+      get :node, params: { id: topic.id }
+      expect(response).to be_success
     end
   end
 
-  describe ":node_feed" do
-    it "should have a node_feed action" do
-      get :node_feed, :id => topic.id
-      response.should be_success
+  describe ':node_feed' do
+    it 'should have a node_feed action' do
+      get :node_feed, params: { id: topic.id }
+      expect(response).to be_success
     end
   end
 
-  describe ":new" do
-    describe "unauthenticated" do
-      it "should not allow anonymous access" do
+  describe ':new' do
+    describe 'unauthenticated' do
+      it 'should not allow anonymous access' do
         get :new
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
 
-    describe "authenticated" do
-      it "should allow access from authenticated user" do
+    describe 'authenticated' do
+      it 'should allow access from authenticated user' do
         sign_in user
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
-      it "should not allow access from newbie user" do
+      it 'should not allow access from newbie user' do
         sign_in newbie
         get :new
-        response.should_not be_success
+        expect(response).not_to be_success
       end
     end
   end
 
-  describe ":edit" do
-    context "unauthenticated" do
-      it "should not allow anonymous access" do
-        get :edit, :id => topic.id
-        response.should_not be_success
+  describe ':edit' do
+    context 'unauthenticated' do
+      it 'should not allow anonymous access' do
+        get :edit, params: { id: topic.id }
+        expect(response).not_to be_success
       end
     end
 
-    context "authenticated" do
-      context "own topic" do
-        it "should allow access from authenticated user" do
+    context 'authenticated' do
+      context 'own topic' do
+        it 'should allow access from authenticated user' do
           sign_in user
-          get :edit, :id => topic.id
-          response.should be_success
+          get :edit, params: { id: topic.id }
+          expect(response).to be_success
         end
       end
 
       context "other's topic" do
         it "should not allow edit other's topic" do
-          other_user = Factory :user
-          topic_of_other_user = Factory(:topic, :user => other_user)
+          other_user = create :user
+          topic_of_other_user = create(:topic, user: other_user)
           sign_in user
-          get :edit, :id => topic_of_other_user.id
-          response.should_not be_success
+          get :edit, params: { id: topic_of_other_user.id }
+          expect(response).not_to be_success
         end
       end
     end
   end
 
-  describe "#show" do
-    it "should clear user mention notification when show topic" do
-      user = Factory :user
-      topic = Factory :topic, :body => "@#{user.login}"
-      Factory :reply, :body => "@#{user.login}", :topic => topic
+  describe '#show' do
+    it 'should clear user mention notification when show topic' do
+      user = create :user
+      topic = create :topic, body: "@#{user.login}"
+      create :reply, body: "@#{user.login}", topic: topic
       sign_in user
-      expect {
-        get :show, :id => topic.id
-      }.to change(user.notifications.unread, :count).by(-2)
-    end
-
-    context "when the topic has 11 replies, and 10 are shown per page" do
-      let!(:user) { FactoryGirl.build_stubbed(:user) }
-      let!(:topic) { FactoryGirl.create(:topic) }
-      let!(:reply) { FactoryGirl.create_list(:reply, 11, :topic => topic) }
-
-      before { sign_in user }
-
-      it "should show the last page by default" do
-        Reply.stub!(:per_page).and_return(10)
-        get :show, :id => topic
-        assigns[:page].should eq(2)
-      end
+      expect do
+        get :show, params: { id: topic.id }
+      end.to change(user.notifications.unread, :count).by(-2)
     end
   end
 
-  describe "#suggest" do
-    it "should not allow user suggest" do
+  describe '#suggest' do
+    it 'should not allow user suggest' do
       sign_in user
-      put :suggest, :id => topic
-      topic.reload.excellent.should == 0
+      post :action, params: { id: topic, type: 'excellent' }
+      expect(topic.reload.excellent).to eq(0)
     end
 
-    it "should not allow user suggest by admin" do
+    it 'should not allow user suggest by admin' do
       sign_in admin
-      put :suggest, :id => topic
-      topic.reload.excellent.should == 1
+      post :action, params: { id: topic, type: 'excellent' }
+      expect(topic.reload.excellent).to eq(1)
     end
   end
 
-  describe "#unsuggest" do
-    context "suggested topic" do
-      let!(:topic) { FactoryGirl.create(:topic, :excellent => 1) }
+  describe '#unsuggest' do
+    context 'suggested topic' do
+      let!(:topic) { create(:topic, excellent: 1) }
 
-      it "should not allow user suggest" do
+      it 'should not allow user suggest' do
         sign_in user
-        put :unsuggest, :id => topic
-        topic.reload.excellent.should == 1
+        post :action, params: { id: topic, type: 'unexcellent' }
+        expect(topic.reload.excellent).to eq(1)
       end
 
-      it "should not allow user suggest by admin" do
+      it 'should not allow user suggest by admin' do
         sign_in admin
-        put :unsuggest, :id => topic
-        topic.reload.excellent.should == 0
+        post :action, params: { id: topic, type: 'unexcellent' }
+        expect(topic.reload.excellent).to eq(0)
       end
+    end
+  end
+
+  describe '#ban' do
+    it 'should not allow user ban' do
+      sign_in user
+      post :action, params: { id: topic, type: 'ban' }
+      expect(topic.reload.node_id).not_to eq(Node.no_point_id)
+    end
+
+    it 'should not allow user suggest by admin' do
+      sign_in admin
+      post :action, params: { id: topic, type: 'ban' }
+      expect(response.status).to eq(302)
+      expect(topic.reload.node_id).to eq(Node.no_point_id)
     end
   end
 end

@@ -307,11 +307,10 @@ window.TopicView = Backbone.View.extend
 
     if link.hasClass("active")
       $.ajax
-        url : "/topics/#{topic_id}/unknot"
-        type : "DELETE"
+      $.post "/topics/#{topic_id}/action?type=unknot"
       link.attr("title","结贴").removeClass("active")
     else
-      $.post "/topics/#{topic_id}/knot"
+      $.post "/topics/#{topic_id}/action?type=knot"
       link.attr("title","打开帖子").addClass("active")
     false
 
