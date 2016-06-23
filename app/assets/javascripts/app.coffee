@@ -1,5 +1,4 @@
 #= require jquery
-#= require jquery.turbolinks
 #= require jquery_ujs
 #= require bootstrap.min
 #= require bootstrap-select.min
@@ -51,7 +50,6 @@ AppView = Backbone.View.extend
 
   initialize: ->
     FormStorage.restore()
-    Turbolinks.ProgressBar.enable()
     @initForDesktopView()
     @initComponents()
     @initNotificationSubscribe()
@@ -331,7 +329,7 @@ window.App =
         insertTpl: "${code}"
     true
 
-$(document).on 'page:change',  ->
+document.addEventListener 'turbolinks:load',  ->
   window._appView = new AppView()
 
 FormStorage.init()

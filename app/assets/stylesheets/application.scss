@@ -812,8 +812,7 @@ kbd {
   }
 }
 
-html.turbolinks-progress-bar::before {
-  position: absolute !important;
+.turbolinks-progress-bar {
   background-color: $red !important;
   height: 2px !important;
 }
@@ -1219,14 +1218,17 @@ img.emoji {
 
 #topic-sidebar {
   position: fixed;
+  display: none;
   width: 260px;
 
-  @media (min-width: 992px) {
+  @media (min-width: 960px) {
+    display: block;
     width: 240px;
   }
 
-  @media (min-width: 1100px) {
-    width: 260px;
+  @media (min-width: 1200px) {
+    display: block;
+    width: 292px;
   }
 
   .group {
@@ -1372,9 +1374,10 @@ img.emoji {
         text-align: center;
       }
     }
-
-    .hideable {
-      display: none;
+    @media (min-width: 1026px) {
+      .hideable {
+        display: none;
+      }
     }
     &:hover {
       .hideable {

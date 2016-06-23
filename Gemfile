@@ -13,8 +13,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'jbuilder'
 
-gem 'turbolinks', git: 'https://github.com/turbolinks/turbolinks-classic.git'
-gem 'jquery-turbolinks'
+gem 'turbolinks', '~> 5.0.0.beta2'
 gem 'dropzonejs-rails'
 
 gem 'actionpack-action_caching', '1.1.1'
