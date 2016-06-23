@@ -139,7 +139,6 @@ class Reply
 
   # 是否是系统事件
   def system_event?
-    # return true
     @system_event ||= action.present?
   end
 
