@@ -9,7 +9,7 @@ class Reply
   include Mongoid::MarkdownBody
   include Mongoid::Mentionable
   include Mongoid::Likeable
-
+  include Mongoid::MentionTopic
 
   UPVOTES = %w(+1 :+1: :thumbsup: :plus1: 👍 👍🏻 👍🏼 👍🏽 👍🏾 👍🏿)
 
@@ -24,6 +24,7 @@ class Reply
   belongs_to :user, inverse_of: :replies
   belongs_to :topic, inverse_of: :replies, touch: true
   has_many :notifications, class_name: 'Notification::Base', dependent: :delete
+  belongs_to :target, polymorphic: true
 
   counter_cache name: :user, inverse_of: :replies
   counter_cache name: :topic, inverse_of: :replies

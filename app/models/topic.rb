@@ -19,6 +19,7 @@ class Topic
   include Redis::Objects
   include Mongoid::Mentionable
   include Mongoid::Closeable
+  include Mongoid::MentionTopic
 
   # 加入 Elasticsearch
   include Mongoid::Searchable
