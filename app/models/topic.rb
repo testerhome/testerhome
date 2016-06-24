@@ -222,6 +222,7 @@ class Topic
 
     self.last_active_mark = Time.now.to_i if self.created_at > 3.months.ago
     self.replies_count = replies.without_system.count
+    self.replied_at = reply.try(:created_at)
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)

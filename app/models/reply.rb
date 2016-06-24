@@ -38,8 +38,8 @@ class Reply
   scope :without_system, -> { where(action: nil) }
   scope :fields_for_list, -> { only(:topic_id, :_id, :body_html, :updated_at, :created_at) }
 
-  validates :body, presence: true, unless: -> { system_event? }
-  validates :body, uniqueness: { scope: [:topic_id, :user_id], message: '不能重复提交。' }, unless: -> { system_event? }
+  validates_presence_of :body, unless: -> { system_event? }
+  validates_uniqueness_of :body, scope: [:topic_id, :user_id], message: "不能重复提交。", unless: -> { system_event? }
 
   validate do
     ban_words = (SiteConfig.ban_words_on_reply || "").split("\n").collect { |word| word.strip }
