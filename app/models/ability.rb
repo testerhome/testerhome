@@ -18,16 +18,21 @@ class Ability
       end
       can :favorite, Topic
       can :unfavorite, Topic
-      can :knot, Topic
-      can :unknot, Topic
       can :follow, Topic
       can :unfollow, Topic
       can :update, Topic do |topic|
-        (topic.user_id == user.id)
+        topic.user_id == user.id
       end
       can :destroy, Topic do |topic|
-         (topic.user_id == user.id)
+         topic.user_id == user.id
       end
+      can :open, Topic do |topic|
+        topic.user_id == user.id
+      end
+      can :close, Topic do |topic|
+        topic.user_id == user.id
+      end
+
 
       # Reply
       # 新手用户晚上禁止回帖，防 spam，可在面板设置是否打开
@@ -42,6 +47,8 @@ class Ability
       can :destroy, Reply do |reply|
         reply.user_id == user.id
       end
+
+      cannot :create, Reply, topic: { :closed? => true }
 
       # Note
       can :create, Note

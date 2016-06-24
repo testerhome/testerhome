@@ -267,7 +267,7 @@ module V3
           doorkeeper_authorize!
           error!('当前用户没有回帖权限，具体请参考官网的说明。', 403) unless can?(:create, Reply)
           @topic = Topic.find(params[:id])
-          if @topic.knot?
+          if @topic.closed?
             error!('已结贴，具体请参考官网的说明。', 403)
           end
           @reply = @topic.replies.build(body: params[:body])

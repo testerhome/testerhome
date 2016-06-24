@@ -1,7 +1,7 @@
 # coding: utf-8
 class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
-                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban, :knot, :unknot]
+                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban, :close, :open]
   caches_action :feed, :node_feed, expires_in: 1.hours
 
   def index
@@ -258,28 +258,25 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.update_attributes(excellent: 1)
     topic_owner.update_score 10
-    redirect_to @topic, success: '加精成功。'
+    redirect_to @topic, notice: '加精成功。'
   end
 
   def unsuggest
     @topic = Topic.find(params[:id])
     @topic.update_attribute(:excellent, 0)
     topic_owner.update_score -10
-    redirect_to @topic, success: '加精已经取消。'
+    redirect_to @topic, notice: '加精已经取消。'
   end
 
-  def knot
-    @topic = Topic.find(params[:id])
-    @topic.update_attributes(knot: 1)
-    redirect_to @topic, success: '已结贴。'
+  def close
+    @topic.close!
+    redirect_to @topic, notice: '话题已关闭，将不再接受任何新的回复。'
   end
 
-  def unknot
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:knot, 0)
-    redirect_to @topic, success: '打开帖子。'
+  def open
+    @topic.open!
+    redirect_to @topic, notice: '话题已重启开启。'
   end
-
 
   def ban
     @topic = Topic.find(params[:id])
@@ -287,7 +284,7 @@ class TopicsController < ApplicationController
     if current_user.admin?
       @topic.update_attributes(modified_admin: current_user)
     end
-    redirect_to @topic, success: '已转移到 NoPoint 节点。'
+    redirect_to @topic, notice: '已转移到违规处理区节点。'
   end
 
   private

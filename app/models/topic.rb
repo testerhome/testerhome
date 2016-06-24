@@ -18,6 +18,7 @@ class Topic
   include Mongoid::MarkdownBody
   include Redis::Objects
   include Mongoid::Mentionable
+  include Mongoid::Closeable
 
   # 加入 Elasticsearch
   include Mongoid::Searchable
@@ -62,8 +63,7 @@ class Topic
   field :lock_node, type: Mongoid::Boolean, default: false
   # 精华帖 0 否， 1 是
   field :excellent, type: Integer, default: 0
-  # 结贴 0 否， 1 是
-  field :knot, type: Integer, default: 0
+  field :closed_at , type: DateTime
 
 
   # 保留所有权利，禁止转载.默认允许转载
@@ -266,10 +266,6 @@ class Topic
 
   def excellent?
     self.excellent >= 1
-  end
-
-  def knot?
-    self.knot >= 1
   end
 
   def self.notify_topic_created(topic_id)
