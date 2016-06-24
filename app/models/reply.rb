@@ -10,6 +10,7 @@ class Reply
   include Mongoid::Mentionable
   include Mongoid::Likeable
 
+
   UPVOTES = %w(+1 :+1: :thumbsup: :plus1: 👍 👍🏻 👍🏼 👍🏽 👍🏾 👍🏿)
 
   field :body
@@ -18,6 +19,7 @@ class Reply
   field :message_id
   # 匿名答复 0 否， 1 是
   field :anonymous, type: Integer, default: 0
+  field :action
 
   belongs_to :user, inverse_of: :replies
   belongs_to :topic, inverse_of: :replies, touch: true
@@ -32,10 +34,13 @@ class Reply
   delegate :title, to: :topic, prefix: true, allow_nil: true
   delegate :login, to: :user, prefix: true, allow_nil: true
 
+
+  scope :without_system, -> { where(action: nil) }
   scope :fields_for_list, -> { only(:topic_id, :_id, :body_html, :updated_at, :created_at) }
 
-  validates_presence_of :body
-  validates_uniqueness_of :body, scope: [:topic_id, :user_id], message: "不能重复提交。"
+  validates :body, presence: true, unless: -> { system_event? }
+  validates :body, uniqueness: { scope: [:topic_id, :user_id], message: '不能重复提交。' }, unless: -> { system_event? }
+
   validate do
     ban_words = (SiteConfig.ban_words_on_reply || "").split("\n").collect { |word| word.strip }
     if self.body.strip.downcase.in?(ban_words)
@@ -73,6 +78,7 @@ class Reply
   def self.notify_reply_created(reply_id)
     reply = Reply.find_by_id(reply_id)
     return if reply.blank?
+    return if reply.system_event?
     topic = Topic.find_by_id(reply.topic_id)
     return if topic.blank?
 
@@ -107,7 +113,7 @@ class Reply
   end
 
   def upvote?
-    body.strip.start_with?(*UPVOTES)
+    (body || '').strip.start_with?(*UPVOTES)
   end
 
   def destroy
@@ -118,5 +124,18 @@ class Reply
 
   def topic_title
     self.topic.title
+  end
+
+  # 是否是系统事件
+  def system_event?
+    @system_event ||= action.present?
+  end
+
+  def self.create_system_event(opts = {})
+    opts[:body] = ''
+    opts[:user] ||= User.current
+    return false if opts[:action].blank?
+    return false if opts[:user].blank?
+    self.create(opts)
   end
 end

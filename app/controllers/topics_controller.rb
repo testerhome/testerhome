@@ -1,7 +1,12 @@
 # coding: utf-8
 class TopicsController < ApplicationController
   load_and_authorize_resource only: [:new, :edit, :create, :update, :destroy,
-                                     :favorite, :unfavorite, :follow, :unfollow, :suggest, :unsuggest, :ban, :close, :open]
+                                     :favorite, :unfavorite, :follow, :unfollow,
+                                     :close, :open, :action]
+
+  before_action :set_topic, only: [:edit, :update, :destroy, :follow,
+                                   :unfollow, :close, :open, :action]
+
   caches_action :feed, :node_feed, expires_in: 1.hours
 
   def index
@@ -147,9 +152,7 @@ class TopicsController < ApplicationController
   end
 
   def edit
-    @topic = Topic.find(params[:id])
     @node = @topic.node
-
     set_seo_meta "#{t('topics.edit_topic')} &raquo; #{t('menu.topics')}"
   end
 
@@ -191,12 +194,7 @@ class TopicsController < ApplicationController
   end
 
   def update
-    @topic = Topic.find(params[:id])
-
-    if current_user.admin?
-      @topic.admin_editing = true
-    end
-
+    @topic.admin_editing = true if current_user.admin?
     if current_user.admin? && current_user.id != @topic.user_id
       # 管理员且非本帖作者
       @topic.modified_admin = current_user
@@ -223,7 +221,6 @@ class TopicsController < ApplicationController
   end
 
   def destroy
-    @topic = Topic.find(params[:id])
     if current_user.admin?
       @topic.admin_deleting = true
     end
@@ -243,29 +240,29 @@ class TopicsController < ApplicationController
   end
 
   def follow
-    @topic = Topic.find(params[:id])
     @topic.push_follower(current_user.id)
     render text: '1'
   end
 
   def unfollow
-    @topic = Topic.find(params[:id])
     @topic.pull_follower(current_user.id)
     render text: '1'
   end
 
-  def suggest
-    @topic = Topic.find(params[:id])
-    @topic.update_attributes(excellent: 1)
-    topic_owner.update_score 10
-    redirect_to @topic, notice: '加精成功。'
-  end
-
-  def unsuggest
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:excellent, 0)
-    topic_owner.update_score -10
-    redirect_to @topic, notice: '加精已经取消。'
+  def action
+    case params[:type]
+      when 'excellent'
+        @topic.excellent!
+        topic_owner.update_score 10
+        redirect_to @topic, notice: '加精成功。'
+      when 'unexcellent'
+        @topic.unexcellent!
+        topic_owner.update_score -10
+        redirect_to @topic, notice: '加精已经取消。'
+      when 'ban'
+        @topic.ban!
+        redirect_to @topic, notice: '已转移到违规处理区节点。'
+    end
   end
 
   def close
@@ -278,16 +275,11 @@ class TopicsController < ApplicationController
     redirect_to @topic, notice: '话题已重启开启。'
   end
 
-  def ban
-    @topic = Topic.find(params[:id])
-    @topic.update_attribute(:node_id, Node.no_point_id)
-    if current_user.admin?
-      @topic.update_attributes(modified_admin: current_user)
-    end
-    redirect_to @topic, notice: '已转移到违规处理区节点。'
-  end
-
   private
+
+  def set_topic
+    @topic ||= Topic.find(params[:id])
+  end
 
   def topic_params
     params.require(:topic).permit(:title, :body, :node_id, :cannot_be_shared)

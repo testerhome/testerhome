@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(*User::ACCESSABLE_ATTRS) }
     end
 
+    User.current = current_user
     # hit unread_notify_count
     unread_notify_count
   end

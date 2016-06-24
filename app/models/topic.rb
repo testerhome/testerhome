@@ -221,7 +221,7 @@ class Topic
     return false if reply.blank? && !opts[:force]
 
     self.last_active_mark = Time.now.to_i if self.created_at > 3.months.ago
-    self.replied_at = reply.try(:created_at)
+    self.replies_count = replies.without_system.count
     self.last_reply_id = reply.try(:id)
     self.last_reply_user_id = reply.try(:user_id)
     self.last_reply_user_login = reply.try(:user_login)
@@ -234,7 +234,7 @@ class Topic
     return false if deleted_reply.blank?
     return false if self.last_reply_user_id != deleted_reply.user_id
 
-    previous_reply = self.replies.where(:_id.nin => [deleted_reply.id]).recent.first
+    previous_reply = self.replies.without_system.where(:_id.nin => [deleted_reply.id]).recent.first
     self.update_last_reply(previous_reply, force: true)
   end
 
@@ -266,6 +266,21 @@ class Topic
 
   def excellent?
     self.excellent >= 1
+  end
+
+  def ban!
+    update_attributes(lock_node: true, node_id: Node.no_point_id, admin_editing: true)
+    Reply.create_system_event(action: 'ban', topic_id: self.id)
+  end
+
+  def excellent!
+    update_attributes(excellent: 1)
+    Reply.create_system_event(action: 'excellent', topic_id: self.id)
+  end
+
+  def unexcellent!
+    update_attributes(excellent: 0)
+    Reply.create_system_event(action: 'unexcellent', topic_id: self.id)
   end
 
   def self.notify_topic_created(topic_id)
