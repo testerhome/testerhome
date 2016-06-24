@@ -480,7 +480,7 @@ DEPENDENCIES
   redis-namespace (~> 1.5.1)
   redis-objects (= 1.1.0)
   redis-search (= 1.0.0.beta2)
-  rouge (~> 1.8.0)
+  rouge
   rspec-rails (~> 3.1)
   ruby-prof
   rucaptcha
