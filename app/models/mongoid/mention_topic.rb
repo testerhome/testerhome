@@ -27,13 +27,10 @@ module Mongoid
 
     def extract_mentioned_topic_ids
       matched_ids = self.body.scan(TOPIC_LINK_REGEXP).flatten
-      Rails.logger.error("asdasdasdasd     GitHub Repositiory fetch Error: #{matched_ids}")
       current_topic_id = self.class.name == 'Topic' ? self.id : self.topic_id
-      Rails.logger.error("asdasdasdasd     GitHub Repositiory fetch Error: #{current_topic_id}")
       if matched_ids.any?
         matched_ids = matched_ids.map(&:to_i).reject { |id| id == current_topic_id }
         self.mentioned_topic_ids = Topic.where(:_id.in => matched_ids).pluck(:id)
-        Rails.logger.error("asdasdasdasd     GitHub Repositiory fetch Error: #{self.mentioned_topic_ids}")
       end
     end
   end

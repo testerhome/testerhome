@@ -1216,6 +1216,48 @@ img.emoji {
   }
 }
 
+.topic-reward {
+
+  padding: 25px;
+  margin-bottom: 40px;
+  background-color: #f5f5f5;
+  border-left: 2px solid #f57e42;
+  box-sizing: border-box;
+  box-shadow: 0 0 1px #d9d9d9;
+
+  .btn {
+    color: white;
+    border-color: #f57e42;
+    background: #f57e42;
+  }
+
+  .modal-body {
+    padding: 50px 100px 100px;
+  }
+  .avatar {
+    margin-bottom: 20px;
+  }
+
+  .media-object {
+    display: inline;
+  }
+  
+  .fa-quote-left, .fa-quote-right {
+    color: #c0c0c0;
+  }
+
+  .infos-body {
+    padding: 0 45px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .info-head {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+
 #topic-sidebar {
   position: fixed;
   display: none;

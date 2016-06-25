@@ -30,7 +30,6 @@
         <% end %>
 
         <%= raw SiteConfig.after_topic_html %>
-        <%= social_share_button_tag h("#{@topic.title} via: @#{Setting.twitter_id} ") %>
       </div>
 
       <% if @topic.excellent? %>
@@ -49,7 +48,6 @@
             <i class="fa fa-legal"></i>「<%= t("topics.cannot_be_shared")%>」
           </div>
       <% end %>
-
       <div class="panel-footer clearfix">
         <%= render "buttons" %>
       </div>
@@ -57,6 +55,9 @@
 
       <%= render partial: "ban_reason" %>
       <%= render partial: "cannot_be_shared" %>
+      <% if @topic.topic_pay_url %>
+        <%= render partial: "reward" %>
+      <%end%>
 
   <% if @replies.blank? %>
     <div class="no-result">

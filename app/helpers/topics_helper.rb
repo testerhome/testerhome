@@ -39,7 +39,7 @@ module TopicsHelper
   def topic_qrcode_pay_tag(topic)
     link_title = "打赏"
     icon = raw(content_tag("i", "", class: "fa fa-money"))
-    link_to(raw("#{icon} 打赏"), "#",  title: link_title, class: "pay-qrcode", 'data-url' => (topic.topic_pay_url))
+    link_to(raw("#{icon} 打赏"), "#",  title: link_title, class: "btn pay-qrcode", 'data-url' => (topic.topic_pay_url))
   end
 
   def topic_follow_tag(topic, opts = {})

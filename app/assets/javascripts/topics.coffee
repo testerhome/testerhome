@@ -17,7 +17,7 @@ window.TopicView = Backbone.View.extend
     "click a.bookmark": "bookmark"
     "click .btn-move-page": "scrollPage"
     "click .topic-detail a.qrcode": "testerhome_qrcode"
-    "click .topic-detail a.pay-qrcode": "testerhome_qrcode_pay"
+    "click .topic-reward a.pay-qrcode": "testerhome_qrcode_pay"
     "click .notify-updated .update": "updateReplies"
     "click .pickup-emoji": "pickupEmoji"
 
