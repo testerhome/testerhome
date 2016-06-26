@@ -66,7 +66,10 @@ class Reply
 
 
 
-  after_create do
+  after_create :send_notify
+
+  def send_notify
+    return if system_event?
     NotifyReplyJob.perform_later(id)
   end
 
@@ -79,7 +82,6 @@ class Reply
   def self.notify_reply_created(reply_id)
     reply = Reply.find_by_id(reply_id)
     return if reply.blank?
-    return if reply.system_event?
     topic = Topic.find_by_id(reply.topic_id)
     return if topic.blank?
 
