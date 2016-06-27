@@ -1458,18 +1458,28 @@ img.emoji {
 
 #notifications {
   .panel-heading {
-    .clean-button {
-      margin-left: 10px;
-    }
     font-size: 16px;
-    line-height: 32px
+    line-height: 32px;
   }
+  .panel-body {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .notification-group {
+    padding: 10px;
+
+    .group-title {
+      color: #aaa;
+      border-bottom: 1px solid #eee;
+      padding: 5px 0;
+    }
+  }
+
+
   .notification {
     position: relative;
     margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid $gray;
-    color: #999;
+    padding: 10px 15px;
     &:last-child {
       margin-bottom: 0px;
       border-bottom: 0px;
@@ -1495,7 +1505,16 @@ img.emoji {
       color: #aaa;
     }
     .media-content {
-      p:last-chind {
+      color: #999;
+
+      a {
+        color: #999 !important;
+      }
+      p {
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      p:last-child {
         margin-bottom: 0;
       }
     }

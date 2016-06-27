@@ -1,22 +1,29 @@
 <div id="notifications" class="panel panel-default">
   <div class="panel-heading">
-      <div class="pull-right">
-          <%= link_to icon_tag("fa fa-trash", label: "清空"), clear_notifications_path, class: 'btn btn-danger', method: :post, 'data-disable-with' => '清空中...' %>
-      </div>
+    <div class="pull-right">
+      <%= link_to icon_tag("fa fa-trash", label: "清空"), clear_notifications_path, class: 'btn btn-danger', method: :post, 'data-disable-with' => '清空中...' %>
+    </div>
     <% if action_name == 'index' %>
-     <%= link_to icon_tag("fa fa-filter", label: "未读通知"), unread_notifications_path, class: 'btn btn-default' %>
+        <%= link_to icon_tag("fa fa-filter", label: "未读通知"), unread_notifications_path, class: 'btn btn-default' %>
     <% else %>
-     <%= link_to icon_tag("fa fa-filter", label: "未读通知"), notifications_path, class: 'btn btn-default active' %>
+        <%= link_to icon_tag("fa fa-filter", label: "未读通知"), notifications_path, class: 'btn btn-default active' %>
     <% end %>
   </div>
+  <div class="panel-body list">
   <% if @notifications.blank? %>
-    <div class="no-result panel-body" style="padding:80px 0;">暂无通知</div>
+      <div class="no-result" style="padding:80px 0;">暂无通知</div>
   <% else %>
-    <div class="panel-body list">
-      <%= render partial: "notification", collection: @notifications %>
-    </div>
-    <div class="panel-footer">
-      <%= will_paginate @notifications %>
-    </div>
+
+      <% @notification_groups.each do |group, notifications| %>
+          <div class="notification-group">
+            <div class="group-title"><i class="fa fa-clock-o"></i> <%= group %></div>
+            <%= render partial: "notification", collection: notifications %>
+          </div>
+      <% end %>
+
   <% end %>
+    </div>
+  <div class="panel-footer">
+    <%= will_paginate @notifications %>
+  </div>
 </div>

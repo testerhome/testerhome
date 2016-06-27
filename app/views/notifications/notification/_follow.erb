@@ -7,7 +7,7 @@
   </div>
   <div class="media-body">
     <div class="media-heading">
-      <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= timeago(notification.created_at) %></span>
+      <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= notification.created_at.strftime('%H:%M') %></span>
     </div>
     <div class="summary">
       开始关注你了。

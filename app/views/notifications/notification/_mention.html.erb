@@ -12,7 +12,7 @@
   <div class="media-body">
     <div class="media-heading">
       <span class="info">在 <%= topic_title_tag(topic, reply: reply) %> 提及你：</span>
-      <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= timeago(notification.created_at) %></span>
+      <span class="date pull-right"><i class="fa fa-clock-o"></i> <%= notification.created_at.strftime('%H:%M') %></span>
 
       <% if !notification.read? %>
         <span class="new label label-warning">新</span>
