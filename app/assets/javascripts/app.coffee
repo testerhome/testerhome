@@ -1,7 +1,6 @@
 #= require jquery
 #= require jquery_ujs
 #= require bootstrap.min
-#= require bootstrap-select.min
 #= require underscore
 #= require backbone
 #= require will_paginate
@@ -72,8 +71,6 @@ AppView = Backbone.View.extend
     $("abbr.timeago").timeago()
     $(".alert").alert()
     $('.dropdown-toggle').dropdown()
-    $('.bootstrap-select').remove()
-    $("select").selectpicker()
 
     # Go Top
     $("#go_top").click () ->
