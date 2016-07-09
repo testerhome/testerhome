@@ -47,10 +47,8 @@ class Notifier
     else if window.Notification and window.Notification.requestPermission
       window.Notification.requestPermission()
 
-  visitUrl: (url) ->
-    window.location.href = url
 
-  notify: (avatar, title, content, url = null) ->
+  notify: (avatar, title, content, url) ->
     console.log avatar
     if @enableNotification
       if not window.Notification
@@ -58,16 +56,17 @@ class Notifier
         if url
           popup.onclick = ->
             window.parent.focus()
-            $.notifier.visitUrl(url)
+            window.location.href = url
         popup.show()
       else
         opts =
           icon: avatar
           body : content
-          onclick : ->
+        popup = new window.Notification(title,opts)
+        if url
+          popup.onclick = ->
             window.parent.focus()
-            $.notifier.visitUrl(url)
-        new window.Notification(title,opts)
+            window.location.href = url
     else
       @checkOrRequirePermission()
 
