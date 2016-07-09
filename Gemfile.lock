@@ -6,6 +6,13 @@ GIT
       doorkeeper (>= 3.0.0)
 
 GIT
+  remote: https://github.com/SamSaffron/message_bus.git
+  revision: 3415039a3b4b25df640b1d8c7f497e5aa0d58b6e
+  specs:
+    message_bus (2.0.1)
+      rack (>= 1.1.3)
+
+GIT
   remote: https://github.com/testerhome/social-share-button.git
   revision: 2d3c416167e3d4c62ca487dc30fb279519ffcf4e
   specs:
@@ -216,9 +223,6 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    message_bus (1.1.1)
-      rack (>= 1.1.3)
-      redis
     mime-types (3.0)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0221)
@@ -459,7 +463,7 @@ DEPENDENCIES
   kgio
   letter_avatar
   letter_opener
-  message_bus
+  message_bus!
   mini_magick
   mongoid (= 5.0.0)
   mongoid_auto_increment_id (= 0.8.1)

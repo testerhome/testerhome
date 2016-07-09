@@ -84,7 +84,7 @@ gem 'sidekiq', '4.0.0.pre2'
 # Sidekiq Web
 gem 'sinatra', :require => nil
 
-gem 'message_bus'
+gem 'message_bus', :git => 'https://github.com/SamSaffron/message_bus.git'
 
 # 分享功能
 gem 'social-share-button', :git => 'https://github.com/testerhome/social-share-button.git'

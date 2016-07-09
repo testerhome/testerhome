@@ -159,7 +159,10 @@ AppView = Backbone.View.extend
   initNotificationSubscribe : () ->
     return if not App.access_token?
     return if App.access_token.length < 5
+    return if window.notificationChannel
+    console.log "init notificationChannel"
     MessageBus.start()
+    window.notificationChannel = true
     MessageBus.callbackInterval = 1000
     MessageBus.subscribe "/notifications_count/#{App.access_token}", (json) ->
       span = $(".notification-count span")

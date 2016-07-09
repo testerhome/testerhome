@@ -421,7 +421,10 @@ window.TopicView = Backbone.View.extend
   initReplyNotificationSubscribe: () ->
     return if not App.access_token?
     return if App.access_token.length < 5
+    return if window.replyNotificationChannel
+    console.log "init replyNotificationChannel"
     MessageBus.start()
+    window.replyNotificationChannel = true
     MessageBus.callbackInterval = 1000
     MessageBus.subscribe "/topics/" + Topics.topic_id, (json) ->
       if json.user_id == App.current_user_id
