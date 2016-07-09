@@ -58,7 +58,9 @@ class ApplicationController < ActionController::Base
     redirect_to topics_path, alert: t('common.access_denied')
   end
 
-  def set_seo_meta(title = '', meta_keywords = '', meta_description = '')
+  def set_seo_meta(title = '',
+                   meta_keywords = '测试,移动测试,开发测试,Appium,Android,iOS,bat测试',
+                   meta_description = '中国最大的移动互联网测试社区,专注于测试技术的落地,分享。中国软件测试新晋精英的精神家园。')
     @page_title = "#{title}" if title.length > 0
     @meta_keywords = meta_keywords
     @meta_description = meta_description
