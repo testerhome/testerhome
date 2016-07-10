@@ -126,6 +126,14 @@ Rails.application.routes.draw do
         post :undestroy
       end
     end
+    resources :answers
+    resources :questions do
+      member do
+        post :suggest
+        post :unsuggest
+        post :undestroy
+      end
+    end
     resources :nodes
     resources :sections
     resources :users

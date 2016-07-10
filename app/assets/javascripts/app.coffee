@@ -21,6 +21,7 @@
 #= require message-bus
 #= require form_storage
 #= require topics
+#= require questions
 #= require pages
 #= require notes
 #= require turbolinks

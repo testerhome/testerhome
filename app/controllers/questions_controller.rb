@@ -87,8 +87,8 @@ class QuestionsController < ApplicationController
 
     @show_raw = params[:raw] == '1'
 
-    @replies = @question.replies.unscoped.without_body.asc(:_id).all
-    check_current_user_liked_replies
+    @answers = @question.answers.unscoped.without_body.asc(:_id).all
+    check_current_user_liked_answers
 
     check_current_user_status_for_question
     set_special_node_active_menu
@@ -100,12 +100,12 @@ class QuestionsController < ApplicationController
     set_seo_meta "#{@question.title} &raquo; #{t('menu.questions')}"
   end
 
-  def check_current_user_liked_replies
+  def check_current_user_liked_answers
     return false unless current_user
 
     # 找出用户 like 过的 Answer，给 JS 处理 like 功能的状态
     @user_liked_answer_ids = []
-    @replies.each do |r|
+    @answers.each do |r|
       unless r.liked_user_ids.index(current_user.id).nil?
         @user_liked_answer_ids << r.id
       end
