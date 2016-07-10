@@ -1,0 +1,36 @@
+<% content_for :sitemap do %>
+  <span class="current">回答</span>
+<% end %>
+<h1>Listing answers</h1>
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr class="head">
+    <td class="first">ID</td>
+    <td style="width:500px">Body</td>
+        <td>Question</td>
+    <td>User</td>
+    <td>At</td>
+
+    <td></td>
+  </tr>
+
+<% @answers.each do |answer| %>
+  <tr id="answer-<%= answer.id %>" class="<%= 'deleted' if !answer.deleted_at.blank? %>">
+    <td class="first"><%= answer.id %></td>
+    <td><%= truncate(answer.body, length: 50) %></td>
+    <% if answer.question %>
+      <td>
+          <%= link_to(answer.question_id, question_path(answer.question_id), title: answer.question.title)%>
+      </td>
+      <% else %>
+      <td><%= answer.question_id %></td>
+      <% end %>
+    <td><%= link_to(answer.user.login, edit_admin_user_path(answer.user_id), target: "_blank") if answer.user %></td>
+    <td><%= l answer.created_at, format: :short %></td>
+    <td><%= link_to '', edit_admin_answer_path(answer), class: "fa fa-pencil" %>
+    <%= link_to '', admin_answer_path(answer), 'data-confirm' => 'Are you sure?', method: :delete, remote: true, class: "fa fa-trash" %></td>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @answers %>
+

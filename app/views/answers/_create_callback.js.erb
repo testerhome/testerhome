@@ -1,0 +1,17 @@
+if($("#answers").length == 0){
+  Turbolinks.visit(location.href);
+} else {
+  if ($(".answer[data-id=<%= answer.id %>]").length == 0) {
+    var current_floor = parseInt($("#answers").data("last-floor")) + 1;
+    $("#answers").data("last-floor",current_floor);
+    var dom = $('<%= j(render("answer", answer: answer, answer_counter: @question.answers_count - 1, display_edit: true)) %>');
+    $("#answers .items").append(dom);
+    $("#answers .total b").text('<%= @question.answers_count %>');
+    $('#question-sidebar .total b').text('<%= @question.answers_count %>');
+    dom.find(".answer-floor").text(current_floor + " 楼");
+    dom.find("a.edit").css("display", "inline-block");
+    dom.addClass('light');
+    _questionView.resetClearReplyHightTimer();
+  }
+}
+

@@ -49,6 +49,35 @@ Rails.application.routes.draw do
     end
   end
 
+  # for qa
+
+  get "questions/node:id" => "questions#node", as: 'node_questions'
+  get "questions/node:id/feed" => "questions#node_feed", as: 'feed_node_questions', defaults: { format: 'xml' }
+  get "questions/last" => "questions#recent", as: 'recent_questions'
+
+
+  resources :questions do
+    member do
+      post :answer
+      post :favorite
+      delete :unfavorite
+      post :follow
+      delete :unfollow
+      post :close
+      post :open
+      post :action
+    end
+    collection do
+      get :no_answer
+      get :popular
+      get :excellent
+      get :feed, defaults: { format: 'xml' }
+      get :feedgood, defaults: { format: 'xml' }
+      post :preview
+    end
+    resources :answers
+  end
+
   get "topics/node:id" => "topics#node", as: 'node_topics'
   get "topics/node:id/feed" => "topics#node_feed", as: 'feed_node_topics', defaults: { format: 'xml' }
   get "topics/last" => "topics#recent", as: 'recent_topics'

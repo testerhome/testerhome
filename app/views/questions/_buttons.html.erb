@@ -1,0 +1,46 @@
+<div class="opts">
+  <%= likeable_tag(@question) %>
+  <%= question_follow_tag(@question) %>
+  <%= question_favorite_tag(@question) %>
+  <%= question_qrcode_tag(@question) %>
+
+  <% if admin? %>
+        <% if !@question.suggested_at.blank? %>
+    <%= link_to raw("<i class='fa fa-thumb-tack'></i> 取消"), unsuggest_admin_question_path(@question), 'data-confirm' => '确定要取消置顶么?', method: :post %>
+        <% else %>
+    <%= link_to raw("<i class='fa fa-thumb-tack'></i> 置顶"), suggest_admin_question_path(@question), 'data-confirm' => '确定要置顶么?', method: :post %>
+    <% end %>
+    <% if !@question.excellent? %>
+          <%= link_to raw("<i class='fa fa-diamond'></i> 加精"), action_question_path(@question.id, type: 'excellent'), title: "设为精华帖" , method: "post", data: { confirm: "确定要设置成精华帖么？" } %>
+      <% end %>
+    <% if @question.node_id != Node.no_point_id %>
+          <%= link_to raw("<i class='fa fa-ban'></i> 屏蔽"), action_question_path(@question.id, type: 'ban'), method: 'post', title: "屏蔽此贴，移动到违规处理区节点" %>
+    <% end %>
+  <% end %>
+
+  <span class="pull-right opts">
+    <% if owner?(@question) or admin? %>
+    <%= link_to "", edit_question_path(@question), class: "fa fa-pencil", title: "修改本帖" %>
+    <%= link_to "", question_path(@question.id), method: :delete, 'data-confirm' => t("common.confirm_delete"), class: "fa fa-trash", title: "删除本帖" %>
+    <% end %>
+    <% if admin? %>
+      <%= link_to "", new_ad_path(question_id: @question.id), class: "fa fa-space-shuttle", title: "推送本帖到客户端头条" %>
+    <% end %>
+  </span>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="qrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="panel-heading">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+            <div class="modal-body">
+                <div id="qrcode-body" class="center-block"></div>
+            </div>
+
+        </div>
+    </div>
+</div>

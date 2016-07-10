@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-9">
+    <% if not mobile? %>
+      <%= raw SiteConfig.question_list_top_html %>
+    <%end%>
+    <div class="questions panel panel-default">
+      <div class="panel-heading clearfix">
+        <%= render "questions/node_info", node: @node %>
+      </div>
+
+      <div class="panel-body">
+        <% if @questions.current_page == 1 %>
+          <% cache(@suggest_questions) do %>
+            <%= render partial: "questions/question", collection: @suggest_questions, locals: { suggest: true } %>
+          <% end %>
+        <% end %>
+
+        <% cache(@questions) do %>
+          <%= render partial: "questions/question", collection: @questions, locals: { suggest: false } %>
+        <% end %>
+      </div>
+
+      <div class="panel-footer clearfix">
+        <%= will_paginate @questions %>
+      </div>
+
+    </div>
+
+    <% if controller_name == "questions" && action_name == "index" && !mobile? %>
+      <%= render "/shared/index_sections" %>
+      <%= render "/shared/hot_locations" %>
+    <% end %>
+
+    <% if !@node.blank? %>
+      <% content_for :node_feed_link do %>
+        <%= auto_discovery_link_tag(:rss, feed_node_questions_url, title: "#{@node.name} 节点最新话题") %>
+      <% end %>
+    <% end %>
+
+    <% comment do %>
+      <% if current_user %>
+      <script type="text/javascript">
+        var readed_question_ids = <%= current_user.filter_readed_questions(@questions + (@suggest_questions || [])) %>;
+        for (var i = 0; i < readed_question_ids.length; i++) {
+          question_id = readed_question_ids[i];
+          $(".question-"+ question_id + " .count a").addClass("state-true");
+        }
+      </script>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div class="sidebar col-md-3">
+    <%= render "questions/sidebar_for_question_index", select_node: @node%>
+  </div>
+
+</div>

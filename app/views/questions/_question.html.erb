@@ -1,0 +1,43 @@
+<% cache([question, suggest]) do %>
+    <% if suggest %>
+        <div class="suggest_question question media question-<%= question.id %>">
+    <% else %>
+        <div class="question media question-<%= question.id %>">
+    <% end %>
+
+    <div class="avatar media-left">
+      <%= user_avatar_tag(question.user, :normal) %>
+    </div>
+    <div class="infos media-body">
+      <div class="title media-heading">
+        <%= link_to(truncate(question.title, length: 100), question_path(question), title: question.title) %>
+        <% if suggest %>
+            <i class="fa fa-thumb-tack" title="置顶"></i>
+        <% end %>
+        <%= question_excellent_tag(question) %>
+        <%= question_closed_tag(question) %>
+      </div>
+      <div class="info">
+        <% if action_name != "node" %>
+            <%= render_node_name(question.node_name, question.node_id) %>
+            •
+        <% end %>
+        <%= user_name_tag(question.user, data: {author: true}) %>
+        <span class="hidden-mobile">
+      <%= raw t("common.created_at", time: timeago(question.created_at)) %>
+          •
+          <% if question.last_answer_user_login.blank? %>
+        <%= raw t("common.created_at", time: timeago(question.created_at)) %>
+      <% else %>
+        <%= t("common.last_by") %> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.replied_at)) %>
+      <% end %>
+      </span>
+      </div>
+    </div>
+    <div class="count media-right">
+      <% if question.answers_count > 0 %>
+          <%= link_to(question.answers_count, "#{question_path(question)}#answer#{question.answers_count}", class: "state-false") %>
+      <% end %>
+    </div>
+    </div>
+<% end %>

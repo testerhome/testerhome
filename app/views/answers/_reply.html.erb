@@ -1,0 +1,40 @@
+<% cache([answer, @question, "raw:#{@show_raw}"]) do %>
+    <%
+      floor = answer_counter + 1
+    %>
+    <div class="answer<%= ' popular' if answer.popular? %><%= ' answer-system' if answer.system_event? %><%= ' answer-deleted' if answer.deleted? %>" data-id="<%= answer.id %>" id="answer<%= floor %>">
+      <% if answer.deleted? and !@show_raw %>
+          <div class="deleted text-center"><%= floor %><%= t("common.floor") %> <%= t("common.deleted") %></div>
+
+           <% elsif answer.system_event? %>
+             <%= render 'answers/system_event', answer: answer %>
+
+      <% else %>
+          <div class="avatar"><%= user_avatar_tag(answer.user, :normal) %></div>
+          <div class="infos">
+            <div class="info">
+        <span class="name">
+          <%= user_name_tag(answer.user) %>
+        </span> ·
+        <span class="time">
+          <a class="answer-floor" href="#answer<%= floor %>">#<%= floor %></a> · <%= timeago(answer.created_at) %>
+        </span>
+        <span class="opts pull-right">
+          <% if !answer.deleted? %>
+            <span class="hideable">
+            <%= link_to('', edit_question_answer_path(@question, answer), class: "edit fa fa-pencil", 'data-uid' => answer.user_id, title: "修改回帖") %>
+                  <%= link_to('', "#", 'data-floor' => floor, 'data-login' => answer.user_login,
+                              title: t("questions.answer_this_floor"), class: "btn-answer fa fa-mail-answer")
+                  %>
+            </span>
+            <%= likeable_tag(answer, cache: true) %>
+          <% end %>
+        </span>
+            </div>
+            <div class="markdown<%= ' deleted' if answer.deleted? %>">
+              <%= raw answer.body_html %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+<% end %>

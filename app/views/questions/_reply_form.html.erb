@@ -1,0 +1,20 @@
+<%= render "editor_toolbar" %>
+<%= form_for(Answer.new, remote: true, url: question_answers_path(@question)) do |f| %>
+
+    <div class="form-group">
+      <%= f.text_area :body, class: "question-editor form-control", rows: "4", tabindex: "1" %>
+    </div>
+    <div class="submit-buttons">
+      <button type="submit" id="answer-button" class="btn btn-primary" tabindex="2" , data-disable-with='<%= t("questions.submit_answer") %>'><%= t("questions.submit_answer") %></button>
+      <span class="help-inline" style="padding-left: 5px;" title="或者 Ctrl + Enter"><kbd>Command</kbd> + <kbd>Enter</kbd></span>
+
+      <div class="pull-right"><a href="/markdown" target="_blank">排版说明</a></div>
+      <% if Node.find(@question.node_id).name.index("匿名") %>
+               <span class="help-inline">
+        <label>
+            <%= f.check_box :anonymous %>  <%= t("questions.real_name") %>
+             </label>
+      </span>
+      <% end %>
+    </div>
+<% end %>

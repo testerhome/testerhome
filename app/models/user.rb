@@ -353,6 +353,20 @@ class User
     Rails.cache.write("user:#{self.id}:topic_read:#{topic.id}", last_reply_id)
   end
 
+  # 将 question 的最后回复设置为已读
+  def read_question(question)
+    return if question.blank?
+    return if self.topic_read?(question)
+
+    self.notifications.unread.any_of({mentionable_type: 'Question', mentionable_id: question.id},
+                                     {mentionable_type: 'Answer', :mentionable_id.in => question.answer_ids},
+                                     {:answer_id.in => question.answer_ids}).update_all(read: true)
+
+    # 处理 last_answer_id 是空的情况
+    last_answer_id = question.last_answer_id || -1
+    Rails.cache.write("user:#{self.id}:question_read:#{question.id}", last_answer_id)
+  end
+
   # 赞东西
   def like(likeable)
     return false if likeable.blank?

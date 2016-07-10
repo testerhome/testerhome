@@ -1,0 +1,6 @@
+<% content_for :sitemap do %>
+  <a href="<%= admin_questions_path %>"><%= t("admin.menu.questions")%></a> &gt; <span class="current"><%= t("common.create")%></span>
+<% end %>
+<h1>New question</h1>
+
+<%= render 'form' %>

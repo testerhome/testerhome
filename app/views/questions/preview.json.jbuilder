@@ -1,0 +1,1 @@
+json.body markdown(@body)

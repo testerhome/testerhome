@@ -1,0 +1,25 @@
+<div class="panel-heading media clearfix">
+  <div class="media-body">
+    <h1 class="media-heading"><%= question.title %> <%= question_closed_tag(question) %></h1>
+    <div class="info">
+      <%= render_node_name(question.node_name,question.node_id) %>
+       ·
+      <%= user_name_tag(question.user, data: { author: true }) %>
+       ·
+      <%= raw t("common.created_at", time: timeago(question.created_at))%>
+      <% if !question.last_answer_user_login.blank? %>
+         ·
+        <%= t("common.last_by")%> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.answered_at))%>
+      <% end %>
+
+      <% if !question.modified_admin.blank? %>
+        ·<%= t("common.modified_by_admin")%> <%= user_name_tag(question.modified_admin) %>
+      <% end %>
+       ·
+      <%= question.hits %> <%= t("common.read_times")%>
+    </div>
+  </div>
+  <div class="avatar media-right">
+    <%= user_avatar_tag(@question.user, :normal) %>
+  </div>
+</div>

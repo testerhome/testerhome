@@ -57,6 +57,9 @@ AppView = Backbone.View.extend
     if $('body').data('controller-name') in ['topics', 'replies']
       window._topicView = new TopicView({parentView: @})
 
+    if $('body').data('controller-name') in ['questions', 'answers']
+      window._questionView = new QuestionView({parentView: @})
+
     if $('body').data('controller-name') in ['pages']
       window._pageView = new PageView({parentView: @})
 
