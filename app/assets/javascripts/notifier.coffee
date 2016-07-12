@@ -13,7 +13,7 @@ class Notifier
     @checkOrRequirePermission()
 
   hasSupport: ->
-    !!(window.Notification or win.webkitNotifications or navigator.mozNotification)
+    !!(window.Notification or window.webkitNotifications or navigator.mozNotification)
 
   hasPermission: ->
     if @checkPermission() == PERMISSION_GRANTED
