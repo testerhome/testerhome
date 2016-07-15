@@ -80,7 +80,7 @@ module QuestionsHelper
   end
 
   def render_question_last_answer_time(question)
-    l((question.replied_at || question.created_at), format: :short)
+    l((question.answered_at || question.created_at), format: :short)
   end
 
   def render_question_created_at(question)
@@ -88,7 +88,7 @@ module QuestionsHelper
   end
 
   def render_question_last_be_replied_time(question)
-    timeago(question.replied_at)
+    timeago(question.answered_at)
   end
 
   def render_question_node_select_tag(question)

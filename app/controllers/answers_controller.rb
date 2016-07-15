@@ -8,8 +8,7 @@ class AnswersController < ApplicationController
     @answer.question_id = @question.id
     @answer.user_id = current_user.id
 
-    # 加入匿名
-    node = Node.find(@answer.node_id)
+    node = Node.find(@question.node_id)
     if @answer.save
       current_user.read_question(@question)
       @msg = t('question.answer_success')

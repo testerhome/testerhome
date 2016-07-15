@@ -29,7 +29,7 @@
           <% if question.last_answer_user_login.blank? %>
         <%= raw t("common.created_at", time: timeago(question.created_at)) %>
       <% else %>
-        <%= t("common.last_by") %> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.replied_at)) %>
+        <%= t("common.last_by") %> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.answered_at)) %>
       <% end %>
       </span>
       </div>
