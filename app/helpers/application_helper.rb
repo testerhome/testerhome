@@ -91,6 +91,10 @@ module ApplicationHelper
     sanitize data
   end
 
+  def title_tag(str)
+    content_for :title, raw("#{str} · #{Setting.app_name}")
+  end
+
   MOBILE_USER_AGENTS =  'palm|blackberry|nokia|phone|midp|mobi|symbian|chtml|ericsson|minimo|' +
                         'audiovox|motorola|samsung|telit|upg1|windows ce|ucweb|astel|plucker|' +
                         'x320|x240|j2me|sgh|portable|sprint|docomo|kddi|softbank|android|mmp|' +
