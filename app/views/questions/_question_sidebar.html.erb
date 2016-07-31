@@ -21,10 +21,10 @@
       <hr />
       <div class="answer-buttons">
         <div class="total">
-          共收到 <b><%= @question.answers_count %></b> 条回复
+          共收到 <b><%= @question.answers_count %></b> 条回答
         </div>
         <% if not @question.closed? %>
-          <a href="#answer" class="btn btn-success btn-block btn-focus-answer">参与回复</a>
+          <a href="#answer" class="btn btn-success btn-block btn-focus-answer">回答</a>
         <% else %>
           <a href="#answer" class="btn disabled btn-success btn-block btn-focus-answer">结贴</a>
         <% end %>

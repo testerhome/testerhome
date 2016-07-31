@@ -5,9 +5,28 @@
         <div class="question media question-<%= question.id %>">
     <% end %>
 
-    <div class="avatar media-left">
-      <%= user_avatar_tag(question.user, :normal) %>
+
+    <div class="count_tags media-left">
+      <div class="mini-count">
+        <span><%= link_to(question.likes_count, question_path(question), title: question.likes_count) %></span>
+      </div>
+      <div><%= link_to(t("questions.likes"), question_path(question), title: t("questions.likes")) %></div>
     </div>
+
+    <div class="count_tags media-left">
+      <div class="mini-count">
+        <span><%= link_to(question.answers_count, question_path(question), title: question.answers_count) %></span>
+      </div>
+      <div><%= link_to(t("questions.answers"), question_path(question), title: t("questions.answers")) %></div>
+    </div>
+
+    <div class="count_tags media-left">
+      <div class="mini-count">
+        <span><%= link_to(question.hits, question_path(question), title: question.hits) %></span>
+      </div>
+      <div><%= link_to(t("questions.hits"), question_path(question), title: t("questions.hits")) %></div>
+    </div>
+
     <div class="infos media-body">
       <div class="title media-heading">
         <%= link_to(truncate(question.title, length: 100), question_path(question), title: question.title) %>
@@ -26,11 +45,11 @@
         <span class="hidden-mobile">
       <%= raw t("common.created_at", time: timeago(question.created_at)) %>
           •
-          <% if question.last_answer_user_login.blank? %>
-        <%= raw t("common.created_at", time: timeago(question.created_at)) %>
-      <% else %>
-        <%= t("common.last_by") %> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.answered_at)) %>
-      <% end %>
+        <% if question.last_answer_user_login.blank? %>
+          <%= raw t("common.created_at", time: timeago(question.created_at)) %>
+        <% else %>
+          <%= t("common.last_by") %> <%= user_name_tag(question.last_answer_user_login) %> <%= raw t("common.answer_at", time: timeago(question.answered_at)) %>
+        <% end %>
       </span>
       </div>
     </div>
@@ -40,4 +59,5 @@
       <% end %>
     </div>
     </div>
+  </div>
 <% end %>
