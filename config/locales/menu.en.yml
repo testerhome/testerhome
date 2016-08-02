@@ -27,6 +27,7 @@
     last_by: "Last by"
     floor: "Floor"
     reply_at: "Replied at %{time}"
+    answer_at: "Answered at %{time}"
     modified_by_admin: "Modified by admin"
     create_item: "Create Item"
     read_times: "hits"

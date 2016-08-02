@@ -27,6 +27,7 @@
     last_by: "最后由"
     floor: "楼"
     reply_at: "于 %{time}回复"
+    answer_at: "于 %{time}回答"
     modified_by_admin: "更新自管理员"
     create_item: "中发起"
     read_times: "次阅读"

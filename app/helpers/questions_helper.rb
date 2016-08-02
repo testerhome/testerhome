@@ -87,7 +87,7 @@ module QuestionsHelper
     timeago(question.created_at, class: "published")
   end
 
-  def render_question_last_be_replied_time(question)
+  def render_question_last_be_answered_time(question)
     timeago(question.answered_at)
   end
 
