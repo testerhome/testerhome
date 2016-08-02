@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
     node = Node.find(@question.node_id)
     if @answer.save
       current_user.read_question(@question)
-      @msg = t('question.answer_success')
+      @msg = t('questions.answer_success')
       answer_owner.update_score 1
     else
       @msg = @answer.errors.full_messages.join('<br />')

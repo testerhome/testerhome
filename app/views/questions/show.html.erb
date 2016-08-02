@@ -1,8 +1,8 @@
 <% content_for :scripts do %>
   <script type="text/javascript">
     Questions.question_id = <%= @question.id %>;
-    <% if current_user && !@user_liked_answer_ids.blank? %>
-    Questions.user_liked_answer_ids = [<%= @user_liked_answer_ids.join(",") %>];
+    <% if current_user && !@user_voted_answer_ids.blank? %>
+    Questions.user_liked_answer_ids = [<%= @user_voted_answer_ids.join(",") %>];
     <% end %>
     $(document).ready(function(){
       <% if admin? %>
@@ -63,14 +63,14 @@
     <div class="no-result">
       <%= t("questions.no_answers") %>
     </div>
-    <% else %>
+  <% else %>
     <div id="answers" class="panel panel-default" data-last-floor="<%= @answers.count %>">
       <div class="total panel-heading">
         共收到 <b><%= @question.answers_count %></b> 条回答
       </div>
       <div class="items panel-body">
-              <%= cache([@question, "raw:#{@show_raw}"]) do %>
-          <%= render partial: "answers/answer", collection: @answers %>
+        <%= cache([@question, "raw:#{@show_raw}"]) do %>
+          <%= render partial: "answers/answer", collection: @answers_by_vote %>
         <% end %>
       </div>
     </div>
@@ -78,12 +78,12 @@
 
     <% if current_user %>
         <% if @question.closed? %>
-            <div class="alert alert-info">此话题已经于 <%= l @question.closed_at, format: :long %> 关闭，不再接受任何回帖。</div>
+            <div class="alert alert-info">此话题已经于 <%= l @question.closed_at, format: :long %> 关闭，不再接受任何回答。</div>
         <% else %>
             <div id="answer" class="panel panel-default">
               <div class="panel-heading">回帖</div>
               <div class="panel-body">
-                <% if can? :create, Reply %>
+                <% if can? :create, Answer %>
                     <%= render 'answer_form' %>
                 <% else %>
                     <div class="alert alert-info">

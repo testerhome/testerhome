@@ -415,6 +415,31 @@ class User
     likeable.liked_by_user?(self) || likeable.user_id == self.id
   end
 
+  # 投票+1
+  def vote(voteable)
+    return false if voteable.blank?
+    return false if voted?(voteable)
+
+    voteable.push(voted_user_ids: self.id)
+    voteable.inc(votes_count: 1)
+    voteable.touch
+  end
+
+  # 取消投票
+  def unvote(voteable)
+    return false if voteable.blank?
+    return false unless voted?(voteable)
+    voteable.pull(voted_user_ids: self.id)
+    voteable.inc(votes_count: -1)
+    voteable.touch
+  end
+
+  # 是否投过票
+  def voted?(voteable)
+    # voteable.voted_by_user?(self) || voteable.user_id == self.id
+    voteable.voted_by_user?(self)
+  end
+
   # 收藏话题
   def favorite_topic(topic_id)
     return false if topic_id.blank?

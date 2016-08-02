@@ -8,10 +8,8 @@ class Answer
   include Mongoid::SoftDelete
   include Mongoid::MarkdownBody
   include Mongoid::Mentionable
-  include Mongoid::Likeable
+  include Mongoid::Voteable
   # include Mongoid::MentionTopic
-
-  UPVOTES = %w(+1 :+1: :thumbsup: :plus1: 👍 👍🏻 👍🏼 👍🏽 👍🏾 👍🏿)
 
   field :body
   field :body_html
@@ -45,11 +43,11 @@ class Answer
   validate do
     ban_words = (SiteConfig.ban_words_on_reply || "").split("\n").collect { |word| word.strip }
     if self.body.strip.downcase.in?(ban_words)
-      self.errors.add(:body,"请勿回复无意义的内容，如你想收藏或赞这篇帖子，请用帖子后面的功能。")
+      self.errors.add(:body,"请勿回复无意义的内容，如你想收藏或赞这个问答，请用问答后面的功能。")
     end
   end
 
-  # 只有增加回复才更新最后回复
+  # 只有增加 answer 才更新最后 answer
   after_create :update_parent_question
   def update_parent_question
     question.update_last_answer(self)  if self.question.present?
@@ -73,11 +71,6 @@ class Answer
     NotifyAnswerJob.perform_later(id)
   end
 
-  after_create :check_vote_chars_for_like_question
-  def check_vote_chars_for_like_question
-    return unless self.upvote?
-    user.like(question)
-  end
 
   def self.notify_answer_created(answer_id)
     answer = Answer.find_by_id(answer_id)
@@ -112,11 +105,7 @@ class Answer
 
   # 是否热门
   def popular?
-    self.likes_count >= 5
-  end
-
-  def upvote?
-    (body || '').strip.start_with?(*UPVOTES)
+    self.votes_count >= 5
   end
 
   def destroy

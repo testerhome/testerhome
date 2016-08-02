@@ -107,6 +107,7 @@ Rails.application.routes.draw do
   resources :ads
   resources :photos
   resources :likes
+  resources :votes
   resources :jobs
   resources :bugs
   resources :opencourses

@@ -88,7 +88,8 @@ class QuestionsController < ApplicationController
     @show_raw = params[:raw] == '1'
 
     @answers = @question.answers.unscoped.without_body.asc(:_id).all
-    check_current_user_liked_answers
+    @answers_by_vote = @question.answers.unscoped.without_body.desc(:votes_count).asc(:_id).all
+    check_current_user_voted_answers
 
     check_current_user_status_for_question
     set_special_node_active_menu
@@ -100,14 +101,14 @@ class QuestionsController < ApplicationController
     set_seo_meta "#{@question.title} &raquo; #{t('menu.questions')}"
   end
 
-  def check_current_user_liked_answers
+  def check_current_user_voted_answers
     return false unless current_user
 
-    # 找出用户 like 过的 Answer，给 JS 处理 like 功能的状态
-    @user_liked_answer_ids = []
+    # 找出用户 vote 过的 Answer，给 JS 处理 vote 功能的状态
+    @user_voted_answer_ids = []
     @answers.each do |r|
-      unless r.liked_user_ids.index(current_user.id).nil?
-        @user_liked_answer_ids << r.id
+      unless r.voted_user_ids.index(current_user.id).nil?
+        @user_voted_answer_ids << r.id
       end
     end
   end

@@ -1,7 +1,7 @@
 # QuestionsController 下所有页面的 JS 功能
 window.Questions =
   question_id: null
-  user_liked_answer_ids: []
+  user_voted_answer_ids: []
 
 window.QuestionView = Backbone.View.extend
   el: "body"
@@ -30,7 +30,7 @@ window.QuestionView = Backbone.View.extend
     @initDropzone()
     @initContentImageZoom()
     @initCloseWarning()
-    @checkRepliesLikeStatus()
+    @checkRepliesVoteStatus()
     @initReplyNotificationSubscribe()
     @resetClearReplyHightTimer()
 
@@ -161,7 +161,7 @@ window.QuestionView = Backbone.View.extend
     login = _el.data("login")
     answer_body = $("#new_answer textarea")
     if floor
-      new_text = "##{floor}楼 @#{login} "
+      new_text = "##{floor} @#{login} "
     else
       new_text = ''
     if answer_body.val().trim().length == 0
@@ -191,11 +191,11 @@ window.QuestionView = Backbone.View.extend
     $("#answers .answer").removeClass("light")
     answerEl.addClass("light")
 
-  # 异步更改用户 like 过的回复的 like 按钮的状态
-  checkRepliesLikeStatus : () ->
-    for id in Questions.user_liked_answer_ids
-      el = $("#answers a.likeable[data-id=#{id}]")
-      @parentView.likeableAsLiked(el)
+  # 异步更改用户 vote 过的回复的 vote 按钮的状态
+  checkRepliesVoteStatus : () ->
+    for id in Questions.user_voted_answer_ids
+      el = $("#answers a.voteable[data-id=#{id}]")
+      @parentView.voteableAsVoted(el)
 
   # Ajax 回复后的事件
   answerCallback : (success, msg) ->

@@ -51,3 +51,7 @@
       undo: "撤銷"
       redo: "重做"
       insert_link: "插入鏈接"
+    answers: "回答數"
+    hits: "點擊數"
+    likes: "贊"
+
