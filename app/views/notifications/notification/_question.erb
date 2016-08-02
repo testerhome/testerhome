@@ -1,0 +1,21 @@
+<% question = notification.question %>
+<% if question.blank? %>
+  <div class="media-body">相关信息已删除</div>
+<% else %>
+  <div class="media-left avatar">
+    <%= user_avatar_tag(question.user, :normal) %>
+  </div>
+  <div class="media-body">
+    <div class="media-heading">
+      <span class="info">创建了问题 <%= question_title_tag(question) %></span>
+      <% if !notification.read? %>
+        <span class="new label label-warning">新</span>
+      <% end %>
+    </div>
+    <%- if question.present? -%>
+      <div class="summary markdown media-content">
+        <%= raw question.body_html %>
+      </div>
+    <%- end -%>
+  </div>
+<% end %>
