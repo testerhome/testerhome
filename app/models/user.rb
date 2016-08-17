@@ -11,7 +11,7 @@ class User
   extend OmniauthCallbacks
   include Mongoid::Searchable
 
-  ALLOW_LOGIN_CHARS_REGEXP = /\A\w+\z/
+  ALLOW_LOGIN_CHARS_REGEXP = /\A[A-Za-z0-9\-\_\.]+\z/
 
   devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :omniauthable
