@@ -294,6 +294,10 @@ class User
     end
   end
 
+  def self.find_login!(slug)
+    find_login(slug) or raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug)
+  end
+
   def self.find_by_email(email)
     where(email: email).first
   end
