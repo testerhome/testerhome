@@ -304,8 +304,8 @@ class User
 
   def self.find_login(slug)
     # FIXME: Regexp search in MongoDB is slow!!!
-    raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug) if not slug =~ ALLOW_LOGIN_CHARS_REGEXP
-    where(login: /^#{slug}$/i).first or raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug)
+    return nil unless slug =~ ALLOW_LOGIN_CHARS_REGEXP
+    where(login: slug).first or where(login: /^#{slug}$/i).first
   end
 
   def bind?(provider)
