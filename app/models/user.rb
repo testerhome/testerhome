@@ -72,6 +72,8 @@ class User
   field :tagline
   field :topics_count, type: Integer, default: 0
   field :replies_count, type: Integer, default: 0
+  field :questions_count, type: Integer, default: 0
+  field :answers_count, type: Integer, default: 0
   # 用户密钥，用于客户端验证
   field :private_token
   field :favorite_topic_ids, type: Array, default: []
@@ -94,11 +96,14 @@ class User
   index email: 1
   index location: 1
   index replies_count: -1, topics_count: -1
+  index answers_count: -1, questions_count: -1
   index({private_token: 1},{ sparse: true })
 
   has_many :topics, dependent: :destroy
+  has_many :questions, dependent: :destroy
   has_many :notes
   has_many :replies, dependent: :destroy
+  has_many :answers, dependent: :destroy
   embeds_many :authorizations
   has_many :notifications, class_name: 'Notification::Base', dependent: :delete
   has_many :photos

@@ -5,6 +5,8 @@
   li << link_to(t("users.menu.profile"), user_path(@user))
   li << link_to(t("users.menu.topics"), topics_user_path(@user))
   li << link_to(t("users.menu.replies"), replies_user_path(@user))
+  li << link_to(t("users.menu.questions"), questions_user_path(@user))
+  li << link_to(t("users.menu.answers"), answers_user_path(@user))
   li << link_to(t("users.menu.favorites"), favorites_user_path(@user))
   li << link_to(t("users.menu.notes"), notes_user_path(@user))
   li << link_to(t("users.menu.following"), following_user_path(@user))

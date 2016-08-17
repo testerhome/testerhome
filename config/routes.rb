@@ -185,6 +185,8 @@ Rails.application.routes.draw do
     member do
       get :topics
       get :replies
+      get :questions
+      get :answers
       get :favorites
       get :notes
       get :blocked

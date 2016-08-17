@@ -2,7 +2,7 @@
 require 'will_paginate/array'
 class UsersController < ApplicationController
   before_action :require_user, only: [:block, :unblock, :auth_unbind, :follow, :unfollow]
-  before_action :find_user, only: [:show, :topics, :replies, :favorites, :notes,
+  before_action :find_user, only: [:show, :topics, :replies, :questions, :answers, :favorites, :notes,
                                    :block, :unblock, :blocked, :calendar,
                                    :follow, :unfollow, :followers, :following]
 
@@ -27,6 +27,16 @@ class UsersController < ApplicationController
 
   def replies
     @replies = @user.replies.without_system.fields_for_list.recent.paginate(page: params[:page], per_page: 20)
+    set_seo_meta("#{@user.login} 的回复")
+  end
+
+  def questions
+    @questions = @user.questions.unscoped.fields_for_list.recent.paginate(page: params[:page], per_page: 40)
+    set_seo_meta("#{@user.login} 的帖子")
+  end
+
+  def answers
+    @answers = @user.answers.without_system.fields_for_list.recent.paginate(page: params[:page], per_page: 20)
     set_seo_meta("#{@user.login} 的回复")
   end
 

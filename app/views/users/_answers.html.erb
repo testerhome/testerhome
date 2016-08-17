@@ -1,0 +1,16 @@
+<ul class="list-group recent-answers">
+  <% answers.each do |answer| %>
+    <% cache(['users', answer]) do %>
+      <% next if answer.question.blank? %>
+      <li class="list-group-item">
+        <div class="title">
+          <%= link_to(answer.question.title, question_path(answer.question_id)) %>
+          <span class="info">at <%= timeago(answer.created_at) %></span>
+        </div>
+        <div class="body markdown">
+          <%= raw answer.body_html %>
+        </div>
+      </li>
+    <% end %>
+  <% end %>
+</ul>

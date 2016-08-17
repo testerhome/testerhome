@@ -1,0 +1,14 @@
+<table class="node-questions table">
+  <tr class="head">
+    <td class="node"><%=t("common.node")%></td>
+    <td class="title"><%=t("common.title")%></td>
+    <td class="answers"><%=t("common.answers_count")%>/<%= t("common.likes_count") %></td>
+  </tr>
+  <% questions.each do |question| %>
+    <tr class="question <%= cycle("odd","") %> <%= 'deleted' if question.deleted? %>">
+      <td class="node"><%= render_node_name(question.node_name,question.node_id) %></td>
+      <td class="title"><%= link_to(question.title, question_path(question)) %> <%= question_excellent_tag(question) %> <em><%= timeago(question.created_at) %></td>
+      <td class="answers"><%= question.answers_count %>/<%= question.likes_count %> </td>
+    </tr>
+  <% end %>
+</table>

@@ -72,6 +72,59 @@
   }
 }
 
+.node-questions {
+  td.title {
+    word-break: break-all;
+    a:link,
+    a:visited {color:#2c64d7; text-decoration: none;}
+    a:hover { text-decoration: underline; }
+    em { font-style:normal; font-size:12px; color:#bbb; }
+    i.icon { margin-bottom: -1px; }
+  }
+  tr.head {
+    td {  border-top:none; padding-top:14px; color:#CCC; font-weight:bold; font-size:12px; }
+  }
+  tr.odd {
+    td { background:#F9F9F9; }
+  }
+  tr.topic {
+    td.author {
+      width:80px;
+      a { color:#666; font-weight:bold; }
+    }
+  }
+}
+
+.recent-questions {
+  ul {
+    li {
+      .title {
+        font-size:14px;
+      }
+      i.icon { margin-bottom: -1px; }
+      .info { margin-top:3px; font-size:12px; color:#bbb; }
+      .node {
+        margin-right:5px;
+        a { color:#444; }
+      }
+    }
+  }
+}
+
+.recent-answers {
+  li {
+    .title {
+      font-size:14px;
+      .info { font-size:12px; color:#bbb; }
+    }
+    .body {
+      a { color:#333; }
+      margin-top:6px; color:#333;
+      p { font-size:13px; }
+    }
+  }
+}
+
 
 .row > .span13 { margin-left:0;}
 #main .userinfo h1 { text-align: left; display:inline; }
