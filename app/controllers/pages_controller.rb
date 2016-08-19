@@ -5,14 +5,15 @@ class PagesController < ApplicationController
   def index
     set_seo_meta('Wiki')
 
-    fresh_when(etag: [SiteConfig.wiki_index_html])
+    fresh_when(etag: [SiteConfig.wiki_index_html, SiteConfig.wiki_sidebar_html])
+
   end
 
   def recent
     @pages = Page.recent.paginate(page: params[:page], per_page: 30)
     set_seo_meta t('pages.wiki_index')
 
-    fresh_when(etag: [@pages])
+    fresh_when(etag: [@pages, SiteConfig.wiki_sidebar_html])
   end
 
   def show
