@@ -13,7 +13,7 @@
 </div>
 
 <div class="row home-icons hidden-sm hidden-xs">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="item item1">
             <div class="icon">
                 <a href="<%= topics_path %>"><i class="fa fa-comments-o"></i></a>
@@ -23,7 +23,17 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+      <div class="item item1">
+        <div class="icon">
+          <a href="<%= questions_path %>"><i class="fa fa-question-circle"></i></a>
+        </div>
+        <div class="text">
+          <a href="<%= questions_path %>">问答专区 <i class="pull-right fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
         <div class="item item2">
             <div class="icon">
                 <a href="<%= pages_path %>"><i class="fa fa-file-text"></i></a>
@@ -33,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="item item3">
             <div class="icon">
                 <a href="<%= jobs_path %>"><i class="fa fa-users"></i></a>
@@ -43,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="item item4">
             <div class="icon">
                 <a href="<%= popular_topics_path %>"><i class="fa fa-star"></i></a>
@@ -76,6 +86,29 @@
     <div class="panel-footer">
         <%= link_to "查看更多...", recent_topics_path %>
     </div>
+</div>
+
+<div class="home_suggest_questions panel panel-default">
+  <div class="panel-heading">最新问题</div>
+  <div class="panel-body questions row">
+    <%
+       odd_questions, even_questions = @latest_questions.partition.each_with_index { |t, i| i.odd?  }
+    %>
+    <div class="col-md-6">
+      <% cache([odd_questions, "odd"]) do %>
+        <%= render partial: "questions/question", collection: odd_questions, locals: { suggest: false } %>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <% cache([even_questions, "even"]) do %>
+        <%= render partial: "questions/question", collection: even_questions, locals: { suggest: false } %>
+      <% end %>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <%= link_to "查看更多...", recent_questions_path %>
+  </div>
 </div>
 
 <div class="home_suggest_topics panel panel-default">
