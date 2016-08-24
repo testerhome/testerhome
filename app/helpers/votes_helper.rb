@@ -28,6 +28,8 @@ module VotesHelper
   private
 
   def unlogin_voteable_tag(voteable)
-    link_to(raw('<i class="fa fa-thumbs-o-up"></i> <span>#{voteable.votes_count}</span>'), new_user_session_path, class: '')
+    label = "#{voteable.votes_count}"
+    vote_label = raw "<i class='fa fa-thumbs-o-up'></i> <br /> <span>#{label}</span>"
+    link_to(vote_label, new_user_session_path, class: '')
   end
 end
