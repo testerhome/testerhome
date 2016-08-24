@@ -71,6 +71,7 @@ AppView = Backbone.View.extend
     $("abbr.timeago").timeago()
     $(".alert").alert()
     $('.dropdown-toggle').dropdown()
+    $('[data-toggle="tooltip"]').tooltip()
 
     # Go Top
     $("#go_top").click () ->

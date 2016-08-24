@@ -1049,7 +1049,7 @@ img.emoji {
     padding: 10px 15px;
     margin: 0 -15px;
     vertical-align: top;
-    position: relative;
+    //position: relative;
     &:last-child {
       border-bottom: 0px;
     }
@@ -1066,6 +1066,7 @@ img.emoji {
       i.fa-diamond {
         color: $red;
       }
+      i.fa-check { color: $green; font-size: 18px; }
       i.fa-bug {
         color: gold
       }
@@ -1145,6 +1146,7 @@ img.emoji {
       text-align: left;
       line-height: 100%;
       margin-bottom: 8px;
+      i.fa-check { color: $green; font-size: 24px; }
     }
     .avatar {
       text-align: right;

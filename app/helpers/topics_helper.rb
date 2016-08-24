@@ -71,12 +71,12 @@ module TopicsHelper
 
   def topic_excellent_tag(topic)
     return "" if !topic.excellent?
-    content_tag(:i,"", title: "精华帖", class: "fa fa-star")
+    content_tag(:i, '', title: '精华帖', class: 'fa fa-star', data: { toggle: 'tooltip' })
   end
 
   def topic_closed_tag(topic)
-    return "" if !topic.closed?
-    content_tag(:i,"", title: "结帖", class: "fa fa-lock")
+    return '' unless topic.closed?
+    content_tag(:i, '', title: '问题已解决／话题已结束讨论', class: 'fa fa-check', data: { toggle: 'tooltip' })
   end
 
   def render_topic_last_reply_time(topic)
