@@ -1,11 +1,11 @@
 module Admin
   class AnswersController < Admin::ApplicationController
     def index
-      @answers = Answer.unscoped.desc(:_id).includes(:question, :user).paginate page: params[:page], per_page: 30
+      @answers = Answer.without_system.desc(:_id).includes(:question, :user).paginate page: params[:page], per_page: 30
     end
 
     def show
-      @answer = Answer.unscoped.find(params[:id])
+      @answer = Answer.without_system.find(params[:id])
 
       if @answer.question.blank?
         redirect_to admin_answers_path, alert: '问题已经不存在'
@@ -17,7 +17,7 @@ module Admin
     end
 
     def edit
-      @answer = Answer.unscoped.find(params[:id])
+      @answer = Answer.without_system.find(params[:id])
     end
 
     def create
@@ -31,7 +31,7 @@ module Admin
     end
 
     def update
-      @answer = Answer.unscoped.find(params[:id])
+      @answer = Answer.without_system.find(params[:id])
 
       if @answer.update_attributes(params[:answer].permit!)
         redirect_to(admin_answers_path, notice: 'Answer was successfully updated.')
@@ -41,7 +41,7 @@ module Admin
     end
 
     def destroy
-      @answer = Answer.unscoped.find(params[:id])
+      @answer = Answer.without_system.find(params[:id])
       @answer.destroy
     end
   end
