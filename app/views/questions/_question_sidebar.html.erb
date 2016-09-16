@@ -9,7 +9,6 @@
         <div class="group">
           <div class="btn-group" role="group">
             <%= question_follow_tag(@question, class: 'btn btn-default') %>
-            <%= question_favorite_tag(@question, class: 'btn btn-default') %>
           </div>
         </div>
       </div>
@@ -32,25 +31,20 @@
       <hr />
       <div class="group opts">
         <% if admin? %>
-          <% if !@question.suggested_at.blank? %>
-          <%= link_to raw("<i class='fa fa-thumb-tack'></i> 取消"), unsuggest_admin_question_path(@question), 'data-confirm' => '确定要取消置顶么?', method: :post %>
-          <% else %>
-          <%= link_to raw("<i class='fa fa-thumb-tack'></i> 置顶"), suggest_admin_question_path(@question), 'data-confirm' => '确定要置顶么?', method: :post %>
-          <% end %>
           <% if !@question.excellent? %>
-                <%= link_to raw("<i class='fa fa-diamond'></i> 加精"), action_question_path(@question, type: 'excellent'), title: "设为精华帖" , method: "post", data: { confirm: "确定要设置成精华帖么？" } %>
+                <%= link_to raw("<i class='fa fa-diamond'></i> 加精"), action_question_path(@question, type: 'excellent'), title: "设为精华问题" , method: "post", data: { confirm: "确定要设置成精华问题么？" } %>
           <% end %>
           <% if @question.node_id != Node.no_point_id %>
-                <%= link_to raw("<i class='fa fa-ban'></i> 屏蔽"), action_question_path(@question, type: 'ban'), method: 'post', title: "屏蔽此贴，移动到违规处理区节点" %>
+                <%= link_to raw("<i class='fa fa-ban'></i> 屏蔽"), action_question_path(@question, type: 'ban'), method: 'post', title: "屏蔽此问题，移动到违规处理区节点" %>
           <% end %>
         <% end %>
 
         <% if owner?(@question) or admin? %>
             <% if can?(:close, @question) %>
                 <% if !@question.closed? %>
-                    <%= link_to raw("<i class='fa fa-lock'></i> 关闭"), close_question_path(@question), method: 'post', title: "关闭话题，不再接受回帖" %>
+                    <%= link_to raw("<i class='fa fa-check'></i> 结束"), close_question_path(@question), method: 'post', title: "问题已解决", data: { toggle: 'tooltip' } %>
                 <% else %>
-                    <%= link_to raw("<i class='fa fa-unlock-alt'></i> 开启"),  open_question_path(@question), method: 'post', title: "重新开启话题" %>
+                    <%= link_to raw("<i class='fa fa-undo'></i> 开启"),  open_question_path(@question), method: 'post', title: "重新开启问题", data: { toggle: 'tooltip' } %>
                 <% end %>
             <% end %>
             <%= link_to "", edit_question_path(@question), class: "fa fa-pencil", title: "修改本帖" %>
@@ -61,6 +55,6 @@
   </div>
 
   <div class="notify-updated">
-    <a class="update" href="#"><i class="fa fa-bell-o"></i> <b>有新回复！</b>点击这里立即载入</a>
+    <a class="update" href="#"><i class="fa fa-bell-o"></i> <b>有新回答！</b>点击这里立即载入</a>
   </div>
 </div>

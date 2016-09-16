@@ -20,7 +20,7 @@ window.TopicView = Backbone.View.extend
     "click .topic-reward a.pay-qrcode": "testerhome_qrcode_pay"
     "click .notify-updated .update": "updateReplies"
     "click .pickup-emoji": "pickupEmoji"
-
+    "click #node-selector .nodes .name a": "nodeSelectorNodeSelected"
 
 
   initialize: (opts) ->
@@ -421,11 +421,12 @@ window.TopicView = Backbone.View.extend
   initReplyNotificationSubscribe: () ->
     return if not App.access_token?
     return if App.access_token.length < 5
-    console.log 'initReplyNotificationSubscribe'
+    return if window.replyNotificationChannel
+    console.log "init replyNotificationChannel"
     MessageBus.start()
+    window.replyNotificationChannel = true
     MessageBus.callbackInterval = 1000
     MessageBus.subscribe "/topics/" + Topics.topic_id, (json) ->
-      console.log 'receivedNotificationCount', json
       if json.user_id == App.current_user_id
         return false
       if json.action == 'create'
@@ -449,4 +450,13 @@ window.TopicView = Backbone.View.extend
     if !window._emojiModal
       window._emojiModal = new EmojiModalView()
     window._emojiModal.show()
+    false
+
+  nodeSelectorNodeSelected: (e) ->
+    el = $(e.currentTarget)
+    e.preventDefault()
+    $("#node-selector").modal('hide')
+    nodeId = el.data('id')
+    $('.form input[name="topic[node_id]"]').val(nodeId)
+    $('#node-selector-button').html(el.text())
     false

@@ -1,15 +1,9 @@
 <div class="opts">
   <%= likeable_tag(@question) %>
   <%= question_follow_tag(@question) %>
-  <%= question_favorite_tag(@question) %>
   <%= question_qrcode_tag(@question) %>
 
   <% if admin? %>
-        <% if !@question.suggested_at.blank? %>
-    <%= link_to raw("<i class='fa fa-thumb-tack'></i> 取消"), unsuggest_admin_question_path(@question), 'data-confirm' => '确定要取消置顶么?', method: :post %>
-        <% else %>
-    <%= link_to raw("<i class='fa fa-thumb-tack'></i> 置顶"), suggest_admin_question_path(@question), 'data-confirm' => '确定要置顶么?', method: :post %>
-    <% end %>
     <% if !@question.excellent? %>
           <%= link_to raw("<i class='fa fa-diamond'></i> 加精"), action_question_path(@question.id, type: 'excellent'), title: "设为精华问题" , method: "post", data: { confirm: "确定要设置成精华问题么？" } %>
       <% end %>

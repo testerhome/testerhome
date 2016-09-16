@@ -71,12 +71,12 @@ module QuestionsHelper
 
   def question_excellent_tag(question)
     return "" if !question.excellent?
-    content_tag(:i,"", title: "精华帖", class: "fa fa-star")
+    content_tag(:i,"", title: "精华问题", class: "fa fa-star")
   end
 
   def question_closed_tag(question)
     return "" if !question.closed?
-    content_tag(:i,"", title: "结帖", class: "fa fa-lock")
+    content_tag(:i, '', title: '问题已解决', class: 'fa fa-check', data: { toggle: 'tooltip' })
   end
 
   def render_question_last_answer_time(question)

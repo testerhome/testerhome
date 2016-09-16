@@ -131,13 +131,12 @@ class UsersController < ApplicationController
 
   protected
   def find_user
-    # 处理 login 有大写字母的情况
-    if params[:id] != params[:id].downcase
-      redirect_to request.path.downcase, status: 301
-      return
-    end
+    @user = User.find_login!(params[:id])
 
-    @user = User.find_login(params[:id])
+    # 转向正确的拼写
+    if @user.login != params[:id]
+      redirect_to user_path(@user.login), status: 301
+    end
     if @user.deleted?
       render_404
     end

@@ -2,12 +2,12 @@
 require "redcarpet"
 module ApplicationHelper
   ALLOW_TAGS = %w(p br img h1 h2 h3 h4 h5 h6 blockquote pre code b i strong em table tr td tbody th strike del u a ul ol li span hr)
-  ALLOW_ATTRIBUTES = %w(href src class id title alt target rel data-floor id)
+  ALLOW_ATTRIBUTES = %w(href src class width height id title alt target rel data-floor)
   EMPTY_STRING = ''.freeze
   $html_cache = {}
   def sanitize_markdown(body)
     # TODO: This method slow, 3.5ms per call in topic body
-    sanitize body, tags: ALLOW_TAGS, attributes: ALLOW_ATTRIBUTES
+    sanitize(body, tags: ALLOW_TAGS, attributes: ALLOW_ATTRIBUTES)
   end
 
   def notice_message
@@ -89,6 +89,10 @@ module ApplicationHelper
     data = data.gsub(/\n\s+/,EMPTY_STRING)
     data = data.gsub(/>\s+</,"><")
     sanitize data
+  end
+
+  def title_tag(str)
+    content_for :title, raw("#{str} · #{Setting.app_name}")
   end
 
   MOBILE_USER_AGENTS =  'palm|blackberry|nokia|phone|midp|mobi|symbian|chtml|ericsson|minimo|' +

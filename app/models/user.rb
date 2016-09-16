@@ -11,7 +11,7 @@ class User
   extend OmniauthCallbacks
   include Mongoid::Searchable
 
-  ALLOW_LOGIN_CHARS_REGEXP = /\A\w+\z/
+  ALLOW_LOGIN_CHARS_REGEXP = /\A[A-Za-z0-9\-\_\.]+\z/
 
   devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :omniauthable
@@ -300,14 +300,18 @@ class User
     end
   end
 
+  def self.find_login!(slug)
+    find_login(slug) or raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug)
+  end
+
   def self.find_by_email(email)
     where(email: email).first
   end
 
   def self.find_login(slug)
     # FIXME: Regexp search in MongoDB is slow!!!
-    raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug) if not slug =~ ALLOW_LOGIN_CHARS_REGEXP
-    where(login: /^#{slug}$/i).first or raise Mongoid::Errors::DocumentNotFound.new(self, slug: slug)
+    return nil unless slug =~ ALLOW_LOGIN_CHARS_REGEXP
+    where(login: slug).first or where(login: /^#{slug}$/i).first
   end
 
   def bind?(provider)

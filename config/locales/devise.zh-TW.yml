@@ -43,3 +43,6 @@
         subject: '重置密碼信息'
       unlock_instructions:
         subject: '解鎖信息'
+    registrations:
+      user:
+        updated: '個人資料更新成功'

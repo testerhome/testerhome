@@ -62,7 +62,7 @@ class Question
   field :last_active_mark, type: Integer
   # 是否锁定节点
   field :lock_node, type: Mongoid::Boolean, default: false
-  # 精华帖 0 否， 1 是
+  # 精华问题 0 否， 1 是
   field :excellent, type: Integer, default: 0
   field :closed_at , type: DateTime
 

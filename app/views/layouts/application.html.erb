@@ -18,7 +18,7 @@
   <%= yield :node_feed_link %>
   <%= raw SiteConfig.custom_head_html %>
 </head>
-<body data-controller-name="<%= controller_name %>">
+<body class="page-<%= controller_name %>" data-controller-name="<%= controller_name %>">
   <div class="header">
     <nav class="navbar navbar-inverse navbar-fixed-top navbar-default">
       <div class="container">
@@ -61,6 +61,16 @@
           <li class="notification-count">
             <a href="<%= notifications_path %>" class="<%= badge_class %>" title="通知"><i class="fa fa-bell"></i><span class="count"><%= unread_notify_count %></span></a>
           </li>
+              <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                  <i class="fa fa-plus"></i> <span class="caret"></span>
+                </a>
+                <%= render_list class: "dropdown-menu", role: "menu" do |li|
+                  li << link_to(t("topics.create_topic"), main_app.new_topic_path)
+                  li << link_to(t("notes.create_note"), main_app.new_note_path)
+                end %>
+              </li>
+
           <% end %>
         </ul>
       </div>

@@ -20,7 +20,7 @@ window.QuestionView = Backbone.View.extend
     "click .question-reward a.pay-qrcode": "testerhome_qrcode_pay"
     "click .notify-updated .update": "updateReplies"
     "click .pickup-emoji": "pickupEmoji"
-
+    "click #node-selector .nodes .name a": "nodeSelectorNodeSelected"
 
 
   initialize: (opts) ->
@@ -450,3 +450,12 @@ window.QuestionView = Backbone.View.extend
       window._emojiModal = new EmojiModalView()
     window._emojiModal.show()
     false
+
+  nodeSelectorNodeSelected: (e) ->
+     el = $(e.currentTarget)
+     e.preventDefault()
+     $("#node-selector").modal('hide')
+     nodeId = el.data('id')
+     $('.form input[name="question[node_id]"]').val(nodeId)
+     $('#node-selector-button').html(el.text())
+     false

@@ -19,6 +19,18 @@
     <div class="topic-detail panel panel-default">
       <%= render partial: "topics/topic_info", locals: { topic: @topic } %>
 
+
+      <% if @topic.excellent? %>
+          <div class="label-awesome">
+            <i class="fa fa-star awesome"></i> 本帖已被设为精华帖！
+            <% if admin? %>
+                <div class="pull-right">
+                  <%= link_to icon_tag("close"), action_topic_path(@topic.id, type: 'unexcellent'), data: { confirm: "确定要取消么？", method: "post" } %>
+                </div>
+            <% end %>
+          </div>
+      <% end %>
+
       <div class="panel-body markdown">
         <%= raw SiteConfig.before_topic_html %>
           <article>
@@ -32,16 +44,6 @@
         <%= raw SiteConfig.after_topic_html %>
       </div>
 
-      <% if @topic.excellent? %>
-        <div class="label-awesome">
-          <i class="fa fa-star awesome"></i> 本帖已被设为精华帖！
-          <% if admin? %>
-          <div class="pull-right">
-            <%= link_to icon_tag("close"), action_topic_path(@topic.id, type: 'unexcellent'), data: { confirm: "确定要取消么？", method: "post" } %>
-          </div>
-          <% end %>
-        </div>
-      <% end %>
 
       <% if @topic.cannot_be_shared? %>
           <div class="label-legal">

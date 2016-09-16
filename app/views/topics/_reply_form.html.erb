@@ -9,7 +9,7 @@
       <span class="help-inline" style="padding-left: 5px;" title="或者 Ctrl + Enter"><kbd>Command</kbd> + <kbd>Enter</kbd></span>
 
       <div class="pull-right"><a href="/markdown" target="_blank">排版说明</a></div>
-      <% if Node.find(@topic.node_id).name.index("匿名") %>
+      <% if Node.find_by_id(@topic.node_id) and Node.find(@topic.node_id).name.index("匿名") %>
                <span class="help-inline">
         <label>
             <%= f.check_box :anonymous %>  <%= t("topics.real_name") %>

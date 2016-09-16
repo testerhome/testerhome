@@ -1,6 +1,5 @@
 /*
  *= require bootstrap.min
- *= require bootstrap-select.min
  *= require font-awesome
  *= require highlight
  *= require social-share-button
@@ -561,25 +560,35 @@ form {
 }
 
 .input-group-addon {
-  padding: 6px 0;
   background: #fff;
+  border-color: #ddd;
+  padding: 0 15px;
   color: #999;
   border-radius: 0px;
   border: 0px;
-  border-bottom: 1px solid #D5DCE1;
+  border: 1px solid #D5DCE1;
 }
 
-.bootstrap-select {
-  .btn-default,
-  .btn-default.active {
-    border: 0px;
-    background: #FFF;
-    border-bottom: 1px solid #F3F3F3;
-    transition: none;
-    padding-bottom: 7px;
-    border-radius: 0;
+.input-group-captcha {
+  background: #FFF;
+  border-radius: 3px 0 0 3px;
+  img {
+    border-radius: 3px 0 0 3px;
   }
 }
+
+.input-group-btn > .btn {
+  padding: 6px 12px;
+  &:focus {
+    background: #FFF;
+    border-color: #ccc;
+  }
+}
+
+.input-group-btn:first-child > .btn {
+  border-right: 0px;
+}
+
 
 .popover {
   border-radius: 3px;
@@ -1040,7 +1049,7 @@ img.emoji {
     padding: 10px 15px;
     margin: 0 -15px;
     vertical-align: top;
-    position: relative;
+    //position: relative;
     &:last-child {
       border-bottom: 0px;
     }
@@ -1057,6 +1066,7 @@ img.emoji {
       i.fa-diamond {
         color: $red;
       }
+      i.fa-check { color: $green; font-size: 18px; }
       i.fa-bug {
         color: gold
       }
@@ -1219,6 +1229,7 @@ img.emoji {
       i.fa-diamond {
         color: $red;
       }
+      i.fa-check { color: $green; font-size: 18px; }
       i.fa-bug {
         color: gold
       }
@@ -1298,6 +1309,7 @@ img.emoji {
       text-align: left;
       line-height: 100%;
       margin-bottom: 8px;
+      i.fa-check { color: $green; font-size: 24px; }
     }
     .avatar {
       text-align: right;
@@ -1307,13 +1319,11 @@ img.emoji {
   .label-awesome {
     font-size: 13px;
     background: #FCF8F7;
-    padding: 3px 15px;
-    border-top: 1px solid #eae5e4;
-    color: #aAa5a4;
+    padding: 5px 15px;
+    border-bottom: 1px solid #f3f0f0;
+    color: #eb5424;
 
-    a {
-      color: #aAa5a4;
-    }
+    a { color: #aAa5a4; }
   }
 
   .label-legal {
@@ -1501,6 +1511,7 @@ img.emoji {
       text-align: left;
       line-height: 100%;
       margin-bottom: 8px;
+      i.fa-check { color: $green; font-size: 24px; }
     }
     .avatar {
       text-align: right;
@@ -2399,6 +2410,11 @@ textarea.div-dropzone-focus {
 }
 
 .topic-copyright {
+  color: grey;
+  border: 1px solid rgba(0,0,0,0.07);
+}
+
+.question-copyright {
   color: grey;
   border: 1px solid rgba(0,0,0,0.07);
 }

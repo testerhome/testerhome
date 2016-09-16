@@ -1,7 +1,6 @@
 #= require jquery
 #= require jquery_ujs
 #= require bootstrap.min
-#= require bootstrap-select.min
 #= require underscore
 #= require backbone
 #= require will_paginate
@@ -70,6 +69,7 @@ AppView = Backbone.View.extend
 
     $('#user_skill_list').tokenfield()
     $("textarea#topic-editor-textarea").pagedownBootstrap()
+    $("textarea#question-editor-textarea").pagedownBootstrap()
 
 
 
@@ -77,8 +77,7 @@ AppView = Backbone.View.extend
     $("abbr.timeago").timeago()
     $(".alert").alert()
     $('.dropdown-toggle').dropdown()
-    $('.bootstrap-select').remove()
-    $("select").selectpicker()
+    $('[data-toggle="tooltip"]').tooltip()
 
     # Go Top
     $("#go_top").click () ->
@@ -213,7 +212,10 @@ AppView = Backbone.View.extend
   initNotificationSubscribe : () ->
     return if not App.access_token?
     return if App.access_token.length < 5
+    return if window.notificationChannel
+    console.log "init notificationChannel"
     MessageBus.start()
+    window.notificationChannel = true
     MessageBus.callbackInterval = 1000
     MessageBus.subscribe "/notifications_count/#{App.access_token}", (json) ->
       span = $(".notification-count span")
