@@ -20,6 +20,7 @@
 #= require message-bus
 #= require form_storage
 #= require topics
+#= require questions
 #= require pages
 #= require notes
 #= require turbolinks
@@ -40,6 +41,7 @@ AppView = Backbone.View.extend
 
   events:
     "click a.likeable": "likeable"
+    "click a.voteable": "voteable"
     "click .header .form-search .btn-search": "openHeaderSearchBox"
     "click .header .form-search .btn-close": "closeHeaderSearchBox"
     "click a.button-block-user": "blockUser"
@@ -56,6 +58,9 @@ AppView = Backbone.View.extend
     if $('body').data('controller-name') in ['topics', 'replies']
       window._topicView = new TopicView({parentView: @})
 
+    if $('body').data('controller-name') in ['questions', 'answers']
+      window._questionView = new QuestionView({parentView: @})
+
     if $('body').data('controller-name') in ['pages']
       window._pageView = new PageView({parentView: @})
 
@@ -64,6 +69,7 @@ AppView = Backbone.View.extend
 
     $('#user_skill_list').tokenfield()
     $("textarea#topic-editor-textarea").pagedownBootstrap()
+    $("textarea#question-editor-textarea").pagedownBootstrap()
 
 
 
@@ -156,6 +162,52 @@ AppView = Backbone.View.extend
     el.data("state","active").attr("title", "取消赞").addClass("active")
     $('span',el).text("#{likes_count} 个赞")
     $("i.fa",el).attr("class","fa fa-heart")
+
+
+  voteable : (e) ->
+    if !App.isLogined()
+      location.href = "/account/sign_in"
+      return false
+
+    $el = $(e.currentTarget)
+    voteable_type = $el.data("type")
+    voteable_id = $el.data("id")
+    $target = $(e.currentTarget)
+    voteable_type = $target.data("type")
+    voteable_id = $target.data("id")
+    votes_count = parseInt($target.data("count"))
+    $el = $(".voteable[data-type='#{voteable_type}'][data-id='#{voteable_id}']")
+
+    if $el.data("state") != "active"
+      $.ajax
+        url : "/votes"
+        type : "POST"
+        data :
+          type : voteable_type
+          id : voteable_id
+
+      votes_count += 1
+      $el.data('count', votes_count)
+      @voteableAsVoted($el)
+      $("i.fa", $el).attr("class","fa fa-thumbs-up")
+    else
+      $.ajax
+        url : "/votes/#{voteable_id}"
+        type : "DELETE"
+        data :
+          type : voteable_type
+      if votes_count > 0
+        votes_count -= 1
+      $el.data("state","").data('count', votes_count).attr("title", "赞同").removeClass("active")
+      $('span', $el).text("#{votes_count}")
+      $("i.fa", $el).attr("class","fa fa-thumbs-o-up")
+    false
+
+  voteableAsVoted : (el) ->
+    votes_count = el.data("count")
+    el.data("state","active").attr("title", "取消赞同").addClass("active")
+    $('span',el).text("#{votes_count}")
+    $("i.fa",el).attr("class","fa fa-thumbs-up")
 
   initNotificationSubscribe : () ->
     return if not App.access_token?

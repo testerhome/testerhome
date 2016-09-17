@@ -1,0 +1,46 @@
+<%= render 'node_selector', node: @question.node %>
+<%= simple_form_for @question, html: { class: "form" } do |f| %>
+  <%= render "shared/error_messages", target: @question %>
+  <%= f.hidden_field :node_id %>
+  <div class="form-group">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default" id="node-selector-button"
+                data-toggle="modal" data-target="#node-selector"><%= @question.node&.name || '选择节点...' %></button>
+      </div>
+      <%= f.text_field :title, class: "form-control", placeholder: "在这里填写标题" %>
+    </div>
+  </div>
+
+  <%= render "editor_toolbar" %>
+
+  <div class="form-group">
+    <%= f.text_area :body, placeholder: "1. 描述清楚你的问题
+
+2. 贴上相关代码，请使用代码块
+
+3. 贴上相关信息
+
+4. 贴上相关截图（代码，请不要用截图）
+
+5. 已经尝试过哪些方法仍然没解决（附上相关链接）
+
+" , id: "question-editor-textarea", class: "question-editor form-control closewarning", rows: 20, identify: "question-editor-form" %>
+  </div>
+
+  <% if @question.new_record? %>
+    <%= render partial: "polls/form" %>
+  <% end %>
+
+    <span class="help-inline">
+                    <label>
+                      <%= f.check_box :cannot_be_shared %>  <%= t("questions.cannot_be_shared")%>
+                    </label>
+                  </span>
+
+
+    <div class="form-group">
+    <%= f.submit t("common.save"), class: "btn btn-primary col-xs-2", 'data-disable-with' => t("common.saving") %>
+    <div class="pull-right"><a href="/markdown" target="_blank"><i class="fa fa-tip"></i> 排版说明</a></div>
+  </div>
+<% end %>

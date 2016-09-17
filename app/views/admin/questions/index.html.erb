@@ -1,0 +1,58 @@
+<% content_for :sitemap do %>
+  <span class="current"><%= t("admin.menu.questions")%></span>
+<% end %>
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr class="head">
+    <td class="first">ID</td>
+    <td style="width:300px">Title</td>
+    <td>Node</td>
+    <td>User</td>
+    <td>Answers</td>
+    <td>At</td>
+    <td>Modified by admin</td>
+    <td style="width:100px"></td>
+  </tr>
+
+<% @questions.each do |question| %>
+  <tr class="<%= 'deleted' if !question.deleted_at.blank? %>">
+    <td class="first"><%= question.id %></td>
+    <td>
+      <%= truncate(question.title, length: 30) %>
+    </td>
+    <td><%= question.node.name if question.node %></td>
+    <td><%= question.user.login if question.user %></td>
+    <td><%= question.answers_count %></td>
+    <td>
+      <% if question.deleted_at.blank? %>
+        <%= l question.created_at, format: :long %>
+      <% else %>
+        <%= link_to question.who_deleted, user_path(question.who_deleted) if not question.who_deleted.blank? %> 删除于 <br />
+        <%= l question.deleted_at, format: :long %>
+      <% end %>
+    </td>
+    <td>
+      <% if !question.modified_admin.blank? %>
+        <%= link_to question.modified_admin.login, user_path(question.modified_admin.login) if not question.modified_admin.blank? %>
+      <% else %>
+        无
+      <% end %>
+    </td>
+    <td>
+      <% if !question.suggested_at.blank? %>
+        <%= link_to t("common.un_top"), unsuggest_admin_question_path(question), 'data-confirm' => 'Are you sure?', method: :post %>
+      <% else %>
+        <%= link_to t("common.place_top"), suggest_admin_question_path(question), 'data-confirm' => 'Are you sure?', method: :post %>
+      <% end %>
+      <%= link_to "", edit_admin_question_path(question), class: "fa fa-pencil" %>
+      <% if question.deleted_at.blank? %>
+        <%= link_to "", admin_question_path(question), 'data-confirm' => 'Are you sure?', method: :delete, class: "fa fa-trash" %>
+      <% else %>
+        <%= link_to "", undestroy_admin_question_path(question), title: t("common.undelete"), 'data-confirm' => 'Are you sure?', method: :post, class: "fa fa-undo" %>
+      <% end %>
+    </td>
+
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @questions %>

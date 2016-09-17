@@ -1,0 +1,9 @@
+<% if !@answer.errors.blank? %>
+  _questionView.answerCallback(0, '<%= j(@msg) %>');
+<% else %>
+
+  <%= render 'create_callback', answer: @answer %>
+
+   _questionView.answerCallback(1, '<%= j(@msg) %>');
+
+<% end %>

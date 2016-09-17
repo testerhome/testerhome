@@ -1,0 +1,17 @@
+<% cache(["sidebar_for_node_recent_questions", question.node_id, Time.now.strftime("%Y-%m-%d %H")]) do %>
+  <%
+  limit = [[question.answers_count, 1].max, 10].min
+  questions = Question.where(:id.ne => question.id, :node_id => question.node_id).recent.limit(limit)
+  %>
+
+  <% if questions.present? %>
+  <div class="panel panel-default">
+    <div class="panel-heading"><%= t("questions.node_recent_questions") %></div>
+    <ul class="list-group">
+    <% questions.each do |item| %>
+      <li class="list-group-item"><%= link_to(truncate(item.title, length: 30), question_path(item), title: item.title) %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+<% end %>

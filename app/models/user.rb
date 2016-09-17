@@ -72,9 +72,12 @@ class User
   field :tagline
   field :topics_count, type: Integer, default: 0
   field :replies_count, type: Integer, default: 0
+  field :questions_count, type: Integer, default: 0
+  field :answers_count, type: Integer, default: 0
   # 用户密钥，用于客户端验证
   field :private_token
   field :favorite_topic_ids, type: Array, default: []
+  field :favorite_question_ids, type: Array, default: []
   # 屏蔽的节点
   field :blocked_node_ids, type: Array, default: []
   # 屏蔽的用户
@@ -93,11 +96,14 @@ class User
   index email: 1
   index location: 1
   index replies_count: -1, topics_count: -1
+  index answers_count: -1, questions_count: -1
   index({private_token: 1},{ sparse: true })
 
   has_many :topics, dependent: :destroy
+  has_many :questions, dependent: :destroy
   has_many :notes
   has_many :replies, dependent: :destroy
+  has_many :answers, dependent: :destroy
   embeds_many :authorizations
   has_many :notifications, class_name: 'Notification::Base', dependent: :delete
   has_many :photos
@@ -325,6 +331,13 @@ class User
     Rails.cache.read("user:#{self.id}:topic_read:#{topic.id}") == last_reply_id
   end
 
+  # 是否读过 question 的最近更新
+  def question_read?(question)
+    # 用 last_answer_id 作为 cache key ，以便不热门的数据自动被 Memcached 挤掉
+    last_answer_id = question.last_answer_id || -1
+    Rails.cache.read("user:#{self.id}:question_read:#{question.id}") == last_answer_id
+  end
+
   def filter_readed_topics(topics)
     t1 = Time.now
     key_hashs = {}
@@ -357,6 +370,34 @@ class User
     Rails.cache.write("user:#{self.id}:topic_read:#{topic.id}", last_reply_id)
   end
 
+  # 将 question 的最后回复设置为已读
+  def read_question(question)
+    return if question.blank?
+    return if self.question_read?(question)
+
+    self.notifications.unread.any_of({mentionable_type: 'Question', mentionable_id: question.id},
+                                     {mentionable_type: 'Answer', :mentionable_id.in => question.answer_ids},
+                                     {:answer_id.in => question.answer_ids}).update_all(read: true)
+
+    # 处理 last_answer_id 是空的情况
+    last_answer_id = question.last_answer_id || -1
+    Rails.cache.write("user:#{self.id}:question_read:#{question.id}", last_answer_id)
+  end
+
+  # 将 question 的最后回复设置为已读
+  def read_question(question)
+    return if question.blank?
+    return if self.question_read?(question)
+
+    self.notifications.unread.any_of({mentionable_type: 'Question', mentionable_id: question.id},
+                                     {mentionable_type: 'Answer', :mentionable_id.in => question.answer_ids},
+                                     {:answer_id.in => question.answer_ids}).update_all(read: true)
+
+    # 处理 last_answer_id 是空的情况
+    last_answer_id = question.last_answer_id || -1
+    Rails.cache.write("user:#{self.id}:question_read:#{question.id}", last_answer_id)
+  end
+
   # 赞东西
   def like(likeable)
     return false if likeable.blank?
@@ -383,6 +424,31 @@ class User
     likeable.liked_by_user?(self) || likeable.user_id == self.id
   end
 
+  # 投票+1
+  def vote(voteable)
+    return false if voteable.blank?
+    return false if voted?(voteable)
+
+    voteable.push(voted_user_ids: self.id)
+    voteable.inc(votes_count: 1)
+    voteable.touch
+  end
+
+  # 取消投票
+  def unvote(voteable)
+    return false if voteable.blank?
+    return false unless voted?(voteable)
+    voteable.pull(voted_user_ids: self.id)
+    voteable.inc(votes_count: -1)
+    voteable.touch
+  end
+
+  # 是否投过票
+  def voted?(voteable)
+    # voteable.voted_by_user?(self) || voteable.user_id == self.id
+    voteable.voted_by_user?(self)
+  end
+
   # 收藏话题
   def favorite_topic(topic_id)
     return false if topic_id.blank?
@@ -403,6 +469,32 @@ class User
   # 是否收藏过话题
   def favorited_topic?(topic_id)
     favorite_topic_ids.include?(topic_id)
+  end
+
+  def favorite_topics_count
+    self.favorite_topic_ids.size
+  end
+
+  # 收藏问题
+  def favorite_question(question_id)
+    return false if question_id.blank?
+    question_id = question_id.to_i
+    return false if favorited_question?(question_id)
+    self.push(favorite_question_ids: question_id)
+    true
+  end
+
+  # 取消对问题的收藏
+  def unfavorite_question(question_id)
+    return false if question_id.blank?
+    question_id = question_id.to_i
+    self.pull(favorite_question_ids: question_id)
+    true
+  end
+
+  # 是否收藏过问题
+  def favorited_question?(question_id)
+    favorite_question_ids.include?(question_id)
   end
 
   def favorite_topics_count

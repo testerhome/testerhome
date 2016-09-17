@@ -1,11 +1,11 @@
 module Admin
   class RepliesController < Admin::ApplicationController
     def index
-      @replies = Reply.unscoped.desc(:_id).includes(:topic, :user).paginate page: params[:page], per_page: 30
+      @replies = Reply.without_system.desc(:_id).includes(:topic, :user).paginate page: params[:page], per_page: 30
     end
 
     def show
-      @reply = Reply.unscoped.find(params[:id])
+      @reply = Reply.without_system.find(params[:id])
 
       if @reply.topic.blank?
         redirect_to admin_replies_path, alert: '帖子已经不存在'
@@ -17,7 +17,7 @@ module Admin
     end
 
     def edit
-      @reply = Reply.unscoped.find(params[:id])
+      @reply = Reply.without_system.find(params[:id])
     end
 
     def create
@@ -31,7 +31,7 @@ module Admin
     end
 
     def update
-      @reply = Reply.unscoped.find(params[:id])
+      @reply = Reply.without_system.find(params[:id])
 
       if @reply.update_attributes(params[:reply].permit!)
         redirect_to(admin_replies_path, notice: 'Reply was successfully updated.')
@@ -41,7 +41,7 @@ module Admin
     end
 
     def destroy
-      @reply = Reply.unscoped.find(params[:id])
+      @reply = Reply.without_system.find(params[:id])
       @reply.destroy
     end
   end

@@ -1,0 +1,34 @@
+<% cache([answer, @question, "raw:#{@show_raw}"]) do %>
+    <div class="answer<%= ' popular' if answer.popular? %><%= ' answer-system' if answer.system_event? %><%= ' answer-deleted' if answer.deleted? %>" data-id="<%= answer.id %>" id="answer<%= answer.id %>">
+      <% if answer.deleted? and !@show_raw %>
+          <div class="deleted text-center"><%= answer.id %><%= t("common.floor") %> <%= t("common.deleted") %></div>
+
+       <% elsif answer.system_event? %>
+         <%= render 'answers/system_event', answer: answer %>
+
+      <% else %>
+          <div class="vote opts"><%= voteable_tag(answer, cache: false) %></div>
+          <div class="infos">
+            <div class="info">
+              <span class="name">
+                <%= user_name_tag(answer.user) %>
+              </span> ·
+              <span class="time">
+                <a class="answer-floor" href="#answer<%= answer.id %>">#<%= answer.id %></a> · <%= timeago(answer.created_at) %>
+              </span>
+              <span class="opts pull-right">
+                <% if !answer.deleted? %>
+                  <span class="hideable">
+                  </span>
+                  <%= link_to('', edit_question_answer_path(@question, answer), class: "edit fa fa-pencil", 'data-uid' => answer.user_id, title: "修改回答") %>
+
+                <% end %>
+              </span>
+            </div>
+            <div class="markdown<%= ' deleted' if answer.deleted? %>">
+              <%= raw answer.body_html %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+<% end %>

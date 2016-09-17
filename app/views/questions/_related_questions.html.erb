@@ -1,0 +1,12 @@
+<% cache([@question, 'related_question', Date.current]) do %>
+  <% if @question.related_questions.present? %>
+    <div class="panel panel-default">
+      <div class="panel-heading">相关话题</div>
+      <ul class="list-group">
+        <% @question.related_questions.each do |question| %>
+          <li class="list-group-item"><%= link_to question.title, question %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

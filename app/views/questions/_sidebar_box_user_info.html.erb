@@ -1,0 +1,47 @@
+<% if !user.blank? %>
+<div class="panel panel-default author-info">
+    <div class="panel-heading">作者</div>
+    <div class="panel-body vcard clearfix">
+        <ul class="list-group">
+            <li class="adr list-group-item">
+                <span class="region"><%= user_name_tag(user) %></span>
+            </li>
+            <% if !user.location.blank? %>
+                <li class="adr list-group-item">
+                    <span class="region"><%= location_name_tag(user.location) %></span>
+                </li>
+            <% end %>
+
+            <% if !user.company.blank? %>
+                <li class="adr list-group-item">
+                    <span class="org"><%= user.company %></span>
+                </li>
+            <% end %>
+
+            <% if !user.tagline.blank? %>
+                <li class="list-group-item">
+                    <span><%= render_user_tagline(user) %></span>
+                </li>
+            <% end %>
+
+            <% if !current_user.blank? and !owner? user %>
+            <li class="list-group-item">
+                <div class="buttons row">
+                    <div class="col-sm-6 div-follow-user">
+                        <%= follow_user_tag(user, {class: "btn btn-primary btn-block btn-sm"}) %>
+                    </div>
+
+                    <div class="col-sm-6 div-block-user">
+                        <%= block_user_tag(user, {class: "btn btn-default btn-block btn-sm"}) %>
+                    </div>
+                </div>
+            </li>
+            <% end %>
+
+        </ul>
+
+    </div>
+
+
+</div>
+<% end %>

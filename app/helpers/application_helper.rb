@@ -209,4 +209,7 @@ module ApplicationHelper
     raw text
   end
 
+  def comment
+  end
+
 end

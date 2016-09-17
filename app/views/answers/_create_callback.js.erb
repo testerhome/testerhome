@@ -1,0 +1,16 @@
+if($("#answers").length == 0){
+  Turbolinks.visit(location.href);
+} else {
+  if ($(".answer[data-id=<%= answer.id %>]").length == 0) {
+    $("#answers").data("last-floor",<%= answer.id %>);
+    var dom = $('<%= j(render("answer", answer: answer, answer_counter: @question.answers_count - 1, display_edit: true)) %>');
+    $("#answers .items").append(dom);
+    $("#answers .total b").text('<%= @question.answers_count %>');
+    $('#question-sidebar .total b').text('<%= @question.answers_count %>');
+    dom.find(".answer-floor").text('#' + '<%= answer.id %>');
+    dom.find("a.edit").css("display", "inline-block");
+    dom.addClass('light');
+    _questionView.resetClearReplyHightTimer();
+  }
+}
+

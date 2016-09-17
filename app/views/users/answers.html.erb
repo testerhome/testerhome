@@ -1,0 +1,16 @@
+<div class="row">
+  <%= render "sidebar", user: @user %>
+
+  <div class="col-md-8">
+    <%= render "menu" %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= render "answers", answers: @answers %>
+      </div>
+      <div class="panel-footer">
+        <%= will_paginate @answers %>
+      </div>
+    </div>
+  </div>
+
+</div>

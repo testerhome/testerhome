@@ -1,0 +1,113 @@
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    Questions.question_id = <%= @question.id %>;
+    <% if current_user && !@user_voted_answer_ids.blank? %>
+    Questions.user_liked_answer_ids = [<%= @user_voted_answer_ids.join(",") %>];
+    <% end %>
+    $(document).ready(function(){
+      <% if admin? %>
+        $("#answers .answer a.edit").css('display','inline-block');
+      <% elsif current_user %>
+        $("#answers .answer a.edit[data-uid='<%= current_user.id %>']").css('display','inline-block');
+      <% end %>
+    })
+  </script>
+<% end %>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="question-detail panel panel-default">
+      <%= render partial: "questions/question_info", locals: { question: @question } %>
+
+      <% if @question.excellent? %>
+        <div class="label-awesome">
+          <i class="fa fa-star awesome"></i> 本问题已被设为精华问题！
+          <% if admin? %>
+            <div class="pull-right">
+              <%= link_to icon_tag("close"), action_question_path(@question.id, type: 'unexcellent'), data: { confirm: "确定要取消么？", method: "post" } %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="panel-body markdown">
+        <%= raw SiteConfig.before_question_html %>
+          <article>
+            <%= raw @question.body_html %>
+          </article>
+
+        <% if @poll %>
+          <%=  render partial: "polls/poll", object: @poll %>
+        <% end %>
+
+        <%= raw SiteConfig.after_question_html %>
+      </div>
+
+      <% if @question.cannot_be_shared? %>
+          <div class="label-legal">
+            <i class="fa fa-legal"></i>「<%= t("questions.cannot_be_shared")%>」
+          </div>
+      <% end %>
+      <div class="panel-footer clearfix">
+        <%= render "buttons" %>
+      </div>
+    </div>
+
+      <%= render partial: "ban_reason" %>
+      <%= render partial: "cannot_be_shared" %>
+      <% if @question.question_pay_url %>
+        <%= render partial: "reward" %>
+      <%end%>
+
+  <% if @answers.blank? %>
+    <div class="no-result">
+      <%= t("questions.no_answers") %>
+    </div>
+  <% else %>
+    <div id="answers" class="panel panel-default" data-last-floor="<%= @answers.count %>">
+      <div class="total panel-heading">
+        共收到 <b><%= @question.answers_count %></b> 条回答
+      </div>
+      <div class="items panel-body">
+        <%= cache([@question, "raw:#{@show_raw}"]) do %>
+          <%= render partial: "answers/answer", collection: @answers_by_vote %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+    <% if current_user %>
+        <% if @question.closed? %>
+            <div class="alert alert-info">此问题已经于 <%= l @question.closed_at, format: :long %> 关闭，不再接受任何回答。</div>
+        <% else %>
+            <div id="answer" class="panel panel-default">
+              <div class="panel-heading">回帖</div>
+              <div class="panel-body">
+                <% if can? :create, Answer %>
+                    <%= render 'answer_form' %>
+                <% else %>
+                    <div class="alert alert-info">
+                      当前设置新手用户不能在 22:00 ~ 9:00 发帖。
+                    </div>
+                <% end %>
+              </div>
+            </div>
+        <% end %>
+    <% else %>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <%= render partial: "questions/translation/need_login_to_answer" %>
+          </div>
+        </div>
+    <% end %>
+
+  <%= render 'related_questions' %>
+
+  </div>
+
+<% if !mobile? %>
+  <div class="sidebar hidden-mobile col-md-3">
+    <%= render 'question_sidebar' %>
+  </div>
+<% end %>
+</div>

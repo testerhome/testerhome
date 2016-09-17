@@ -31,6 +31,7 @@ class Poll
   validate :limit_options_count, on: :create
 
   scope :for_topic, ->(tid) { without('options.voters').where(topic_id: tid) }
+  scope :for_question, ->(qid) { without('options.voters').where(question_id: qid) }
 
   belongs_to :topic, inverse_of: :poll
 
