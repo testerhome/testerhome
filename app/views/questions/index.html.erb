@@ -1,5 +1,59 @@
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-12">
+
+    <% if can? :create, Question %>
+      <div class="panel panel-default clearfix">
+        <div class="panel-body">
+          <div class="btn-group pull-left">
+            <% if !@node.blank? %>
+              <%= link_to(t("questions.start_a_new_question_button"), new_question_path(node: select_node.id), class: "btn btn-primary" )%>
+            <% else %>
+              <%= link_to(t("questions.start_a_new_question_button"), new_question_path, class: "btn btn-primary" )%>
+            <% end %>
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+
+            <% comment do %>
+              <ul class="dropdown-menu">
+                <% cache(["sidebar_new_question_box",SiteConfig.new_question_dropdown_node_ids]) do %>
+                  <% Node.new_question_dropdowns.each do |node| %>
+                    <li>
+                      <%= link_to(node.name, new_question_path(node: node.id)) %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            <% end %>
+
+          </div>
+
+          <!--
+            <%= link_to(sanitize("<span class='icon icons-rss'></span> RSS"), feed_questions_url, title: t("questions.subscribe_with_rss", name: Setting.app_name), class: "pull-right feed-button btn btn-default", target: "_blank") %>
+          -->
+        </div>
+      </div>
+
+    <% else %>
+      <% if current_user && !current_user.avatar? %>
+        <div class="panel panel-default clearfix">
+          <div class="panel-body">
+            <p><%= t('questions.have_no_avatar')%></p>
+            <%= link_to t('common.upload'), edit_user_registration_path, class: 'btn btn-warning btn-block' %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if current_user && current_user.newbie? %>
+      <div class="panel panel-default">
+        <div class="panel-heading">新手必读</div>
+        <div class="panel-body">
+          <%= raw SiteConfig.newbie_notices %>
+        </div>
+      </div>
+    <% end %>
+
     <% if not mobile? %>
       <%= raw SiteConfig.question_list_top_html %>
     <%end%>
@@ -50,8 +104,19 @@
   </div>
 
 
-  <div class="sidebar col-md-3">
-    <%= render "questions/sidebar_for_question_index", select_node: @node%>
+  <div class="sidebar col-md-12">
+    <%= raw SiteConfig.question_index_sidebar_html %>
+
+    <% cache(["sidebar_statistics",Time.now.strftime("%Y-%m-%d %H")]) do %>
+      <div class="panel panel-default">
+        <div class="panel-heading"><%= t("common.statics")%></div>
+        <ul class="list-group">
+          <li class="list-group-item">社区会员: <%= User.unscoped.count %> 人</li>
+          <li class="list-group-item">问题数: <%= Question.unscoped.count %> 个</li>
+          <li class="list-group-item">回答数: <%= Answer.unscoped.count %> 条</li>
+        </ul>
+      </div>
+    <% end %>
   </div>
 
 </div>
