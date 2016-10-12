@@ -1,7 +1,7 @@
 # coding: utf-8
 require "auto-space"
 
-CORRECT_CHARS = [
+QUESTION_CORRECT_CHARS = [
   ['【', '['],
   ['】', ']'],
   ['（', '('],
@@ -173,7 +173,7 @@ class Question
 
   before_save :auto_correct_title
   def auto_correct_title
-    CORRECT_CHARS.each do |chars|
+    QUESTION_CORRECT_CHARS.each do |chars|
       self.title.gsub!(chars[0], chars[1])
     end
     self.title.auto_space!
