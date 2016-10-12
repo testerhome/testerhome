@@ -8,8 +8,10 @@ class Node
   field :summary
   field :sort, type: Integer, default: 0
   field :topics_count, type: Integer, default: 0
+  field :questions_count, type: Integer, default: 0
 
   has_many :topics
+  has_many :questions
   delegate :name, to: :section, prefix: true, allow_nil: true
 
   belongs_to :section
