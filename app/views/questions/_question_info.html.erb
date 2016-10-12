@@ -2,7 +2,7 @@
   <div class="media-body">
     <h1 class="media-heading"><%= question.title %> <%= question_closed_tag(question) %></h1>
     <div class="info">
-      <%= render_node_name(question.node_name,question.node_id) %>
+      <%= render_node_name(question.node_name,question.node_id, 'question') %>
        ·
       <%= user_name_tag(question.user, data: { author: true }) %>
        ·

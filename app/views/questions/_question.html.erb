@@ -38,7 +38,7 @@
       </div>
       <div class="info">
         <% if action_name != "node" %>
-            <%= render_node_name(question.node_name, question.node_id) %>
+            <%= render_node_name(question.node_name, question.node_id, 'question') %>
             •
         <% end %>
         <%= user_name_tag(question.user, data: {author: true}) %>
