@@ -6,7 +6,7 @@
         <div class="panel-body">
           <div class="btn-group pull-left">
             <% if !@node.blank? %>
-              <%= link_to(t("questions.start_a_new_question_button"), new_question_path(node: select_node.id), class: "btn btn-primary" )%>
+              <%= link_to(t("questions.start_a_new_question_button"), new_question_path(node: @node.id), class: "btn btn-primary" )%>
             <% else %>
               <%= link_to(t("questions.start_a_new_question_button"), new_question_path, class: "btn btn-primary" )%>
             <% end %>
