@@ -227,7 +227,8 @@ class Question
     self.last_answer_id = answer.try(:id)
     self.last_answer_user_id = answer.try(:user_id)
     self.last_answer_user_login = answer.try(:user_login)
-    self.__elasticsearch__.update_document
+    # fixme: Add elasticsearch back when it works
+    # self.__elasticsearch__.update_document
     self.save
   end
 
