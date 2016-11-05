@@ -11,7 +11,8 @@ class User
   extend OmniauthCallbacks
   include Mongoid::Searchable
 
-  ALLOW_LOGIN_CHARS_REGEXP = /\A[A-Za-z0-9\-\_\.]+\z/
+  LOGIN_FORMAT = 'A-Za-z0-9\-\_\.'
+  ALLOW_LOGIN_FORMAT_REGEXP = /\A[#{LOGIN_FORMAT}]+\z/
 
   devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :omniauthable
@@ -145,7 +146,7 @@ class User
       blocked: 2,
   }
 
-  validates :login, format: { with: ALLOW_LOGIN_CHARS_REGEXP, message: '只允许数字、大小写字母和下划线'},
+  validates :login, format: { with: ALLOW_LOGIN_FORMAT_REGEXP, message: '只允许数字、大小写字母和下划线'},
                               length: {:in => 3..20}, presence: true,
                               uniqueness: {case_sensitive: false}
 
@@ -304,7 +305,7 @@ class User
 
   def self.find_login(slug)
     # FIXME: Regexp search in MongoDB is slow!!!
-    return nil unless slug =~ ALLOW_LOGIN_CHARS_REGEXP
+    return nil unless slug =~ ALLOW_LOGIN_FORMAT_REGEXP
     where(login: slug).first or where(login: /^#{slug}$/i).first
   end
 
