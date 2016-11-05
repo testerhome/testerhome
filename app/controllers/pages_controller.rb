@@ -81,7 +81,7 @@ class PagesController < ApplicationController
   end
 
   def preview
-    render text: MarkdownTopicConverter.convert(params[:body])
+    render text: Homeland::Markdown.call(params[:body])
   end
 
   protected

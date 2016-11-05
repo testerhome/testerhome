@@ -58,7 +58,7 @@ class Node
   # Markdown 转换过后的 HTML
   def summary_html
     Rails.cache.fetch("#{self.cache_key}/summary_html") do
-      MarkdownTopicConverter.convert(self.summary)
+      Homeland::Markdown.call(self.summary)
     end
   end
 

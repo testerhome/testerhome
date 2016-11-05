@@ -2,7 +2,7 @@
 require 'digest/md5'
 module TopicsHelper
   def markdown(text)
-    sanitize_markdown(MarkdownTopicConverter.format(text))
+    sanitize_markdown(Homeland::Markdown.call(text))
   end
 
   def topic_use_readed_text(state)

@@ -15,6 +15,10 @@ module TesterHome
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/uploaders)
     config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += [
+        Rails.root.join('lib/homeland'),
+        Rails.root.join('lib/exception_notifier')
+    ]
     config.autoload_paths += %W(#{config.root}/app/grape)
 
     config.time_zone = 'Beijing'
@@ -70,7 +74,6 @@ module TesterHome
   end
 end
 
-require "markdown"
 $memory_store = ActiveSupport::Cache::MemoryStore.new
 
 I18n.config.enforce_available_locales = false

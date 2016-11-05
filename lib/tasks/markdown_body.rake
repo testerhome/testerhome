@@ -6,7 +6,7 @@ namespace :markdown_body do
       klass.find_in_batches do |group|
         group.each do |record|
           if record.body.present?
-            html = sanitize_markdown(MarkdownTopicConverter.format(record.body))
+            html = sanitize_markdown(Homeland::Markdown.call(record.body))
             if html != record.body_html
               record.update_attribute(:body_html, html)
               puts "#{klass.name} #{record.id}"

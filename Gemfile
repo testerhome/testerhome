@@ -70,6 +70,8 @@ gem 'redis-namespace', '~> 1.5.1'
 gem 'redis-objects', '1.1.0'
 
 # Markdown 格式 & 文本处理
+gem 'html-pipeline'
+gem 'html-pipeline-rouge_filter'
 gem 'redcarpet', '~> 3.3.3'
 gem 'rouge'
 gem 'auto-space', '0.0.4'
