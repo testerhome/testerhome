@@ -5,7 +5,7 @@ class Notification::TopicDeleted < Notification::Base
   delegate :title, to: :topic, prefix: true, allow_nil: true
 
   def notify_hash
-    return {} if self.topic.blank?
+    return {title: "你发布的话题被管理员删除了。", content: "请注意查看论坛须知。", content_path: "markdown"} if self.topic.blank?
     {
         title: "你发布的话题被管理员删除了。",
         content: self.topic_body[0, 30],
@@ -14,8 +14,7 @@ class Notification::TopicDeleted < Notification::Base
   end
 
   def content_path
-    return '' if self.topic.blank?
-    url_helpers.topic_path(self.topic_id)
+    return 'markdown'
   end
 
 end
