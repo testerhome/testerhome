@@ -1,11 +1,11 @@
 module Homeland
   class Pipeline
     class YoukuFilter < HTML::Pipeline::TextFilter
-      YOUKU_URL_REGEXP = /(\s|^|<div>|<br>)(https?:\/\/)(\w+\.)?(youku\.com\/v_show\/id_)([=A-Za-z0-9_-]*)\.html\S*/
+      YOUKU_URL_REGEXP = /(\s|^|<div>|<br>)(https?:\/\/)(\w+\.)?(youku\.com\/v_show\/id_)(.*)\.html\S*/
 
       def call
         @text.gsub(YOUKU_URL_REGEXP) do
-          youku_id = $6
+          youku_id = $5
           close_tag = $1 if ["<br>", "<div>"].include? $1
           wmode = context[:video_wmode]
           autoplay = context[:video_autoplay] || false
