@@ -1,15 +1,17 @@
-<% cache(['markdown-guide', Digest::MD5.hexdigest(MARKDOWN_DOC)]) do %>
+<% title_tag 'Markdown 教程' %>
+
+<% cache(['markdown-guide', Digest::MD5.hexdigest(Homeland::Markdown.example)]) do %>
     <div class="panel markdown panel-default">
-        <div class="panel-body">
-            <h1>Markdown 教程</h1>
-            <div class="row">
-                <div class="col-md-6">
-                    <pre><code><%= MARKDOWN_DOC %></code></pre>
-                </div>
-                <div class="col-md-6">
-                    <%= markdown(MARKDOWN_DOC)%>
-                </div>
-            </div>
+      <div class="panel-body">
+        <h1>Markdown 教程</h1>
+        <div class="row">
+          <div class="col-md-6">
+            <pre><code><%= Homeland::Markdown.example %></code></pre>
+          </div>
+          <div class="col-md-6">
+            <%= markdown(Homeland::Markdown.example)%>
+          </div>
         </div>
+      </div>
     </div>
 <% end %>
