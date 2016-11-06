@@ -9,6 +9,7 @@ context = {
 filters = [
   Homeland::Pipeline::NormalizeMentionFilter,
   Homeland::Pipeline::YoutubeFilter,
+  Homeland::Pipeline::YoukuFilter,
   Homeland::Pipeline::MarkdownFilter,
   Homeland::Pipeline::MentionFilter,
   Homeland::Pipeline::FloorFilter,
